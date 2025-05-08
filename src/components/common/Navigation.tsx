@@ -29,8 +29,7 @@ export function Navigation() {
               <NavigationMenuLink
                 className={cn(
                   navigationMenuTriggerStyle(),
-                  pathname === item.href &&
-                    "bg-accent text-accent-foreground" // 선택된 페이지
+                  pathname === item.href && "bg-accent text-accent-foreground" // 선택된 페이지
                 )}
               >
                 {item.name}
@@ -42,8 +41,3 @@ export function Navigation() {
     </NavigationMenu>
   );
 }
-const Navigation = () => {
-  return <div></div>;
-};
-
-export default Navigation;
