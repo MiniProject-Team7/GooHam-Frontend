@@ -1,30 +1,27 @@
 /** @type {import('tailwindcss').Config} */
 module.exports = {
+  darkMode: "class",
   content: ["./src/**/*.{js,ts,jsx,tsx}"],
-  safelist: [
-    "border-border",
-    "bg-background",
-    "text-foreground",
-    "ring",
-    "outline-ring/50"
-  ],
   theme: {
     extend: {
+      fontFamily: {
+        sans: ["Pretendard", "sans-serif"],
+      },
       colors: {
-        border: "hsl(var(--color-border) / <alpha-value>)",
-        input: "hsl(var(--color-input) / <alpha-value>)",
-        ring: "hsl(var(--color-ring) / <alpha-value>)",
-        background: "hsl(var(--color-background) / <alpha-value>)",
-        foreground: "hsl(var(--color-foreground) / <alpha-value>)",
-        primary: "hsl(var(--color-primary) / <alpha-value>)",
-        "primary-foreground": "hsl(var(--color-primary-foreground) / <alpha-value>)",
-        secondary: "hsl(var(--color-secondary) / <alpha-value>)",
-        "secondary-foreground": "hsl(var(--color-secondary-foreground) / <alpha-value>)",
-        muted: "hsl(var(--color-muted) / <alpha-value>)",
-        "muted-foreground": "hsl(var(--color-muted-foreground) / <alpha-value>)",
-        accent: "hsl(var(--color-accent) / <alpha-value>)",
-        "accent-foreground": "hsl(var(--color-accent-foreground) / <alpha-value>)",
-        destructive: "hsl(var(--color-destructive) / <alpha-value>)",
+        background: "var(--background)",
+        foreground: "var(--foreground)",
+        border: "var(--border)",
+        input: "var(--input)",
+        ring: "var(--ring)",
+        primary: "var(--primary)",
+        "primary-foreground": "var(--primary-foreground)",
+        secondary: "var(--secondary)",
+        "secondary-foreground": "var(--secondary-foreground)",
+        muted: "var(--muted)",
+        "muted-foreground": "var(--muted-foreground)",
+        accent: "var(--accent)",
+        "accent-foreground": "var(--accent-foreground)",
+        destructive: "var(--destructive)",
       },
       borderRadius: {
         sm: "var(--radius-sm)",
