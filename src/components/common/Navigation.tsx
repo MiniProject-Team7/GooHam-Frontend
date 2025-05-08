@@ -42,3 +42,8 @@ export function Navigation() {
     </NavigationMenu>
   );
 }
+const Navigation = () => {
+  return <div></div>;
+};
+
+export default Navigation;
