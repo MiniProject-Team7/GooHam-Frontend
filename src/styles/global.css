@@ -1,5 +1,8 @@
-@import "tailwindcss";
+/* 1️⃣ tailwind.config.js 를 먼저 지정해야 커스텀 컬러·폰트가 반영됩니다 */
 @config "../../tailwind.config.js";
+
+/* 2️⃣ 그 다음에 Tailwind 전체를 불러옵니다 (base / components / utilities) */
+@import "tailwindcss";
 
 @font-face {
   font-family: "Pretendard";
@@ -21,8 +24,8 @@
   --border: rgba(0, 0, 0, 0.1);
   --input: rgba(0, 0, 0, 0.05);
   --ring: rgba(0, 0, 0, 0.2);
-  --primary: #111827;
-  --primary-foreground: #ffffff;
+  /* --primary: #111827;
+  --primary-foreground: #ffffff; */
   --secondary: #f3f4f6;
   --secondary-foreground: #111827;
   --muted: #e5e7eb;
@@ -48,8 +51,8 @@
 
 html, body {
   font-family: "Pretendard", sans-serif;
-  background-color: var(--background);
-  color: var(--foreground);
+  /* background-color: var(--background); */
+  /* color: var(--foreground); */
   -webkit-font-smoothing: antialiased;
   -moz-osx-font-smoothing: grayscale;
   margin: 0;
