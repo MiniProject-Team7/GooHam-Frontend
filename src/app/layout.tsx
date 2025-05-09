@@ -1,6 +1,6 @@
 import type { Metadata } from "next";
 import { Navigation } from "@/components/common/Navigation";
-import "@/styles/global.css";
+import "../styles/global.css";
 
 export const metadata: Metadata = {
   title: "GooHam",
