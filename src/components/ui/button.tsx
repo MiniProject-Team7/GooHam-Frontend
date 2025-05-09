@@ -12,7 +12,7 @@ const buttonVariants = cva(
         default: "bg-primary-500 text-white shadow-xs hover:bg-primary-400",
         secondary:
           "bg-background text-primary-500 shadow-xs hover:bg-primary-100 border border-gray",
-        write: "bg-background text-primary-500 shadow-xs hover:bg-primary-100 border border",
+        write: "bg-background text-primary-500 shadow-xs hover:bg-primary-100 border",
         edit: "bg-secondary-500 text-white shadow-xs hover:bg-secondary-400",
         link: "bg-primary-500 text-white shadow-xs hover:bg-primary-300",
         destructive:
