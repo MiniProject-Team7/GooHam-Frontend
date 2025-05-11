@@ -1,12 +1,7 @@
 "use client";
 
-import React, { JSX, useState } from "react";
-// import { Avatar, AvatarFallback, AvatarImage } from "../../../components/ui/avatar";
-// import { Button } from "../../../components/ui/button";
+import React, { JSX, useState, useRef } from "react";
 import { Card, CardContent } from "../../../components/ui/card";
-// import { Input } from "../../../components/ui/input";
-// import { Textarea } from "../../../components/ui/textarea";
-// import { ActionButtonSection } from "./sections/ActionButtonSection";
 import { FormContainerSection } from "./sections/FormContainerSection";
 import { ProfileViewSection } from "./sections/ProfileViewSection/ProfileViewSection";
 import { SettingsGroupSection } from "./sections/SettingsGroupSection";
@@ -14,9 +9,31 @@ import { UserInfoGroupSection } from "./sections/UserInfoGroupSection";
 import { Sidebar } from "./sections/Sidebar";
 import { EditView } from "./sections/EditView";
 import { ReadOnlyView } from "./sections/ReadOnlyView";
+import { MyPost } from "./sections/MyPost";
 
 export const DivWrapper = (): JSX.Element => {
   const [isEditing, setIsEditing] = useState(false);
+  const [activeMenu, setActiveMenu] = useState("기본 정보");
+
+  // 각 섹션 ref
+  const passwordRef = useRef<HTMLDivElement>(null);
+  const alarmRef = useRef<HTMLDivElement>(null);
+  const deleteRef = useRef<HTMLDivElement>(null);
+
+  const handleSelectMenu = (menu: string) => {
+    setActiveMenu(menu);
+
+    // 메뉴 클릭 시 해당 섹션으로 스크롤
+    const scrollMap: Record<string, React.RefObject<HTMLDivElement | null>> = {
+      비밀번호: passwordRef,
+      알림설정: alarmRef,
+      계정삭제: deleteRef,
+    };
+
+    if (scrollMap[menu]?.current) {
+      scrollMap[menu].current?.scrollIntoView({ behavior: "smooth" });
+    }
+  };
 
   return (
     <main className="bg-gray-50 flex flex-row justify-center w-full " data-model-id="103:1784">
@@ -24,29 +41,48 @@ export const DivWrapper = (): JSX.Element => {
         {/* Main content */}
         <div className="flex px-[50px] gap-[75px] mt-[69px]">
           {/* Sidebar */}
-          <Sidebar />
+          <Sidebar activeMenu={activeMenu} onSelectMenu={handleSelectMenu} />
 
           {/* Main content area */}
           <div className="max-w-[890px]">
-            <h1 className="font-bold text-[32px] mb-[50px]">계정 관리</h1>
+            <h1 className="font-bold text-[32px] mb-[50px]">
+              {activeMenu === "작성한 글" ? "나의 활동" : "계정 관리"}
+            </h1>
 
-            <Card className="border border-solid border-[#00000038] rounded-xl">
-              <CardContent className="p-0">
-                <h2 className="text-[28px] font-semibold p-[63px_52px_36px]">기본 정보</h2>
+            {activeMenu === "기본 정보" ||
+            activeMenu === "비밀번호" ||
+            activeMenu === "알림 설정" ||
+            activeMenu === "계정 삭제" ? (
+              <Card className="border border-solid border-[#00000038] rounded-xl">
+                <CardContent className="p-[55px]">
+                  <h2 className="text-[28px] font-semibold mb-[36px]">기본 정보</h2>
 
-                <div className="px-[55px]">
                   {isEditing ? (
                     <EditView setIsEditing={setIsEditing} />
                   ) : (
                     <ReadOnlyView setIsEditing={setIsEditing} />
                   )}
 
-                  <SettingsGroupSection />
-                  <UserInfoGroupSection />
-                  <FormContainerSection />
-                </div>
-              </CardContent>
-            </Card>
+                  <div ref={passwordRef}>
+                    <SettingsGroupSection />
+                  </div>
+
+                  <div ref={alarmRef}>
+                    <UserInfoGroupSection />
+                  </div>
+
+                  <div ref={deleteRef}>
+                    <FormContainerSection />
+                  </div>
+                </CardContent>
+              </Card>
+            ) : null}
+
+            {activeMenu === "작성한 글" && (
+              <Card className="border border-solid border-[#00000038] rounded-xl p-10">
+                <MyPost />
+              </Card>
+            )}
           </div>
         </div>
 

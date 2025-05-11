@@ -62,13 +62,13 @@ export const ActionButtonSection = ({ selected, onChange }: Props) => {
               key={category.id}
               variant="outline"
               onClick={() => handleCategoryClick(category.name)}
-              className={`flex flex-col items-center justify-center w-[70px] h-[70px] py-[6px] px-[15px] rounded-lg border shrink-0 ${
+              className={`flex flex-col items-center justify-center w-[70px] h-[70px] py-[6px] px-[15px] rounded-lg border shrink-0 bg-white${
                 isSelected
                   ? "border-primary-500 text-primary-500"
-                  : "border-[rgba(0,0,0,0.22)] text-black hover:bg-gray-100"
+                  : "border border-[rgba(0,0,0,0.22)] text-black hover:bg-gray-100"
               }`}
             >
-              <div className={`mb-1 ${isSelected ? "text-primary" : "text-black"}`}>
+              <div className={`mb-1 ${isSelected ? "text-primary-500" : "text-black"}`}>
                 {iconMap[category.name]}
               </div>
               <span className="font-medium text-[12.8px] leading-[17.9px] [font-family:'Pretendard-Medium',Helvetica]">
