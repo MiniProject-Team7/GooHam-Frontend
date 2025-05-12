@@ -68,7 +68,7 @@ export const MyPost = (): JSX.Element => {
 
         <div className="flex flex-col">
           <div className="flex items-center gap-4">
-            <h2 className="text-[32px] font-semibold [font-family:'Pretendard-SemiBold',Helvetica] text-[#000000]">
+            <h2 className="text-[24px] font-semibold [font-family:'Pretendard-SemiBold',Helvetica] text-[#000000] mt-[12px]">
               홍길동
             </h2>
             <span className="text-2xl font-normal [font-family:'Pretendard-Regular',Helvetica] text-[#000000]">
