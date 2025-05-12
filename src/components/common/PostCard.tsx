@@ -27,17 +27,17 @@ const statusStyles: Record<string, string> = {
 
 export function PostCard({ post }: PostCardProps) {
   return (
-    <Card className="flex w-[600px] h-[280px] flex-col md:flex-row p-4 rounded-xl hover:shadow-md transition">
+    <Card className="flex w-[600px] h-[260px] flex-col md:flex-row p-4 rounded-xl hover:shadow-md transition">
       <img
         src={post.image}
         alt={post.title}
         className="w-[260px] h-[180px] flex-shrink-0 object-cover  rounded-xl"
       />
 
-      <CardContent className="flex flex-col gap-4 mt-4 md:mt-0 md:ml-6 p-0 flex-1">
+      <CardContent className="flex flex-col gap-6 mt-4 md:mt-0 md:ml-6 p-0 flex-1">
         <div>
           <div className="flex items-start justify-between gap-2 py-1">
-            <h2 className="text-xl font-bold truncate min-w-0 flex-1">
+            <h2 className="text-heading-md font-bold truncate min-w-0 flex-1">
               {post.title}
             </h2>
             <span
@@ -49,12 +49,12 @@ export function PostCard({ post }: PostCardProps) {
             </span>
           </div>
 
-          <p className="text-m text-gray-500 mt-3">{post.userName}</p>
-          <div className="flex items-center gap-2 text-sm text-gray-600 mt-2">
+          <p className="text-title-md text-gray-50 mt-3">{post.userName}</p>
+          <div className="flex items-center gap-2 text-sm text-gray-40 mt-2">
             <Calendar className="w-4 h-4" />
             <span>{post.scheduleStart}</span>
           </div>
-          <div className="flex items-center gap-2 text-sm text-gray-600 mt-2">
+          <div className="flex items-center gap-2 text-sm text-gray-40 mt-2">
             <MapPin className="w-4 h-4" />
             <span>{post.location}</span>
           </div>

@@ -105,7 +105,7 @@ export default function Posts() {
   ];
 
   return (
-    <main className="px-8 py-12 max-w-screen-xl mx-auto">
+    <main className="px-8 py-12 max-w-screen-2xl mx-auto">
       <h1 className="text-3xl font-bold mb-6 text-left">게시글</h1>
 
       <div className="flex flex-wrap gap-2 mb-8">
@@ -125,7 +125,7 @@ export default function Posts() {
             {category}
           </Badge>
         ))}
-        <Button variant="outline" className="ml-auto flex items-center gap-1">
+        <Button variant="outline" className="ml-auto mr-8 flex items-center gap-1">
           ✏️ 글쓰기
         </Button>
       </div>
