@@ -10,6 +10,7 @@ import {
   Gamepad,
   Palette,
   CircleEllipsis,
+  PartyPopper,
 } from "lucide-react";
 
 // Props 타입 선언
@@ -27,6 +28,7 @@ const iconMap: { [key: string]: React.ReactNode } = {
   음식: <Coffee size={40} />,
   "취미/오락": <Gamepad size={40} />,
   "인문/예술": <Palette size={40} />,
+  행사: <PartyPopper size={40} />,
   기타: <CircleEllipsis size={40} />,
 };
 
@@ -39,7 +41,8 @@ const categories = [
   { id: 6, name: "음식" },
   { id: 7, name: "취미/오락" },
   { id: 8, name: "인문/예술" },
-  { id: 9, name: "기타" },
+  { id: 9, name: "행사" },
+  { id: 10, name: "기타" },
 ];
 
 export const ActionButtonSection = ({ selected, onChange }: Props) => {
@@ -53,7 +56,7 @@ export const ActionButtonSection = ({ selected, onChange }: Props) => {
 
   return (
     <section className="w-full py-5 rounded-[5px] overflow-hidden">
-      <div className="flex flex-row flex-nowrap gap-[10px] px-1 overflow-x-auto scrollbar-hide">
+      <div className="grid grid-cols-5 gap-[10px] px-1">
         {categories.map((category) => {
           const isSelected = selected.includes(category.name);
 
@@ -71,9 +74,7 @@ export const ActionButtonSection = ({ selected, onChange }: Props) => {
               <div className={`mb-1 ${isSelected ? "text-primary-500" : "text-black"}`}>
                 {iconMap[category.name]}
               </div>
-              <span className="font-medium text-[12.8px] leading-[17.9px] [font-family:'Pretendard-Medium',Helvetica]">
-                {category.name}
-              </span>
+              <span className="font-medium text-[12.8px] leading-[17.9px]">{category.name}</span>
             </Button>
           );
         })}

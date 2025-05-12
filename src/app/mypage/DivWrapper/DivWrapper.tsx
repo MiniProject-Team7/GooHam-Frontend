@@ -15,22 +15,23 @@ export const DivWrapper = (): JSX.Element => {
   const [activeMenu, setActiveMenu] = useState("기본 정보");
 
   // 각 섹션 ref
+  const basicInfoRef = useRef<HTMLDivElement>(null);
   const passwordRef = useRef<HTMLDivElement>(null);
   const alarmRef = useRef<HTMLDivElement>(null);
   const deleteRef = useRef<HTMLDivElement>(null);
 
+  const scrollMap: Record<string, React.RefObject<HTMLDivElement | null>> = {
+    "기본 정보": basicInfoRef,
+    비밀번호: passwordRef,
+    "알림 설정": alarmRef,
+    "계정 삭제": deleteRef,
+  };
+
   const handleSelectMenu = (menu: string) => {
     setActiveMenu(menu);
-
-    // 메뉴 클릭 시 해당 섹션으로 스크롤
-    const scrollMap: Record<string, React.RefObject<HTMLDivElement | null>> = {
-      비밀번호: passwordRef,
-      알림설정: alarmRef,
-      계정삭제: deleteRef,
-    };
-
-    if (scrollMap[menu]?.current) {
-      scrollMap[menu].current?.scrollIntoView({ behavior: "smooth" });
+    const targetRef = scrollMap[menu];
+    if (targetRef?.current) {
+      targetRef.current.scrollIntoView({ behavior: "smooth" });
     }
   };
 
@@ -56,11 +57,13 @@ export const DivWrapper = (): JSX.Element => {
                 <CardContent className="p-[55px]">
                   <h2 className="text-heading-md font-semibold mb-[36px]">기본 정보</h2>
 
-                  {isEditing ? (
-                    <EditView setIsEditing={setIsEditing} />
-                  ) : (
-                    <ReadOnlyView setIsEditing={setIsEditing} />
-                  )}
+                  <div ref={basicInfoRef}>
+                    {isEditing ? (
+                      <EditView setIsEditing={setIsEditing} />
+                    ) : (
+                      <ReadOnlyView setIsEditing={setIsEditing} />
+                    )}
+                  </div>
 
                   <div ref={passwordRef}>
                     <SettingsGroupSection />

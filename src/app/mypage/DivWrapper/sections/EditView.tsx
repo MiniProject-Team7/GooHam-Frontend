@@ -77,7 +77,7 @@ export const EditView = ({ setIsEditing }: { setIsEditing: (v: boolean) => void 
           </Button>
         </div>
 
-        <div className="space-y-8 px-[133px]">
+        <div className="space-y-8 px-[110px]">
           {formFields.map(({ key, label, placeholder, isTextarea, noInput }) =>
             noInput ? (
               <div key={key}>
