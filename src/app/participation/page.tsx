@@ -3,7 +3,7 @@
 import * as React from "react";
 import { ChevronLeft, ChevronRight } from "lucide-react";
 import { Separator } from "@/components/ui/separator";
-import { Select, SelectTrigger, SelectValue, SelectContent, SelectItem } from "@/components/ui/select";
+// import { Select, SelectTrigger, SelectValue, SelectContent, SelectItem } from "@/components/ui/select";
 import { Button } from "@/components/ui/button";
 import { allPosts, allApplications} from "./participtiondata";
 import { PostCard } from "@/components/common/PostCard";
@@ -13,7 +13,7 @@ export default function ParticipationManagementPage() {
   // 더미 데이터 예시
 
   const postsPerPage = 2;
-  const appsPerPost = 6;
+  const appsPerPost = 8;
   const totalPages = Math.ceil(allPosts.length / postsPerPage);
 
   const [page, setPage] = React.useState(1);
@@ -22,7 +22,7 @@ export default function ParticipationManagementPage() {
   const currentPosts = allPosts.slice(startIdx, startIdx + postsPerPage);
 
   return (
-    <div className="space-y-10 px-10 py-6">
+    <div className="relative w-full max-w-7xl mx-auto py-6">
       {currentPosts.map((post) => {
         // 해당 게시물의 신청 리스트, 최대 6개
         const apps = (allApplications[post.id] || []).slice(0, appsPerPost);
@@ -33,7 +33,7 @@ export default function ParticipationManagementPage() {
             <PostCard post={post} />
 
             {/* 참여 신청 카드 그리드: 2행 x 3열 */}
-            <div className="grid grid-cols-1 sm:grid-cols-3 gap-6">
+            <div className="grid grid-cols-1 sm:grid-cols-4 gap-6">
               {apps.map((app) => (
                 <ParticipationCard key={app.id} data={app} />
               ))}
