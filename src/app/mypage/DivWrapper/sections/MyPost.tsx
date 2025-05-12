@@ -1,32 +1,43 @@
-import { CalendarIcon, MapPinIcon } from "lucide-react";
 import React, { JSX } from "react";
 import { Avatar, AvatarFallback, AvatarImage } from "../../../../components/ui/avatar";
-import { Badge } from "../../../../components/ui/badge";
 import { Button } from "../../../../components/ui/button";
 import { Card, CardContent } from "../../../../components/ui/card";
 import { Tabs, TabsContent, TabsList, TabsTrigger } from "../../../../components/ui/tabs";
+import { PostCard } from "@/components/common/PostCard";
 
 // 게시글 데이터
 const posts = [
   {
-    id: 1,
-    title: "게시물 제목",
-    status: "모집중",
-    author: "홍길동",
-    eventSchedule: "이벤트 일정",
-    eventLocation: "이벤트 장소",
-    tags: ["Text", "Text", "Text"],
-    image: "https://c.animaapp.com/Y3JyHhbU/img/rectangle-31.svg",
+    id: 3,
+    userName: "홍길동",
+    title: "서울 한강 러닝 같이 하실 분",
+    content: "이번 주말에 한강에서 러닝하실 분을 모집합니다!",
+    image: "/images/cat.jpg",
+    maxParticipants: 5,
+    currentParticipants: 2,
+    categoryName: ["스포츠", "일상"],
+    status: "모집완료",
+    scheduleStart: "2025-05-10 09:00",
+    scheduleEnd: "2025-05-10T11:00:00",
+    location: "서울 여의도 한강공원",
+    createdAt: "2025-05-01T14:00:00",
+    updatedAt: "2025-05-01T14:00:00",
   },
   {
     id: 2,
-    title: "게시물 제목",
-    status: "모집중",
-    author: "홍길동",
-    eventSchedule: "이벤트 일정",
-    eventLocation: "이벤트 장소",
-    tags: ["Text", "Text", "Text"],
-    image: "https://c.animaapp.com/Y3JyHhbU/img/rectangle-31-1.svg",
+    userName: "이영희",
+    title: "비건 카페 탐방 같이 가실 분",
+    content: "비건 디저트를 좋아하시는 분들과 소모임을 갖고 싶어요!",
+    image: "/images/cat.jpg",
+    maxParticipants: 3,
+    currentParticipants: 1,
+    categoryName: ["일상", "음식"],
+    status: "모집 중",
+    scheduleStart: "2025-05-15 14:00",
+    scheduleEnd: "2025-05-15T16:00:00",
+    location: "서울 성수동 카페 거리",
+    createdAt: "2025-05-05T10:30:00",
+    updatedAt: "2025-05-05T10:30:00",
   },
 ];
 
@@ -81,73 +92,35 @@ export const MyPost = (): JSX.Element => {
         <TabsList className="w-full justify-start gap-6 bg-transparent h-auto p-0">
           <TabsTrigger
             value="posts"
-            className="text-title-lg tracking-wide leading-[24px] data-[state=active]:text-primary-500"
+            className="cursor-pointer text-title-lg tracking-wide leading-[24px] data-[state=active]:text-primary-500"
           >
             작성한 게시글
           </TabsTrigger>
           <TabsTrigger
             value="comments"
-            className="text-title-lg tracking-wide leading-[24px] data-[state=active]:text-primary-500"
+            className="cursor-pointer text-title-lg tracking-wide leading-[24px] data-[state=active]:text-primary-500"
           >
             작성한 댓글
           </TabsTrigger>
         </TabsList>
 
         {/* 작성한 게시글 */}
-        <TabsContent value="posts" className="mt-6">
-          <Card className="border border-solid border-gray-22 rounded-xl p-6">
-            <CardContent className="p-0 space-y-6">
-              {posts.map((post) => (
-                <Card key={post.id} className="border border-solid border-gray-22 rounded-xl p-4">
-                  <CardContent className="p-0">
-                    <div className="flex flex-col md:flex-row gap-6 items-center justify-between">
-                      <div
-                        className="w-full md:w-[280px] h-[200px] bg-cover bg-center rounded-md"
-                        style={{ backgroundImage: `url(${post.image})` }}
-                      />
-
-                      <div className="w-full md:w-[304px] flex flex-col gap-4">
-                        <div className="flex justify-between items-center">
-                          <h3 className="font-title-large text-black text-xl font-semibold">
-                            {post.title}
-                          </h3>
-                          <Badge variant="default">{post.status}</Badge>
-                        </div>
-
-                        <p className="font-title-medium text-black text-base">{post.author}</p>
-
-                        <div className="flex items-center gap-2">
-                          <CalendarIcon className="w-5 h-5" />
-                          <span className="text-sm text-black">{post.eventSchedule}</span>
-                        </div>
-
-                        <div className="flex items-center gap-2">
-                          <MapPinIcon className="w-3 h-[17px]" />
-                          <span className="text-sm text-black">{post.eventLocation}</span>
-                        </div>
-
-                        <div className="flex flex-wrap gap-2">
-                          {post.tags.map((tag, index) => (
-                            <Badge
-                              key={index}
-                              variant="outline"
-                              className="bg-surface rounded-2xl border-stroke"
-                            >
-                              {tag}
-                            </Badge>
-                          ))}
-                        </div>
-
-                        <Button className="w-full h-10 bg-primary-500 text-white rounded-xl mt-2">
-                          자세히 보기
-                        </Button>
-                      </div>
-                    </div>
-                  </CardContent>
-                </Card>
-              ))}
-            </CardContent>
-          </Card>
+        <TabsContent value="posts" className="mt-6 space-y-6">
+          {posts.map((post) => (
+            <PostCard
+              key={post.id}
+              post={{
+                id: post.id,
+                image: post.image,
+                title: post.title,
+                status: post.status === "모집완료" ? "마감" : "모집 중", // 문자열 변환!
+                userName: post.userName,
+                scheduleStart: post.scheduleStart,
+                location: post.location,
+                categoryName: post.categoryName,
+              }}
+            />
+          ))}
         </TabsContent>
 
         {/* 작성한 댓글 */}
