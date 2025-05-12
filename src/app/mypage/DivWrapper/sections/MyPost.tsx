@@ -1,10 +1,10 @@
 import { CalendarIcon, MapPinIcon } from "lucide-react";
 import React, { JSX } from "react";
-import { Avatar, AvatarFallback, AvatarImage } from "../../../../../components/ui/avatar";
-import { Badge } from "../../../../../components/ui/badge";
-import { Button } from "../../../../../components/ui/button";
-import { Card, CardContent } from "../../../../../components/ui/card";
-import { Tabs, TabsContent, TabsList, TabsTrigger } from "../../../../../components/ui/tabs";
+import { Avatar, AvatarFallback, AvatarImage } from "../../../../components/ui/avatar";
+import { Badge } from "../../../../components/ui/badge";
+import { Button } from "../../../../components/ui/button";
+import { Card, CardContent } from "../../../../components/ui/card";
+import { Tabs, TabsContent, TabsList, TabsTrigger } from "../../../../components/ui/tabs";
 
 // 게시글 데이터
 const posts = [
@@ -68,7 +68,7 @@ export const MyPost = (): JSX.Element => {
 
         <div className="flex flex-col">
           <div className="flex items-center gap-4">
-            <h2 className="text-[32px] font-semibold [font-family:'Pretendard-SemiBold',Helvetica] text-[#000000]">
+            <h2 className="text-[24px] font-semibold [font-family:'Pretendard-SemiBold',Helvetica] text-[#000000] mt-[12px]">
               홍길동
             </h2>
             <span className="text-2xl font-normal [font-family:'Pretendard-Regular',Helvetica] text-[#000000]">
