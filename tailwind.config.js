@@ -64,7 +64,11 @@ module.exports = {
         },
         black: "#222222",
         white: "#FFFFFF",
-        gray: "#38383838",
+        gray: {
+          50: "rgba(0,0,0,0.5)",
+          40: "rgba(0,0,0,0.4)",
+          22: "rgba(0,0,0,0.22)",
+        },
         foreground: "var(--foreground)",
         border: "var(--border)",
         input: "var(--input)",
