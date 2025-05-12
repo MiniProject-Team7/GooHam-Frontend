@@ -3,7 +3,6 @@
 import React, { JSX, useState, useRef } from "react";
 import { Card, CardContent } from "../../../components/ui/card";
 import { FormContainerSection } from "./sections/FormContainerSection";
-import { ProfileViewSection } from "./sections/ProfileViewSection";
 import { SettingsGroupSection } from "./sections/SettingsGroupSection";
 import { UserInfoGroupSection } from "./sections/UserInfoGroupSection";
 import { Sidebar } from "./sections/Sidebar";
@@ -36,7 +35,7 @@ export const DivWrapper = (): JSX.Element => {
   };
 
   return (
-    <main className="bg-gray-50 flex flex-row justify-center w-full " data-model-id="103:1784">
+    <main className="bg-background flex flex-row justify-center w-full " data-model-id="103:1784">
       <div className="bg-app-background w-full max-w-[1440px] relative">
         {/* Main content */}
         <div className="flex px-[50px] gap-[75px] mt-[69px]">
@@ -45,7 +44,7 @@ export const DivWrapper = (): JSX.Element => {
 
           {/* Main content area */}
           <div className="max-w-[890px]">
-            <h1 className="font-bold text-[32px] mb-[50px]">
+            <h1 className="font-bold text-heading-lg mb-[50px]">
               {activeMenu === "작성한 글" ? "나의 활동" : "계정 관리"}
             </h1>
 
@@ -53,9 +52,9 @@ export const DivWrapper = (): JSX.Element => {
             activeMenu === "비밀번호" ||
             activeMenu === "알림 설정" ||
             activeMenu === "계정 삭제" ? (
-              <Card className="border border-solid border-[#00000038] rounded-xl">
+              <Card className="border border-solid border-gray-22 rounded-xl">
                 <CardContent className="p-[55px]">
-                  <h2 className="text-[28px] font-semibold mb-[36px]">기본 정보</h2>
+                  <h2 className="text-heading-md font-semibold mb-[36px]">기본 정보</h2>
 
                   {isEditing ? (
                     <EditView setIsEditing={setIsEditing} />
@@ -79,7 +78,7 @@ export const DivWrapper = (): JSX.Element => {
             ) : null}
 
             {activeMenu === "작성한 글" && (
-              <Card className="border border-solid border-[#00000038] rounded-xl p-10">
+              <Card className="border border-solid border-gray-22 rounded-xl p-10">
                 <MyPost />
               </Card>
             )}
@@ -87,11 +86,7 @@ export const DivWrapper = (): JSX.Element => {
         </div>
 
         {/* Profile view section */}
-        <div className=" mt-[69px] ">
-          {" "}
-          {/* 마진 추가*/}
-          <ProfileViewSection />
-        </div>
+        <div className=" mt-[69px] "></div>
       </div>
     </main>
   );
