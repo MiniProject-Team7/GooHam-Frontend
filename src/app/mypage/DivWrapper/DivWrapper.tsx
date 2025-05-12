@@ -36,7 +36,7 @@ export const DivWrapper = (): JSX.Element => {
   };
 
   return (
-    <main className="bg-gray-50 flex flex-row justify-center w-full " data-model-id="103:1784">
+    <main className="bg-background flex flex-row justify-center w-full " data-model-id="103:1784">
       <div className="bg-app-background w-full max-w-[1440px] relative">
         {/* Main content */}
         <div className="flex px-[50px] gap-[75px] mt-[69px]">
