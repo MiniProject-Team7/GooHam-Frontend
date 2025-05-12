@@ -27,7 +27,7 @@ const statusStyles: Record<string, string> = {
 
 export function PostCard({ post }: PostCardProps) {
   return (
-    <Card className="flex w-[600px] h-[260px] flex-col md:flex-row p-4 rounded-xl hover:shadow-md transition">
+    <Card className="flex w-[600px] h-[280px] flex-col md:flex-row p-4 rounded-xl hover:shadow-md transition">
       <img
         src={post.image}
         alt={post.title}
