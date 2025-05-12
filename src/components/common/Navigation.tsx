@@ -3,8 +3,17 @@
 import Link from "next/link";
 import Image from "next/image";
 import { usePathname } from "next/navigation";
-import { NavigationMenu, NavigationMenuList, NavigationMenuItem } from "@/components/ui/navigation-menu";
-import { DropdownMenu, DropdownMenuContent, DropdownMenuTrigger, DropdownMenuItem } from "@/components/ui/dropdown-menu";
+import {
+  NavigationMenu,
+  NavigationMenuList,
+  NavigationMenuItem,
+} from "@/components/ui/navigation-menu";
+import {
+  DropdownMenu,
+  DropdownMenuContent,
+  DropdownMenuTrigger,
+  DropdownMenuItem,
+} from "@/components/ui/dropdown-menu";
 import { Bell, LogOut, User } from "lucide-react";
 import { cn } from "@/lib/utils";
 
@@ -19,7 +28,7 @@ export function Navigation() {
   const isLoggedIn = true; // TODO: 실제 인증 상태로 대체
 
   return (
-    <header className="sticky top-0 z-50 w-full bg-background">
+    <header className="sticky top-0 z-50 w-full bg-white">
       {/* 
         sticky       : 화면 상단에 고정
         top-0        : 위에서 0 위치
@@ -64,9 +73,9 @@ export function Navigation() {
                       // transition-colors: 색상 변화 애니메이션
                       // hover:text-primary: 호버 시 주요 색상
 
-                        pathname === item.href &&
-      `text-primary-500! font-bold after:absolute after:-bottom-5.5 after:left-1/2 after:translate-x-[-50%] after:h-0.5 after:w-full after:bg-primary-500 after:content-[""]`
-                        // SELECTED_ITEM_CLASSNAME
+                      pathname === item.href &&
+                        `text-primary-500! font-bold after:absolute after:-bottom-5.5 after:left-1/2 after:translate-x-[-50%] after:h-0.5 after:w-full after:bg-primary-500 after:content-[""]`
+                      // SELECTED_ITEM_CLASSNAME
                       // 선택된 메뉴 스타일:
                       // text-primary: 텍스트 강조
                       // font-bold: 글자 두껍게

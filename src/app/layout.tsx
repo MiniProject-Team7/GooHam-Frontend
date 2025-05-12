@@ -1,6 +1,7 @@
 import type { Metadata } from "next";
 import { Navigation } from "@/components/common/Navigation";
 import "../styles/global.css";
+import { Footer } from "@/components/common/footer";
 
 export const metadata: Metadata = {
   title: "GooHam",
@@ -17,6 +18,7 @@ export default function RootLayout({
       <body>
         <Navigation />
         <main>{children}</main>
+        <Footer />
       </body>
     </html>
   );
