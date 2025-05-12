@@ -4,7 +4,7 @@ module.exports = {
   content: [
     "./src/app/**/*.{js,ts,jsx,tsx}",
     "./src/components/**/*.{js,ts,jsx,tsx}",
-    "./src/styles/global.css",   // ← 파일 위치·이름과 정확히 일치시켜 추가
+    "./src/styles/global.css", // ← 파일 위치·이름과 정확히 일치시켜 추가
   ],
   theme: {
     extend: {
@@ -64,6 +64,7 @@ module.exports = {
         },
         black: "#222222",
         white: "#FFFFFF",
+        gray: "#38383838",
         foreground: "var(--foreground)",
         border: "var(--border)",
         input: "var(--input)",
