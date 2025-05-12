@@ -23,8 +23,7 @@ export function ParticipationCard({
   data,
   onApprove,
   onReject,
-}: ParticipationCardProps) {
-    
+}: ParticipationCardProps) {    
 const handleApprove = (id: number) => {
     // console.log("Approve clicked for", id);
   };
@@ -64,6 +63,7 @@ return (
             description="이 작업은 돌이킬 수 없습니다."
             onConfirm={() => handleReject(data.id)}
             />
+
       </CardFooter>
     </Card>
   );

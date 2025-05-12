@@ -9,7 +9,6 @@ import { allPosts, allApplications} from "./participtiondata";
 import { PostCard } from "@/components/common/PostCard";
 import { ParticipationCard } from "@/components/common/ParticipationCard";
 
-
 export default function ParticipationManagementPage() {
   // 더미 데이터 예시
 
