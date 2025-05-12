@@ -1,3 +1,9 @@
+import CommentForm from "@/components/comments/CommentForm";
+import CommentList from "@/components/comments/CommentList";
+import JoinProfileCard from "@/components/posts/JoinProfileCard";
+import ParticipantList from "@/components/posts/ParticipantList";
+import PostDetailCard from "@/components/posts/PostDetailItem";
+import { Comment } from "@/types/comment";
 import { Post } from "@/types/post";
 
 const dummyPost: Post[] = [
@@ -99,19 +105,65 @@ const dummyPost: Post[] = [
   },
 ];
 
-export default function PostDetail() {
+export type Participant = {
+  id: number;
+  name: string;
+  profileImg?: string;
+};
+
+const dummyParticipants: Participant[] = [
+  {
+    id: 1,
+    name: "홍길동",
+    profileImg: "https://i.pravatar.cc/150?img=1",
+  },
+  {
+    id: 2,
+    name: "김철수",
+    profileImg: "https://i.pravatar.cc/150?img=2",
+  },
+  {
+    id: 3,
+    name: "이영희",
+    // profileImg: "https://i.pravatar.cc/150?img=3",
+  },
+  {
+    id: 4,
+    name: "박지민",
+    // profileImg: "https://i.pravatar.cc/150?img=4",
+  },
+];
+
+const dummyComments: Comment[] = [
+  {
+    userName: "김코딩",
+    profileImg: "https://i.pravatar.cc/150?img=12",
+    content: "좋은 글 감사합니다!",
+    createdAt: "1시간 전",
+  },
+  {
+    userName: "이자바",
+    // profileImg: "https://i.pravatar.cc/150?img=12",
+    content: "참여하고 싶어요!",
+    createdAt: "2시간 전",
+  },
+];
+
+export default function PostDetailPage() {
   return (
-    <div className="max-w-2xl mx-auto p-6">
-      <img
-        src={dummyPost[0].image}
-        alt={dummyPost[0].title}
-        className="w-full h-60 object-cover rounded-xl"
-      />
-      <h1 className="text-2xl font-bold mt-4">{dummyPost[0].title}</h1>
-      <p className="text-sm text-gray-500 mt-1">{dummyPost[0].userName}</p>
-      <p className="text-gray-600 mt-2">📅 {dummyPost[0].scheduleStart}</p>
-      <p className="text-gray-600">📍 {dummyPost[0].location}</p>
-      <p className="text-gray-800 mt-4">{dummyPost[0].content}</p>
+    <div className="flex justify-center px-6 py-10 gap-6">
+      <div className="w-full max-w-[60%]">
+        <PostDetailCard post={dummyPost[0]} />
+
+        <h3 className="mt-10 mb-3 text-lg font-semibold">댓글</h3>
+        <CommentForm />
+        <CommentList comments={dummyComments} />
+      </div>
+
+      <div className="w-full max-w-[20%] flex flex-col gap-4">
+        <JoinProfileCard post={dummyPost[0]} />
+        <ParticipantList participants={dummyParticipants} />
+      </div>
     </div>
   );
 }
