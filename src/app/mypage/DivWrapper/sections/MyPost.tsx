@@ -11,7 +11,7 @@ const posts = [
   {
     id: 1,
     title: "게시물 제목",
-    status: "모집 중",
+    status: "모집중",
     author: "홍길동",
     eventSchedule: "이벤트 일정",
     eventLocation: "이벤트 장소",
@@ -21,7 +21,7 @@ const posts = [
   {
     id: 2,
     title: "게시물 제목",
-    status: "모집 중",
+    status: "모집중",
     author: "홍길동",
     eventSchedule: "이벤트 일정",
     eventLocation: "이벤트 장소",
@@ -54,7 +54,7 @@ const comments = [
 
 export const MyPost = (): JSX.Element => {
   return (
-    <section className="w-full max-w-[940px] mx-auto mt-[25px]">
+    <section className="w-full max-w-[940px] mx-auto mt-[10px]">
       {/* 사용자 정보 */}
       <div className="flex flex-col items-center md:items-start md:flex-row gap-6">
         <Avatar className="w-[120px] h-[120px]">
@@ -66,19 +66,13 @@ export const MyPost = (): JSX.Element => {
           <AvatarFallback>홍길동</AvatarFallback>
         </Avatar>
 
-        <div className="flex flex-col">
+        <div className="flex flex-col mt-[30px]">
           <div className="flex items-center gap-4">
-            <h2 className="text-[24px] font-semibold [font-family:'Pretendard-SemiBold',Helvetica] text-[#000000] mt-[12px]">
-              홍길동
-            </h2>
-            <span className="text-2xl font-normal [font-family:'Pretendard-Regular',Helvetica] text-[#000000]">
-              2000.00.00
-            </span>
+            <h2 className="text-title-lg">홍길동</h2>
+            <span className="text-lable-lg">2000.00.00</span>
           </div>
 
-          <p className="text-2xl font-medium [font-family:'Pretendard-Medium',Helvetica] text-[#000000] text-center md:text-left">
-            honghong@test.com
-          </p>
+          <p className="text-lable-lg text-center md:text-left">honghong@test.com</p>
         </div>
       </div>
 
@@ -87,13 +81,13 @@ export const MyPost = (): JSX.Element => {
         <TabsList className="w-full justify-start gap-6 bg-transparent h-auto p-0">
           <TabsTrigger
             value="posts"
-            className="font-lable-medium text-[16px] tracking-wide leading-[24px] text-[#000000] data-[state=active]:text-primary-500"
+            className="text-title-lg tracking-wide leading-[24px] data-[state=active]:text-primary-500"
           >
             작성한 게시글
           </TabsTrigger>
           <TabsTrigger
             value="comments"
-            className="font-lable-medium text-[16px] tracking-wide leading-[24px] text-[#000000] data-[state=active]:text-primary-500"
+            className="text-title-lg tracking-wide leading-[24px] data-[state=active]:text-primary-500"
           >
             작성한 댓글
           </TabsTrigger>
@@ -101,10 +95,10 @@ export const MyPost = (): JSX.Element => {
 
         {/* 작성한 게시글 */}
         <TabsContent value="posts" className="mt-6">
-          <Card className="border border-solid border-[#00000038] rounded-xl p-6">
+          <Card className="border border-solid border-gray-22 rounded-xl p-6">
             <CardContent className="p-0 space-y-6">
               {posts.map((post) => (
-                <Card key={post.id} className="border border-solid border-[#d9d9d9] rounded-xl p-4">
+                <Card key={post.id} className="border border-solid border-gray-22 rounded-xl p-4">
                   <CardContent className="p-0">
                     <div className="flex flex-col md:flex-row gap-6 items-center justify-between">
                       <div
@@ -117,9 +111,7 @@ export const MyPost = (): JSX.Element => {
                           <h3 className="font-title-large text-black text-xl font-semibold">
                             {post.title}
                           </h3>
-                          <Badge className="bg-secondary-500 text-black rounded-xl px-4 py-1">
-                            {post.status}
-                          </Badge>
+                          <Badge variant="default">{post.status}</Badge>
                         </div>
 
                         <p className="font-title-medium text-black text-base">{post.author}</p>
@@ -161,7 +153,7 @@ export const MyPost = (): JSX.Element => {
         {/* 작성한 댓글 */}
         <TabsContent value="comments" className="mt-6 space-y-6">
           {comments.map((comment) => (
-            <Card key={comment.id} className="border border-solid border-[#00000038] rounded-xl">
+            <Card key={comment.id} className="border border-solid border-gray-22 rounded-xl">
               <CardContent className="p-4">
                 <div className="flex items-start gap-4">
                   <div

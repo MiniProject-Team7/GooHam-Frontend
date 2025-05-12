@@ -60,7 +60,7 @@ export const EditView = ({ setIsEditing }: { setIsEditing: (v: boolean) => void 
   };
 
   return (
-    <Card className="border border-solid border-[#00000038] rounded-xl mb-[24px]">
+    <Card className="border border-solid border-gray-22 rounded-xl mb-[24px]">
       <CardContent className="p-[48px_0_24px]">
         <div className="flex flex-col items-center mb-10">
           <Avatar className="w-[100px] h-[100px]">
@@ -73,7 +73,7 @@ export const EditView = ({ setIsEditing }: { setIsEditing: (v: boolean) => void 
               alt="Create"
               src="https://c.animaapp.com/yTfAUR4U/img/create@2x.png"
             />
-            <span className="text-base text-gray-600">프로필 사진 수정하기</span>
+            <span className="text-base text-gray-50">프로필 사진 수정하기</span>
           </Button>
         </div>
 
@@ -81,7 +81,7 @@ export const EditView = ({ setIsEditing }: { setIsEditing: (v: boolean) => void 
           {formFields.map(({ key, label, placeholder, isTextarea, noInput }) =>
             noInput ? (
               <div key={key}>
-                <label className="font-semibold text-2xl text-gray-500">{label}</label>
+                <label className="text-title-md text-gray-50">{label}</label>
                 <div>
                   <ActionButtonSection
                     selected={formData.categories}
@@ -93,7 +93,7 @@ export const EditView = ({ setIsEditing }: { setIsEditing: (v: boolean) => void 
               </div>
             ) : (
               <div key={key} className="flex items-start">
-                <label className="w-[109px] font-semibold text-2xl text-gray-500">{label}</label>
+                <label className="w-[109px] text-title-md text-gray-50">{label}</label>
                 {isTextarea ? (
                   <Textarea
                     className="flex-1 ml-[109px] h-[297px] rounded-lg border border-gray-300"
@@ -103,7 +103,7 @@ export const EditView = ({ setIsEditing }: { setIsEditing: (v: boolean) => void 
                   />
                 ) : (
                   <Input
-                    className="flex-1 ml-[109px] h-12 rounded-lg border border-gray-300"
+                    className="flex-1 ml-[109px] h-12 rounded-lg border border-gray-40"
                     placeholder={placeholder}
                     value={formData[key] as string}
                     onChange={(e) => handleChange(key, e.target.value)}
