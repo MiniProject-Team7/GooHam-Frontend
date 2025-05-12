@@ -1,1 +1,0 @@
-export { MyPost } from "./MyPost";

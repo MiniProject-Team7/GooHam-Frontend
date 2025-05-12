@@ -3,7 +3,7 @@
 import React, { JSX, useState, useRef } from "react";
 import { Card, CardContent } from "../../../components/ui/card";
 import { FormContainerSection } from "./sections/FormContainerSection";
-import { ProfileViewSection } from "./sections/ProfileViewSection/ProfileViewSection";
+import { ProfileViewSection } from "./sections/ProfileViewSection";
 import { SettingsGroupSection } from "./sections/SettingsGroupSection";
 import { UserInfoGroupSection } from "./sections/UserInfoGroupSection";
 import { Sidebar } from "./sections/Sidebar";
