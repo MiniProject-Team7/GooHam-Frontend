@@ -12,20 +12,16 @@ export const SettingsGroupSection = (): JSX.Element => {
 
   return (
     <section className="w-full max-w-[836px] my-8">
-      <h2 className="text-[28px] font-semibold [font-family:'Pretendard-SemiBold',Helvetica] text-black mb-6">
-        {passwordData.title}
-      </h2>
+      <h2 className="text-heading-md font-semibold text-black mb-6">{passwordData.title}</h2>
 
-      <Card className="w-full border border-solid border-[#00000038] rounded-xl">
+      <Card className="w-full border border-solid border-gray-22 rounded-xl">
         <CardContent className="p-0">
           <div className="flex justify-between items-center p-8">
             <div className="flex flex-col gap-4">
-              <p className="[font-family:'Pretendard-Regular',Helvetica] font-normal text-black text-base">
+              <p className="text-label-lg text-black text-base">
                 최근 업데이트: {passwordData.lastUpdated}
               </p>
-              <p className="[font-family:'Pretendard-Regular',Helvetica] font-normal text-black text-2xl">
-                {passwordData.title}
-              </p>
+              <p className="text-label-lg text-black">{passwordData.title}</p>
             </div>
 
             <Button
