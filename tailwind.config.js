@@ -4,7 +4,7 @@ module.exports = {
   content: [
     "./src/app/**/*.{js,ts,jsx,tsx}",
     "./src/components/**/*.{js,ts,jsx,tsx}",
-    "./src/styles/global.css",   // ← 파일 위치·이름과 정확히 일치시켜 추가
+    "./src/styles/global.css", // ← 파일 위치·이름과 정확히 일치시켜 추가
   ],
   theme: {
     extend: {
@@ -39,14 +39,14 @@ module.exports = {
           50: "#FFF7FC",
         },
         secondary: {
-          700: "#C77B39",
-          600: "#B28900",
-          500: "#FDBD8C",
-          400: "#FFCD9D",
-          300: "#FFDBB6",
-          200: "#FFE6CC",
-          100: "#FFF1E5",
-          50: "#FFF9F5",
+          700: "#BF4543",
+          600: "#E66360",
+          500: "#FF7C79",
+          400: "#FFB0A1",
+          300: "#FFDAC9",
+          200: "#FFEBDE",
+          100: "#FFF8F2",
+          50: "#EDEDED",
         },
         error: {
           700: "#FF5252",
@@ -64,6 +64,11 @@ module.exports = {
         },
         black: "#222222",
         white: "#FFFFFF",
+        gray: {
+          50: "rgba(0,0,0,0.5)",
+          40: "rgba(0,0,0,0.4)",
+          22: "rgba(0,0,0,0.22)",
+        },
         foreground: "var(--foreground)",
         border: "var(--border)",
         input: "var(--input)",
