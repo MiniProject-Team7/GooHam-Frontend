@@ -15,7 +15,7 @@ export default function Posts() {
       maxParticipants: 5,
       currentParticipants: 2,
       categoryName: ["스포츠", "일상"],
-      status: "모집중",
+      status: "모집 중",
       scheduleStart: "2025-05-10 09:00",
       scheduleEnd: "2025-05-10T11:00:00",
       location: "서울 여의도 한강공원",
@@ -31,7 +31,7 @@ export default function Posts() {
       maxParticipants: 3,
       currentParticipants: 1,
       categoryName: ["일상", "음식"],
-      status: "모집예정",
+      status: "모집 예정",
       scheduleStart: "2025-05-15 14:00",
       scheduleEnd: "2025-05-15T16:00:00",
       location: "서울 성수동 카페 거리",
@@ -47,7 +47,7 @@ export default function Posts() {
       maxParticipants: 5,
       currentParticipants: 2,
       categoryName: ["스포츠", "일상"],
-      status: "모집완료",
+      status: "모집 완료",
       scheduleStart: "2025-05-10 09:00",
       scheduleEnd: "2025-05-10T11:00:00",
       location: "서울 여의도 한강공원",
@@ -79,7 +79,7 @@ export default function Posts() {
       maxParticipants: 5,
       currentParticipants: 2,
       categoryName: ["스포츠", "일상"],
-      status: "모집중",
+      status: "모집 중",
       scheduleStart: "2025-05-10 09:00",
       scheduleEnd: "2025-05-10T11:00:00",
       location: "서울 여의도 한강공원",
@@ -95,7 +95,7 @@ export default function Posts() {
       maxParticipants: 3,
       currentParticipants: 1,
       categoryName: ["일상", "음식"],
-      status: "모집완료",
+      status: "모집 완료",
       scheduleStart: "2025-05-15 14:00",
       scheduleEnd: "2025-05-15T16:00:00",
       location: "서울 성수동 카페 거리",
@@ -105,7 +105,7 @@ export default function Posts() {
   ];
 
   return (
-    <main className="px-8 py-12 max-w-screen-xl mx-auto">
+    <main className="px-8 py-12 max-w-screen-2xl mx-auto">
       <h1 className="text-3xl font-bold mb-6 text-left">게시글</h1>
 
       <div className="flex flex-wrap gap-2 mb-8">
@@ -125,7 +125,7 @@ export default function Posts() {
             {category}
           </Badge>
         ))}
-        <Button variant="outline" className="ml-auto flex items-center gap-1">
+        <Button variant="outline" className="ml-auto mr-8 flex items-center gap-1">
           ✏️ 글쓰기
         </Button>
       </div>
