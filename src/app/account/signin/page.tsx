@@ -17,7 +17,7 @@ export default function SigninPage() {
   const [passwordEmpty, setPasswordEmpty] = useState(false);
   const [loginError, setLoginError] = useState(false);
   const [showPwd, setShowPwd] = useState(false);
-  
+
   const dummyUser = { email: "user@example.com", password: "password123" };
 
   const validateEmail = (value: string) => /^[^\s@]+@[^\s@]+\.[^\s@]+$/.test(value);
@@ -69,11 +69,11 @@ export default function SigninPage() {
                 <p className="mt-1 text-sm text-red-500"></p>
               )}
             </div>
-            <div className="flex flex-col">
+            <div className="relative flex flex-col">
               {/* <label htmlFor="signin-password" className="mb-1 font-medium">비밀번호</label> */}
               <Input
                 id="signin-password"
-                type="password"
+                type={showPwd ? "text" : "password"}
                 placeholder="비밀번호를 입력해주세요"
                 value={password}
                 className={passwordEmpty ? "border-red-500 focus:border-red-500" : ""}
@@ -83,6 +83,17 @@ export default function SigninPage() {
                   setLoginError(false);
                 }}
               />
+              <button
+               type="button"
+               onClick={() => setShowPwd(!showPwd)}
+               className="absolute right-3 top-1/2 -translate-y-1/2 p-1"
+             >
+               {showPwd
+                 ? <EyeOff className="w-5 h-5 text-gray-500" />
+                 : <Eye className="w-5 h-5 text-gray-500" />
+               }
+             </button>
+             
               {passwordEmpty && (
                 <p className="mt-1 text-sm text-red-500"></p>
               )}
