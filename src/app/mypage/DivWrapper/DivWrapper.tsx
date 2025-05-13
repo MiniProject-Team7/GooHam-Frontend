@@ -53,7 +53,7 @@ export const DivWrapper = (): JSX.Element => {
             activeMenu === "비밀번호" ||
             activeMenu === "알림 설정" ||
             activeMenu === "계정 삭제" ? (
-              <Card className="border border-solid border-gray-22 rounded-xl">
+              <Card className="rounded-xl">
                 <CardContent className="p-[55px]">
                   <h2 className="text-heading-md font-semibold mb-[36px]">기본 정보</h2>
 
@@ -81,7 +81,7 @@ export const DivWrapper = (): JSX.Element => {
             ) : null}
 
             {activeMenu === "작성한 글" && (
-              <Card className="border border-solid border-gray-22 rounded-xl p-10">
+              <Card className="rounded-xl p-10 w-[787px] mx-auto">
                 <MyPost />
               </Card>
             )}

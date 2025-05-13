@@ -61,7 +61,7 @@ export const EditView = ({ setIsEditing }: { setIsEditing: (v: boolean) => void 
 
   return (
     <Card className="border border-solid border-gray-22 rounded-xl mb-[24px]">
-      <CardContent className="p-[48px_0_24px]">
+      <CardContent className="px-[12px] pt-[48px] pb-[24px]">
         <div className="flex flex-col items-center mb-10">
           <Avatar className="w-[100px] h-[100px]">
             <AvatarImage src={formData.avatar} alt="Profile" />
@@ -103,7 +103,7 @@ export const EditView = ({ setIsEditing }: { setIsEditing: (v: boolean) => void 
                   />
                 ) : (
                   <Input
-                    className="flex-1 ml-[109px] h-12 rounded-lg border border-gray-40"
+                    className="flex-1 ml-[109px] h-12 rounded-lg border border-gray-22"
                     placeholder={placeholder}
                     value={formData[key] as string}
                     onChange={(e) => handleChange(key, e.target.value)}
