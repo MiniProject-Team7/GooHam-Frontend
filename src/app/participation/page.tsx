@@ -6,8 +6,9 @@ import { Separator } from "@/components/ui/separator";
 // import { Select, SelectTrigger, SelectValue, SelectContent, SelectItem } from "@/components/ui/select";
 import { Button } from "@/components/ui/button";
 import { allPosts, allApplications} from "./participtiondata";
-import { PostCard } from "@/components/common/PostCard";
 import { ParticipationCard } from "@/components/common/ParticipationCard";
+import  PostCard from "@/components/common/PostCard";
+
 
 export default function ParticipationManagementPage() {
   // 더미 데이터 예시

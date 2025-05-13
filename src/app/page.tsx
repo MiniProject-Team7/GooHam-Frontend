@@ -7,6 +7,7 @@ import { Badge } from "@/components/ui/badge";
 import { Avatar, AvatarImage, AvatarFallback } from "@/components/ui/avatar";
 import { Button } from "@/components/ui/button";
 import { Calendar, MapPin } from "lucide-react";
+import { statusToBadgeVariant } from "@/utils/statusVariant";
 
 const cards = [
   { title: "첫 번째 카드", desc: "이곳에 설명이 들어갑니다." },
@@ -19,6 +20,7 @@ export default function HomePage() {
   const [selectedIndex, setSelectedIndex] = React.useState(0);
   const [slideCount, setSlideCount] = React.useState(0);
 
+  
   // Embla가 초기화된 후 API를 저장하고, 슬라이드 개수 세팅
   const handleApiInit = React.useCallback((api: CarouselApi) => {
     setEmblaApi(api);
@@ -70,6 +72,7 @@ export default function HomePage() {
     interests: ["스포츠", "여행", "음식"],
   },
 ];
+
 
   return (
     <div className="relative w-full max-w-7xl mx-auto py-6">
@@ -139,11 +142,11 @@ export default function HomePage() {
                     </Avatar>
                     <div>
                       <CardTitle className="text-base">{post.title}</CardTitle>
-                      <div className="text-xs text-muted-foreground">{post.authorName}</div>
+                      <div className="text-xs text-muted-foreground">{post.author}</div>
                     </div>
                   </div>
                   <CardAction>
-                    <Badge variant="secondary" className="px-3 py-1 rounded-full text-xs">
+                    <Badge variant={statusToBadgeVariant(post.status)} className="px-3 py-1 rounded-full text-xs">
                       {post.status}
                     </Badge>
                   </CardAction>
@@ -164,7 +167,7 @@ export default function HomePage() {
                 {/* 3) 관심사 태그 */}
                 <div className="px-4 flex flex-wrap gap-2">
                   {post.interests.map((tag, i) => (
-                    <Badge key={i} variant="outline" className="px-2 py-1 rounded-full text-xs">
+                    <Badge key={i} variant="default" className="px-2 py-1 rounded-full text-xs">
                       {tag}
                     </Badge>
                   ))}
@@ -195,7 +198,7 @@ export default function HomePage() {
               </Avatar>
               <h3 className="text-base font-semibold">홍길동</h3>
               <p className="text-sm text-muted-foreground">hong@email.com</p>
-              <Button variant="default" size="sm" className="mt-2 w-full">
+              <Button variant="edit" size="sm" className="mt-2 w-full">
                 프로필 수정하기
               </Button>
             </div>
@@ -207,7 +210,7 @@ export default function HomePage() {
                 {["스포츠", "일상", "자기계발"].map((cat) => (
                   <Badge
                     key={cat}
-                    variant="outline"
+                    variant="default"
                     className="px-3 py-1 rounded-full text-sm"
                   >
                     {cat}
