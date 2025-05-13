@@ -14,6 +14,14 @@ const cards = [
   { title: "세 번째 카드", desc: "버튼이나 리스트도 OK!" },
 ];
 
+
+const statusStyles: Record<string, string> = {
+  "모집 예정": "bg-yellow-100 text-yellow-700",
+  "모집 중": "bg-green-100 text-green-800",
+  "모집 완료": "bg-red-100 text-red-800",
+  "종료": "bg-gray-200 text-gray-700",
+};
+
 export default function HomePage() {
   const [emblaApi, setEmblaApi] = React.useState<CarouselApi | null>(null);
   const [selectedIndex, setSelectedIndex] = React.useState(0);
@@ -28,6 +36,7 @@ export default function HomePage() {
       setSelectedIndex(api.selectedScrollSnap());
     });
   }, []);
+
 
   const posts = [{
     id: 1,
@@ -143,7 +152,7 @@ export default function HomePage() {
                     </div>
                   </div>
                   <CardAction>
-                    <Badge variant="secondary" className="px-3 py-1 rounded-full text-xs">
+                    <Badge variant="secondary" className={`${statusStyles[post.status]} px-3 py-1 rounded-full text-xs`}>
                       {post.status}
                     </Badge>
                   </CardAction>
