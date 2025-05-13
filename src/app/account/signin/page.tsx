@@ -69,7 +69,7 @@ export default function SigninPage() {
                 <p className="mt-1 text-sm text-red-500"></p>
               )}
             </div>
-            <div className="relative flex flex-col">
+            <div className="flex flex-col">
               {/* <label htmlFor="signin-password" className="mb-1 font-medium">비밀번호</label> */}
               <Input
                 id="signin-password"
@@ -87,13 +87,12 @@ export default function SigninPage() {
                type="button"
                onClick={() => setShowPwd(!showPwd)}
                className="absolute right-3 top-1/2 -translate-y-1/2 p-1"
-             >
+              >
                {showPwd
                  ? <EyeOff className="w-5 h-5 text-gray-500" />
                  : <Eye className="w-5 h-5 text-gray-500" />
                }
              </button>
-             
               {passwordEmpty && (
                 <p className="mt-1 text-sm text-red-500"></p>
               )}
@@ -103,8 +102,8 @@ export default function SigninPage() {
                     비밀번호 재설정
                 </Link>
             </div>
-            
           </CardContent>
+          
           {loginError && !emailEmpty && !passwordEmpty && (
             <p className="px-6 text-center text-sm text-red-500">
               이메일 또는 비밀번호가 잘못 되었습니다. 이메일과 비밀번호를 정확히 입력해 주세요.
