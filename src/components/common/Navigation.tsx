@@ -1,6 +1,7 @@
 "use client";
 
 import Link from "next/link";
+import { useState } from "react";
 import Image from "next/image";
 import { usePathname } from "next/navigation";
 import {
@@ -14,6 +15,7 @@ import {
   DropdownMenuTrigger,
   DropdownMenuItem,
 } from "@/components/ui/dropdown-menu";
+import { Avatar, AvatarImage, AvatarFallback } from "@/components/ui/avatar";
 import { Bell, LogOut, User } from "lucide-react";
 import { cn } from "@/lib/utils";
 
@@ -27,6 +29,8 @@ export function Navigation() {
   const pathname = usePathname();
   const isLoggedIn = true; // TODO: 실제 인증 상태로 대체
 
+  const [avatarUrl, setAvatarUrl] = useState<string | null>("/images/default_profile.png");
+
   return (
     <header className="sticky top-0 z-50 w-full bg-white">
       {/* 
@@ -37,7 +41,7 @@ export function Navigation() {
         border-b     : 하단 테두리
         bg-background: Tailwind theme 배경색 사용
       */}
-      <div className="mx-auto flex h-20 max-w-7xl items-center justify-between px-10">
+      <div className="mx-auto w-full flex h-20 max-w-7xl items-center justify-between ">
         {/*
           mx-auto     : 중앙 정렬
           flex        : 가로 정렬
@@ -52,8 +56,10 @@ export function Navigation() {
         <div className="flex items-center gap-15">
           {/* gap-10: 로고와 메뉴 사이 간격 */}
           <Link href="/">
-            <Image src="/logo.png" alt="logo" width={40} height={40} className="rounded-full" />
-            {/* rounded-full: 원형 이미지 */}
+            <Avatar className="w-40 h-40 focus:outline-none focus:ring-0 cursor-pointer">
+              <AvatarImage src="/logo.png" alt="GooHam Logo" />
+              <AvatarFallback>GH</AvatarFallback>
+            </Avatar>
           </Link>
 
           <NavigationMenu>
@@ -95,19 +101,19 @@ export function Navigation() {
         </div>
 
         {/* 오른쪽: 로그인 or 알림/프로필 */}
-        <div className="flex items-center gap-12">
+        <div className="flex ml-auto items-center gap-8">
           {isLoggedIn ? (
             <>
               {/* 알림 아이콘 */}
               <DropdownMenu>
                 <DropdownMenuTrigger asChild>
-                  <button className="rounded-md p-2 hover:bg-muted">
+                  <button className="rounded-md p-2 focus:outline-none hover:bg-muted">
                     {/* 
                       rounded-md: 버튼 라운딩
                       p-2       : 패딩
                       hover:bg-muted: 호버 시 연한 배경
                     */}
-                    <Bell className="h-5 w-5 text-foreground" />
+                    <Bell className="h-8 w-8 text-foreground" />
                     {/* h/w-5: 아이콘 크기 / text-foreground: 기본 글자색 */}
                   </button>
                 </DropdownMenuTrigger>
@@ -119,15 +125,22 @@ export function Navigation() {
               {/* 프로필 이미지 */}
               <DropdownMenu>
                 <DropdownMenuTrigger asChild>
-                  <Image
-                    src="/avatar.png"
-                    alt="avatar"
-                    width={32}
-                    height={32}
-                    className="rounded-full cursor-pointer border"
-                    // 원형, 커서, 테두리 추가
-                  />
-                </DropdownMenuTrigger>
+                {/* Avatar 컴포넌트 사용 */}
+                  <Avatar className="w-10 h-10 cursor-pointer">
+                    {avatarUrl ? (
+                      <AvatarImage
+                        src={avatarUrl}
+                        alt="User Avatar"
+                        onError={() => setAvatarUrl(null)} // 실패 시 null로
+                      />
+                    ) : (
+                      <AvatarFallback>
+                        {/* Fallback에는 이니셜 또는 기본 아이콘 */}
+                        <User className="w-4 h-4" />
+                      </AvatarFallback>
+                    )}
+                </Avatar>
+              </DropdownMenuTrigger>
                 <DropdownMenuContent align="end">
                   <DropdownMenuItem asChild>
                     <Link href="/mypage" className="flex items-center gap-2">

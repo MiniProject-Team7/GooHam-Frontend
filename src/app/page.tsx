@@ -139,7 +139,7 @@ export default function HomePage() {
                     </Avatar>
                     <div>
                       <CardTitle className="text-base">{post.title}</CardTitle>
-                      <div className="text-xs text-muted-foreground">{post.authorName}</div>
+                      <div className="text-xs text-muted-foreground">{post.author}</div>
                     </div>
                   </div>
                   <CardAction>
@@ -195,7 +195,7 @@ export default function HomePage() {
               </Avatar>
               <h3 className="text-base font-semibold">홍길동</h3>
               <p className="text-sm text-muted-foreground">hong@email.com</p>
-              <Button variant="default" size="sm" className="mt-2 w-full">
+              <Button variant="edit" size="sm" className="mt-2 w-full">
                 프로필 수정하기
               </Button>
             </div>
