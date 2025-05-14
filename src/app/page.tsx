@@ -77,16 +77,16 @@ export default function HomePage() {
   return (
     <div className="relative w-full max-w-7xl mx-auto py-6">
       {/* 1행: 캐러셀 (가로 전체) */}
-      <div>
+      <div className="overflow-hidden rounded-2xl">
         <Carousel
           opts={{ loop: true, align: "center" }}
-          className="relative w-full max-w-full mx-auto h-64"
+          className="relative w-full max-w-full mx-auto h-64 overflow-hidden"
           setApi={handleApiInit}
         >
           <CarouselContent className="flex gap-6 h-64">
             {cards.map((slide, idx) => (
-              <CarouselItem key={idx} className="pl-4">
-                <div className="h-full w-full bg-yellow-200 rounded-lg p-6 flex flex-col items-center justify-center">
+              <CarouselItem key={idx} className="pl-4 rounded 2xl">
+                <div className="h-full w-full bg-yellow-200 rounded-2x1 p-6 flex flex-col items-center justify-center">
                   <h3 className="text-heading-lg mb-2 text-center">
                     {slide.title}
                   </h3>
