@@ -37,7 +37,6 @@ export default function SigninPage() {
     }
 
     if (email === dummyUser.email && password === dummyUser.password) {
-      alert("로그인 성공! 환영합니다.");
       router.push("/");
     } else {
       setLoginError(true);
