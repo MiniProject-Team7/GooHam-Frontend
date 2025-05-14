@@ -26,59 +26,94 @@ const navItems = [
   { name: "마이페이지", href: "/mypage" },
 ];
 
-  const notices: Notice[] = [
-  {
-    id: "1",
-    type: "신청",
-    from: "철수",
-    postTitle: "함께 등산 가실 분",
-    createdAt: "2025-05-13T11:20:00Z",
-    link: "/post/123",
-  },
-  {
-    id: "2",
-    type: "승인",
-    postTitle: "함께 등산 가실 분",
-    createdAt: "2025-05-13T12:00:00Z",
-    link: "/post/123/applications",
-  },
-  {
-    id: "3",
-    type: "댓글",
-    from: "영희",
-    postTitle: "맛집 투어",
-    createdAt: "2025-05-13T12:30:00Z",
-    link: "/post/456#comments",
-  },
-  // … 최대 30개
+type FormattedNotice = {
+  content: React.ReactNode;
+  time: string;
+}
+
+const notices: Notice[] = [
+{
+  id: "1",
+  type: "신청",
+  from: "철수",
+  postTitle: "함께 등산 가실 분",
+  createdAt: "2025-05-13T11:20",
+  link: "/post/123",
+},
+{
+  id: "2",
+  type: "승인",
+  postTitle: "함께 등산 가실 분",
+  createdAt: "2025-05-13T12:00",
+  link: "/post/123/applications",
+},
+{
+  id: "3",
+  type: "댓글",
+  from: "영희",
+  postTitle: "맛집 투어",
+  createdAt: "2025-05-13T12:30",
+  link: "/post/456#comments",
+},
+// … 최대 30개
 ];
 
 // 알림 메시지 포맷터
-function formatNoticeContent(n: Notice) {
-  const timeLabel = new Date(n.createdAt).toLocaleString();
+function formatNoticeContent(n: Notice): FormattedNotice {
+  const timeLabel = new Date(n.createdAt).toLocaleString("ko-KR", {
+    month: "2-digit",
+    day: "2-digit",
+    hour: "2-digit",
+    minute: "2-digit",
+    hour12: false,
+  });
+
+  // postTitle 부분만 <span>으로 감싸서 CSS 클래스 적용
+  const titleSpan = (
+    <span className="text-title-sm">
+      {n.postTitle}
+    </span>
+  );
+
   switch (n.type) {
     case "신청":
       return {
-        text: `${n.from}님이 "${n.postTitle}"에 신청하셨습니다.`,
+        content: (
+          <>
+            {n.from}님이 {titleSpan}에 신청하셨습니다.
+          </>
+        ),
         time: timeLabel,
       };
     case "댓글":
       return {
-        text: `${n.from}님이 "${n.postTitle}"에 댓글을 남기셨습니다.`,
+        content: (
+          <>
+            {n.from}님이 {titleSpan}에 댓글을 남기셨습니다.
+          </>
+        ),
         time: timeLabel,
       };
     case "승인":
       return {
-        text: `"${n.postTitle}"이(가) 승인되었습니다.`,
+        content: (
+          <>
+            {titleSpan}에 대한 신청이 승인되었습니다.
+          </>
+        ),
         time: timeLabel,
       };
     case "거절":
       return {
-        text: `"${n.postTitle}"이(가) 거절되었습니다.`,
+        content: (
+          <>
+            {titleSpan}에 대한 신청이 거절되었습니다.
+          </>
+        ),
         time: timeLabel,
       };
     default:
-      return { text: "", time: timeLabel };
+      return { content: null, time: timeLabel };
   }
 }
 
@@ -94,10 +129,9 @@ export function Navigation() {
       [notices]
   );
 
-
-
-
   const [avatarUrl, setAvatarUrl] = useState<string | null>("/images/default_profile.png");
+  const userName = "홍길동";
+  const userIntro = "안녕하세요. 20살 홍길동입니다."
 
   return (
     <header className="sticky top-0 z-50 w-full bg-white">
@@ -169,56 +203,59 @@ export function Navigation() {
         </div>
 
         {/* 오른쪽: 로그인 or 알림/프로필 */}
-        <div className="flex ml-auto items-center gap-8">
+        <div className="select-none flex ml-auto items-center gap-8">
           {isLoggedIn ? (
             <>
               {/* 알림 아이콘 */}
             <DropdownMenu>
-            <DropdownMenuTrigger asChild>
-              <button className="rounded-md p-3 focus:outline-none hover:bg-muted">
-                <Bell className="h-6 w-6 text-foreground stroke-1.5" />
-              </button>
-            </DropdownMenuTrigger>
+              <DropdownMenuTrigger asChild>
+                <button className="rounded-md p-3 focus:outline-none 
+                hover:bg-muted select-none focus:ring-0
+                focus-visible:outline-none">
+                  <Bell className="h-6 w-6 text-foreground stroke-1.5" />
+                </button>
+              </DropdownMenuTrigger>
 
-            <DropdownMenuContent
-              align="end"
-              sideOffset={4}
-              className="w-80 bg-popover text-popover-foreground p-2 overflow-hidden"
-            >
-              <h4 className="px-2 py-1 text-sm font-semibold">알림 목록</h4>
-              <DropdownMenuSeparator />
+              <DropdownMenuContent
+                align="end"
+                sideOffset={4}
+                className="w-100 h-80 bg-white border-gray-22 text-popover-foreground p-2 overflow-hidden"
+              >
+                <div className="px-3 py-3 text-title-md ">알림 목록</div>
+                <DropdownMenuSeparator />
 
-              {sorted.length === 0 ? (
-                <div className="flex h-40 items-center justify-center text-sm text-muted-foreground">
-                  새로운 알림이 없습니다.
-                </div>
-              ) : (
-                <div className="max-h-64 overflow-y-auto space-y-1">
-                  {sorted.map((n) => {
-                    const { text, time } = formatNoticeContent(n);
-                    return (
-                      <DropdownMenuItem asChild key={n.id} className="p-0">
-                        <Link
-                          href={n.link}
-                          className="block w-full px-2 py-2 hover:bg-accent/10 rounded"
-                        >
-                          <p className="text-sm">{text}</p>
-                          <time className="text-xs text-muted-foreground">{time}</time>
-                        </Link>
-                      </DropdownMenuItem>
-                    );
-                  })}
-                </div>
-              )}
-
-              <DropdownMenuSeparator />
-
-                  <div className="px-2 py-2 text-title-md">
-                    <Link href="/notification">
-                        전체 알림 보기
-                    </Link>
+                {sorted.length === 0 ? (
+                  <div className="flex h-40 items-center justify-center text-sm text-muted-foreground">
+                    새로운 알림이 없습니다.
                   </div>
-                </DropdownMenuContent>
+                ) : (
+                  <div className="h-50 max-h-80 overflow-y-auto space-y-1">
+                    {sorted.map((n) => {
+                      const { content, time } = formatNoticeContent(n);
+                      return (
+                        <DropdownMenuItem asChild key={n.id} className="p-0">
+                           <Link
+                              href={n.link}
+                              className="flex items-start justify-between w-full px-2 py-2 hover:bg-accent/10 rounded"
+                            >
+                              <p className="text-sm flex-1">{content}</p>
+                              <time className="text-xs text-gray-400 whitespace-nowrap">
+                                {time}
+                              </time>
+                            </Link>
+                        </DropdownMenuItem>
+                      );
+                    })}
+                  </div>
+                )}
+
+                <DropdownMenuSeparator />
+                    <div className="justify-self-center px-2 pb-2 pt-3 text-primary-500 text-title-md">
+                      <Link href="/notification">
+                          전체 알림 보기
+                      </Link>
+                    </div>
+                  </DropdownMenuContent>
               </DropdownMenu>
 
               {/* 프로필 이미지 */}
@@ -240,15 +277,43 @@ export function Navigation() {
                     )}
                 </Avatar>
               </DropdownMenuTrigger>
-                <DropdownMenuContent align="end">
+              <DropdownMenuContent align="end" sideOffset={4} className="w-80 h-70 bg-white border-gray-22 text-popover-foreground p-2">
+                  <div className="flex flex-col items-center px-4 py-3 gap-3">
+                    <div className = "text-title-md text-black self-start mb-2">나의 정보</div>
+                    <Avatar className="w-15 h-15">
+                      {avatarUrl ? (
+                        <AvatarImage src={avatarUrl} alt="User Avatar" />
+                      ) : (
+                        <AvatarFallback>
+                          <User className="w-4 h-4" />
+                        </AvatarFallback>
+                      )}
+                    </Avatar>
+                    <div className="text-title-md text-black truncate">{userName}</div>
+                    <div className = "text-lable-md text-gray-22 truncate">{userIntro}</div>
+                  </div>
+
+                <DropdownMenuSeparator />  
+                  {/* 마이페이지 */}
                   <DropdownMenuItem asChild>
-                    <Link href="/mypage" className="flex items-center gap-2">
-                      <User className="h-4 w-4" href="/mypage"/> 마이페이지
+                    <Link
+                      href="/mypage"
+                      className="flex items-center gap-2 px-2 py-1 rounded hover:bg-accent/10"
+                    >
+                      <User className="w-4 h-4 text-title-md" /> 마이페이지
                     </Link>
                   </DropdownMenuItem>
-                  <DropdownMenuItem>
-                    <LogOut className="h-4 w-4 mr-2" />
-                    로그아웃
+                  <DropdownMenuSeparator />
+                  {/* 로그아웃 */}
+                  <DropdownMenuItem
+                    onSelect={() => {
+                      // TODO: 실제 로그아웃 로직 호출
+                      console.log("로그아웃!");
+                    }}
+                    className="flex items-center gap-2 px-2 py-1 rounded hover:bg-destructive/10 data-[variant=destructive]:text-destructive"
+                    data-variant="destructive"
+                  >
+                    <LogOut className="w-4 h-4 text-title-md" /> 로그아웃
                   </DropdownMenuItem>
                 </DropdownMenuContent>
               </DropdownMenu>
