@@ -1,4 +1,6 @@
 "use client";
+
+import React, { useState } from "react";
 import { Button } from "@/components/ui/button";
 import { Input } from "@/components/ui/input";
 import { Textarea } from "@/components/ui/textarea";
@@ -12,7 +14,6 @@ import { useRouter } from "next/navigation";
 export default function PostWrite() {
   const [selected, setSelected] = useState<string[]>([]);
   const router = useRouter();
-
   const handleImg = (e: ChangeEvent<HTMLInputElement>) => {
     const img = e.target.files?.[0];
     if (img) {
