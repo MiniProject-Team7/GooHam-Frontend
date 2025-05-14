@@ -1,8 +1,7 @@
 "use client";
-
+import * as React from "react";
 import Link from "next/link";
 import { useState } from "react";
-import Image from "next/image";
 import { usePathname } from "next/navigation";
 import {
   NavigationMenu,
@@ -14,10 +13,12 @@ import {
   DropdownMenuContent,
   DropdownMenuTrigger,
   DropdownMenuItem,
+  DropdownMenuSeparator
 } from "@/components/ui/dropdown-menu";
 import { Avatar, AvatarImage, AvatarFallback } from "@/components/ui/avatar";
 import { Bell, LogOut, User } from "lucide-react";
 import { cn } from "@/lib/utils";
+import { Notice } from "@/types/notice";
 
 const navItems = [
   { name: "게시글", href: "/posts" },
@@ -25,9 +26,76 @@ const navItems = [
   { name: "마이페이지", href: "/mypage" },
 ];
 
+  const notices: Notice[] = [
+  {
+    id: "1",
+    type: "신청",
+    from: "철수",
+    postTitle: "함께 등산 가실 분",
+    createdAt: "2025-05-13T11:20:00Z",
+    link: "/post/123",
+  },
+  {
+    id: "2",
+    type: "승인",
+    postTitle: "함께 등산 가실 분",
+    createdAt: "2025-05-13T12:00:00Z",
+    link: "/post/123/applications",
+  },
+  {
+    id: "3",
+    type: "댓글",
+    from: "영희",
+    postTitle: "맛집 투어",
+    createdAt: "2025-05-13T12:30:00Z",
+    link: "/post/456#comments",
+  },
+  // … 최대 30개
+];
+
+// 알림 메시지 포맷터
+function formatNoticeContent(n: Notice) {
+  const timeLabel = new Date(n.createdAt).toLocaleString();
+  switch (n.type) {
+    case "신청":
+      return {
+        text: `${n.from}님이 "${n.postTitle}"에 신청하셨습니다.`,
+        time: timeLabel,
+      };
+    case "댓글":
+      return {
+        text: `${n.from}님이 "${n.postTitle}"에 댓글을 남기셨습니다.`,
+        time: timeLabel,
+      };
+    case "승인":
+      return {
+        text: `"${n.postTitle}"이(가) 승인되었습니다.`,
+        time: timeLabel,
+      };
+    case "거절":
+      return {
+        text: `"${n.postTitle}"이(가) 거절되었습니다.`,
+        time: timeLabel,
+      };
+    default:
+      return { text: "", time: timeLabel };
+  }
+}
+
 export function Navigation() {
   const pathname = usePathname();
   const isLoggedIn = true; // TODO: 실제 인증 상태로 대체
+
+  const sorted = React.useMemo(
+      () =>
+        notices
+          .slice(0, 30)
+          .sort((a, b) => new Date(b.createdAt).getTime() - new Date(a.createdAt).getTime()),
+      [notices]
+  );
+
+
+
 
   const [avatarUrl, setAvatarUrl] = useState<string | null>("/images/default_profile.png");
 
@@ -105,20 +173,51 @@ export function Navigation() {
           {isLoggedIn ? (
             <>
               {/* 알림 아이콘 */}
-              <DropdownMenu>
-                <DropdownMenuTrigger asChild>
-                  <button className="rounded-md p-2 focus:outline-none hover:bg-muted">
-                    {/* 
-                      rounded-md: 버튼 라운딩
-                      p-2       : 패딩
-                      hover:bg-muted: 호버 시 연한 배경
-                    */}
-                    <Bell className="h-8 w-8 text-foreground" />
-                    {/* h/w-5: 아이콘 크기 / text-foreground: 기본 글자색 */}
-                  </button>
-                </DropdownMenuTrigger>
-                <DropdownMenuContent align="end">
-                  <DropdownMenuItem>새 알림 없음</DropdownMenuItem>
+            <DropdownMenu>
+            <DropdownMenuTrigger asChild>
+              <button className="rounded-md p-3 focus:outline-none hover:bg-muted">
+                <Bell className="h-6 w-6 text-foreground stroke-1.5" />
+              </button>
+            </DropdownMenuTrigger>
+
+            <DropdownMenuContent
+              align="end"
+              sideOffset={4}
+              className="w-80 bg-popover text-popover-foreground p-2 overflow-hidden"
+            >
+              <h4 className="px-2 py-1 text-sm font-semibold">알림 목록</h4>
+              <DropdownMenuSeparator />
+
+              {sorted.length === 0 ? (
+                <div className="flex h-40 items-center justify-center text-sm text-muted-foreground">
+                  새로운 알림이 없습니다.
+                </div>
+              ) : (
+                <div className="max-h-64 overflow-y-auto space-y-1">
+                  {sorted.map((n) => {
+                    const { text, time } = formatNoticeContent(n);
+                    return (
+                      <DropdownMenuItem asChild key={n.id} className="p-0">
+                        <Link
+                          href={n.link}
+                          className="block w-full px-2 py-2 hover:bg-accent/10 rounded"
+                        >
+                          <p className="text-sm">{text}</p>
+                          <time className="text-xs text-muted-foreground">{time}</time>
+                        </Link>
+                      </DropdownMenuItem>
+                    );
+                  })}
+                </div>
+              )}
+
+              <DropdownMenuSeparator />
+
+                  <div className="px-2 py-2 text-title-md">
+                    <Link href="/notification">
+                        전체 알림 보기
+                    </Link>
+                  </div>
                 </DropdownMenuContent>
               </DropdownMenu>
 
@@ -144,7 +243,7 @@ export function Navigation() {
                 <DropdownMenuContent align="end">
                   <DropdownMenuItem asChild>
                     <Link href="/mypage" className="flex items-center gap-2">
-                      <User className="h-4 w-4" /> 마이페이지
+                      <User className="h-4 w-4" href="/mypage"/> 마이페이지
                     </Link>
                   </DropdownMenuItem>
                   <DropdownMenuItem>
@@ -155,7 +254,7 @@ export function Navigation() {
               </DropdownMenu>
             </>
           ) : (
-            <Link href="/login" className="text-sm text-muted-foreground hover:text-primary">
+            <Link href="/account/signin" className="text-md text-muted-foreground hover:text-primary">
               {/* 로그인 링크: 흐린 색 → hover 시 강조색 */}
               로그인
             </Link>
