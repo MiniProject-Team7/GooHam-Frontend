@@ -3,8 +3,8 @@ import { Avatar, AvatarFallback, AvatarImage } from "../../../../components/ui/a
 import { Button } from "../../../../components/ui/button";
 import { Card, CardContent } from "../../../../components/ui/card";
 import { Tabs, TabsContent, TabsList, TabsTrigger } from "../../../../components/ui/tabs";
-import PostItem from "@/components/posts/PostItem";
-
+import PostCard from "@/components/common/PostCard";
+import { dummyPosts } from "@/app/posts/postData";
 
 // 게시글 데이터
 const posts = [
@@ -16,8 +16,8 @@ const posts = [
     image: "/images/cat.jpg",
     maxParticipants: 5,
     currentParticipants: 2,
-    categoryName: ["스포츠", "일상"],
-    status: "모집완료",
+    categoryName: "스포츠",
+    status: "모집 완료",
     scheduleStart: "2025-05-10 09:00",
     scheduleEnd: "2025-05-10T11:00:00",
     location: "서울 여의도 한강공원",
@@ -32,7 +32,7 @@ const posts = [
     image: "/images/cat.jpg",
     maxParticipants: 3,
     currentParticipants: 1,
-    categoryName: ["일상", "음식"],
+    categoryName: "음식",
     status: "모집 중",
     scheduleStart: "2025-05-15 14:00",
     scheduleEnd: "2025-05-15T16:00:00",
@@ -107,9 +107,9 @@ export const MyPost = (): JSX.Element => {
 
         {/* 작성한 게시글 */}
         <TabsContent value="posts" className="mt-6 space-y-6">
-          {posts.map((post) => (
-            <div key={post.id} className="border border-gray-200 rounded-xl">
-              <PostItem post={post} />
+          {dummyPosts.map((post) => (
+            <div key={post.id}>
+              <PostCard post={post} />
             </div>
           ))}
         </TabsContent>
