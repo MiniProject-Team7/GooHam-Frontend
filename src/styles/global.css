@@ -48,6 +48,10 @@
   --ring: rgba(255, 255, 255, 0.2);
 }
 
+html {
+  overflow-y: scroll;
+}
+
 html,
 body {
   font-family: "Pretendard", sans-serif;
