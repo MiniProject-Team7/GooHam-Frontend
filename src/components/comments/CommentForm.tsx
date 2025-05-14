@@ -15,12 +15,12 @@ const CommentForm = () => {
   };
 
   return (
-    <div className="border border-gray rounded-xl p-4 mb-6 bg-white">
+    <div className="rounded-xl p-4 mb-6 bg-white">
       <Textarea
         placeholder="댓글을 입력하세요."
         value={content}
         onChange={(e) => setContent(e.target.value)}
-        className="border border-gray mb-3 resize-none"
+        className=" mb-3 resize-none"
         rows={3}
       />
       <div className="text-right">

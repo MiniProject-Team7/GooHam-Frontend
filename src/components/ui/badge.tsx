@@ -5,18 +5,23 @@ import { cva, type VariantProps } from "class-variance-authority";
 import { cn } from "@/lib/utils";
 
 const badgeVariants = cva(
-  "inline-flex items-center justify-center rounded-md border px-2 py-0.5 text-xs font-medium w-fit whitespace-nowrap shrink-0 [&>svg]:size-3 gap-1 [&>svg]:pointer-events-none focus-visible:border-ring focus-visible:ring-ring/50 focus-visible:ring-[3px] aria-invalid:ring-destructive/20 dark:aria-invalid:ring-destructive/40 aria-invalid:border-destructive transition-[color,box-shadow] overflow-hidden",
+  "inline-flex items-center justify-center rounded-[20px] border px-2 py-0.5 text-xs w-fit whitespace-nowrap shrink-0 [&>svg]:size-3 gap-1 [&>svg]:pointer-events-none focus-visible:border-ring focus-visible:ring-ring/50 focus-visible:ring-[3px] aria-invalid:ring-destructive/20 dark:aria-invalid:ring-destructive/40 aria-invalid:border-destructive transition-[color,box-shadow] overflow-hidden",
   {
     variants: {
       variant: {
-        default: "bg-white text-black border border-gray-22 [a&]:hover:bg-primary-400 rounded-xl",
-        selected:
-          "bg-primary-500 text-black border border-gray-22 [a&]:hover:bg-primary-700 rounded-xl",
+        default: "bg-white text-black border border-gray-22 [a&]:hover:bg-primary-400",
+        selected: "bg-primary-500 text-black border border-gray-22 [a&]:hover:bg-primary-700",
         secondary:
           "border-transparent bg-secondary text-secondary-foreground [a&]:hover:bg-secondary/90",
         destructive:
           "border-transparent bg-destructive text-white [a&]:hover:bg-destructive/90 focus-visible:ring-destructive/20 dark:focus-visible:ring-destructive/40 dark:bg-destructive/60",
         outline: "text-foreground [a&]:hover:bg-accent [a&]:hover:text-accent-foreground",
+        statusUpcoming: "bg-yellow-100 text-yellow-700 border-transparent rounded-full",
+        statusOpen: "bg-green-100 text-green-800 border-transparent rounded-full",
+        statusClosed: "bg-red-100   text-red-800 border-transparent rounded-full",
+        statusEnded: "bg-gray-200  text-gray-700 border-transparent rounded-full",
+        editDefault: "bg-white text-black text-md border border-gray-22 [a&]:hover:bg-primary-400",
+        editSelected: "bg-primary-500 text-white text-md [a&]:hover:bg-primary-700",
       },
     },
     defaultVariants: {

@@ -5,21 +5,22 @@ import { ChevronLeft, ChevronRight } from "lucide-react";
 import { Separator } from "@/components/ui/separator";
 // import { Select, SelectTrigger, SelectValue, SelectContent, SelectItem } from "@/components/ui/select";
 import { Button } from "@/components/ui/button";
-import { allPosts, allApplications} from "./participtiondata";
-import { PostCard } from "@/components/common/PostCard";
+import { allPosts, allApplications } from "./participtiondata";
 import { ParticipationCard } from "@/components/common/ParticipationCard";
+import PostCard from "@/components/common/PostCard";
+import { dummyPosts } from "../posts/postData";
 
 export default function ParticipationManagementPage() {
   // 더미 데이터 예시
 
   const postsPerPage = 2;
   const appsPerPost = 8;
-  const totalPages = Math.ceil(allPosts.length / postsPerPage);
+  const totalPages = Math.ceil(dummyPosts.length / postsPerPage);
 
   const [page, setPage] = React.useState(1);
 
   const startIdx = (page - 1) * postsPerPage;
-  const currentPosts = allPosts.slice(startIdx, startIdx + postsPerPage);
+  const currentPosts = dummyPosts.slice(startIdx, startIdx + postsPerPage);
 
   return (
     <div className="relative w-full max-w-7xl mx-auto py-6">
