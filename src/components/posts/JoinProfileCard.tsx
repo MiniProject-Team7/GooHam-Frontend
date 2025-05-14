@@ -4,6 +4,8 @@ import { Badge } from "@/components/ui/badge";
 import { Post } from "@/types/post";
 import { Avatar, AvatarFallback } from "../ui/avatar";
 import { AvatarImage } from "@radix-ui/react-avatar";
+import { Member } from "@/types/user";
+import { Calendar, MapPin, Shapes, Users } from "lucide-react";
 
 const JoinProfileCard = ({ post }: { post: Post }) => {
   return (
@@ -18,20 +20,30 @@ const JoinProfileCard = ({ post }: { post: Post }) => {
           <p className="text-sm text-gray-500">2001.01.08</p>
         </div>
       </div>
-      <div className="pl-2 text-gray-500 mb-1">📅 {post.scheduleStart}</div>
-      <div className="pl-2 text-gray-500 mb-1">
-        👥 {post.currentParticipants}/{post.maxParticipants}
+      <div className="flex items-center gap-2 text-sm text-gray-50 mt-2">
+        <Calendar className="w-4 h-4" />
+        <span>{post.scheduleStart}</span>
       </div>
-      <div className="pl-2 text-gray-500 mb-1">📍 {post.location}</div>
-      <div className="mt-2 flex flex-wrap mb-2">
-        {post.categoryName.map((cat, i) => (
-          <Badge key={i}>{cat}</Badge>
-        ))}
+      <div className="flex items-center gap-2 text-sm text-gray-50 mt-2">
+        <Users className="w-4 h-4" />
+        <span>{post.location}</span>
       </div>
-
-      <Button variant="default" className="w-full mb-2">
-        참여 신청하기
-      </Button>
+      <div className="flex items-center gap-2 text-sm text-gray-50 mt-2">
+        <MapPin className="w-4 h-4" />
+        <span>{post.location}</span>
+      </div>
+      <div className="flex items-center gap-2 text-sm text-gray-40 mt-2">
+        <Shapes className="w-4 h-4" />
+        <span>category</span>
+      </div>
+      <div className="flex flex-wrap gap-2 m-1 mt-2 mb-3">
+        <Badge>{post.categoryName}</Badge>
+      </div>
+      <div className="flex justify-center">
+        <Button variant="default" className="flex w-[80%] mb-2 ">
+          참여 신청하기
+        </Button>
+      </div>
     </Card>
   );
 };
