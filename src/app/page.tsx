@@ -85,8 +85,8 @@ export default function HomePage() {
         >
           <CarouselContent className="flex gap-6 h-64">
             {cards.map((slide, idx) => (
-              <CarouselItem key={idx} className="pl-4 rounded 2xl">
-                <div className="h-full w-full bg-yellow-200 rounded-2x1 p-6 flex flex-col items-center justify-center">
+              <CarouselItem key={idx} className="pl-4">
+                <div className="h-full w-full bg-yellow-200 rounded-2xl p-6 flex flex-col items-center justify-center">
                   <h3 className="text-heading-lg mb-2 text-center">
                     {slide.title}
                   </h3>
