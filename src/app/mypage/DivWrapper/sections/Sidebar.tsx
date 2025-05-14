@@ -18,7 +18,7 @@ const sidebarItems = [
 export const Sidebar = ({ activeMenu, onSelectMenu }: Props): JSX.Element => {
   return (
     <aside className="w-[200px] flex-shrink-0">
-      <Card className="w-full rounded-[20px] border border-[#00000038]">
+      <Card className="w-full rounded-[20px]">
         <CardContent className="p-6">
           {/* 계정 관리 섹션 */}
           <h2 className="font-bold text-l mb-4">계정 관리</h2>

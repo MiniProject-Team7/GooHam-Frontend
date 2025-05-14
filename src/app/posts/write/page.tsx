@@ -1,22 +1,28 @@
+"use client";
+
+import React, { useState } from "react";
 import { Button } from "@/components/ui/button";
 import { Input } from "@/components/ui/input";
 import { Textarea } from "@/components/ui/textarea";
 import { Label } from "@/components/ui/label";
 import { Plus } from "lucide-react";
+import { ActionButtonSection } from "@/app/mypage/DivWrapper/sections/ActionButtonSection";
 
-const categories = [
-  "스포츠",
-  "일상",
-  "자기계발",
-  "공동구매",
-  "여행",
-  "음식",
-  "취미/오락",
-  "인문/예술",
-  "기타",
-];
+// const categories = [
+//   "스포츠",
+//   "일상",
+//   "자기계발",
+//   "공동구매",
+//   "여행",
+//   "음식",
+//   "취미/오락",
+//   "인문/예술",
+//   "기타",
+// ];
 
 export default function PostWrite() {
+  const [selectedCategories, setSelectedCategories] = useState<string[]>([]);
+
   return (
     <div className="max-w-4xl mx-auto py-12 px-4">
       <h1 className="text-2xl font-bold mb-6">게시글 작성하기</h1>
@@ -44,19 +50,14 @@ export default function PostWrite() {
           <Input id="location" placeholder="모임 장소를 입력해주세요." />
         </div>
 
+        {/* ✅ 카테고리 버튼 */}
         <div className="col-span-full">
           <Label className="mb-2 block">카테고리</Label>
-          <div className="flex flex-wrap gap-2 rounded-xl p-4">
-            {categories.map((cat) => (
-              <Button
-                key={cat}
-                variant="outline"
-                // className="flex items-center gap-1 px-3 py-1 border border-gray-300 rounded-full text-sm hover:bg-pink-100 transition"
-              >
-                {cat}
-              </Button>
-            ))}
-          </div>
+          <ActionButtonSection
+            selected={selectedCategories}
+            onChange={setSelectedCategories}
+            className="grid-cols-10"
+          />
         </div>
       </div>
 
