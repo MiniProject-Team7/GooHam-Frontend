@@ -3,10 +3,10 @@ export interface Post {
   userName: string;
   title: string;
   content: string;
-  image: string;
+  images: string[];
   maxParticipants: number;
   currentParticipants: number;
-  categoryName: string[];
+  categoryName: string;
   status: string;
   scheduleStart: string;
   scheduleEnd: string;
