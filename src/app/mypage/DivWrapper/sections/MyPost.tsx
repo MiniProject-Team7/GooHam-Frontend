@@ -1,10 +1,11 @@
+"use client";
+
 import React, { JSX } from "react";
 import { Avatar, AvatarFallback, AvatarImage } from "../../../../components/ui/avatar";
 import { Button } from "../../../../components/ui/button";
 import { Card, CardContent } from "../../../../components/ui/card";
 import { Tabs, TabsContent, TabsList, TabsTrigger } from "../../../../components/ui/tabs";
 import PostItem from "@/components/posts/PostItem";
-
 
 // 게시글 데이터
 const posts = [
