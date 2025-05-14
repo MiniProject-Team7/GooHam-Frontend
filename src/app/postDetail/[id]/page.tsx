@@ -1,22 +1,3 @@
-// import { Post } from "@/types/post";
-
-// export default function PostDetail() {
-//   return (
-//     <div className="max-w-2xl mx-auto p-6">
-//       <img
-//         src={dummyPost[0].image}
-//         alt={dummyPost[0].title}
-//         className="w-full h-60 object-cover rounded-xl"
-//       />
-//       <h1 className="text-2xl font-bold mt-4">{dummyPost[0].title}</h1>
-//       <p className="text-sm text-gray-500 mt-1">{dummyPost[0].userName}</p>
-//       <p className="text-gray-600 mt-2">📅 {dummyPost[0].scheduleStart}</p>
-//       <p className="text-gray-600">📍 {dummyPost[0].location}</p>
-//       <p className="text-gray-800 mt-4">{dummyPost[0].content}</p>
-//     </div>
-//   );
-// }
-
 import { dummyComments, dummyParticipants, dummyPosts } from "@/app/posts/postData";
 import CommentForm from "@/components/comments/CommentForm";
 import CommentList from "@/components/comments/CommentList";
