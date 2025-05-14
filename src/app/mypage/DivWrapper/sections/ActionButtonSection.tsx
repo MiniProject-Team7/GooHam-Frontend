@@ -13,12 +13,6 @@ import {
   PartyPopper,
 } from "lucide-react";
 
-// Props 타입 선언
-type Props = {
-  selected: string[];
-  onChange: (selected: string[]) => void;
-};
-
 const iconMap: { [key: string]: React.ReactNode } = {
   스포츠: <Bike size={40} />,
   자기계발: <BookOpen size={40} />,
@@ -45,7 +39,13 @@ const categories = [
   { id: 10, name: "기타" },
 ];
 
-export const ActionButtonSection = ({ selected, onChange }: Props) => {
+type Props = {
+  selected: string[];
+  onChange: (selected: string[]) => void;
+  className?: string; // 추가
+};
+
+export const ActionButtonSection = ({ selected, onChange, className }: Props) => {
   const handleCategoryClick = (name: string) => {
     if (selected.includes(name)) {
       onChange(selected.filter((category) => category !== name));
@@ -56,10 +56,9 @@ export const ActionButtonSection = ({ selected, onChange }: Props) => {
 
   return (
     <section className="w-full py-5 rounded-[5px] overflow-hidden">
-      <div className="grid grid-cols-5 gap-[10px] px-1">
+      <div className={`grid gap-[10px] px-1 ${className ?? "grid-cols-5"}`}>
         {categories.map((category) => {
           const isSelected = selected.includes(category.name);
-
           return (
             <Button
               key={category.id}
@@ -67,8 +66,8 @@ export const ActionButtonSection = ({ selected, onChange }: Props) => {
               onClick={() => handleCategoryClick(category.name)}
               className={`flex flex-col items-center justify-center w-[70px] h-[70px] py-[6px] px-[15px] rounded-lg border shrink-0 bg-white${
                 isSelected
-                  ? "border-primary-500 text-primary-500"
-                  : "border border-[rgba(0,0,0,0.22)] text-black hover:bg-gray-100"
+                  ? " border-primary-500 text-primary-500"
+                  : " border border-[rgba(0,0,0,0.22)] text-black hover:bg-gray-100"
               }`}
             >
               <div className={`mb-1 ${isSelected ? "text-primary-500" : "text-black"}`}>
