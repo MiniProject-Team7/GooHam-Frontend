@@ -39,6 +39,7 @@ const notices: Notice[] = [
   postTitle: "함께 등산 가실 분",
   createdAt: "2025-05-13T11:20",
   link: "/post/123",
+  is_read: false,
 },
 {
   id: "2",
@@ -46,6 +47,7 @@ const notices: Notice[] = [
   postTitle: "함께 등산 가실 분",
   createdAt: "2025-05-13T12:00",
   link: "/post/123/applications",
+  is_read: false,
 },
 {
   id: "3",
@@ -54,6 +56,7 @@ const notices: Notice[] = [
   postTitle: "맛집 투어",
   createdAt: "2025-05-13T12:30",
   link: "/post/456#comments",
+  is_read: true,
 },
 // … 최대 30개
 ];

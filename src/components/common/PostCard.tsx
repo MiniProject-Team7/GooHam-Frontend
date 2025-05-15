@@ -42,12 +42,11 @@ const PostCard = ({ post }: { post: Post }) => {
 
           <div className="flex flex-wrap gap-2 mt-2">
             <Badge>{post.categoryName}</Badge>
-            <Badge>{post.categoryName}</Badge>
           </div>
         </div>
 
         <div className="mt-3">
-          <Link href={`/postdetail/${post.id}`}>
+          <Link href={`/postDetail/${post.id}`}>
             <Button variant="link" size="default" className="w-75">
               자세히 보기
             </Button>
