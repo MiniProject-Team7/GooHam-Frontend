@@ -12,6 +12,7 @@ import {
   DropdownMenu,
   DropdownMenuContent,
   DropdownMenuTrigger,
+  DropdownMenuPortal,
   DropdownMenuItem,
   DropdownMenuSeparator
 } from "@/components/ui/dropdown-menu";
@@ -218,7 +219,7 @@ export function Navigation() {
                   <Bell className="h-6 w-6 text-foreground stroke-1.5" />
                 </button>
               </DropdownMenuTrigger>
-
+              <DropdownMenuPortal>
               <DropdownMenuContent
                 align="end"
                 sideOffset={4}
@@ -247,6 +248,7 @@ export function Navigation() {
                               </time>
                             </Link>
                         </DropdownMenuItem>
+                        
                       );
                     })}
                   </div>
@@ -259,6 +261,7 @@ export function Navigation() {
                       </Link>
                     </div>
                   </DropdownMenuContent>
+                  </DropdownMenuPortal>
               </DropdownMenu>
 
               {/* 프로필 이미지 */}
@@ -280,6 +283,7 @@ export function Navigation() {
                     )}
                 </Avatar>
               </DropdownMenuTrigger>
+              <DropdownMenuPortal>
               <DropdownMenuContent align="end" sideOffset={4} className="w-80 h-70 bg-white border-gray-22 text-popover-foreground p-2">
                   <div className="flex flex-col items-center px-4 py-3 gap-3">
                     <div className = "text-title-md text-black self-start mb-2">나의 정보</div>
@@ -319,6 +323,7 @@ export function Navigation() {
                     <LogOut className="w-4 h-4 text-title-md" /> 로그아웃
                   </DropdownMenuItem>
                 </DropdownMenuContent>
+                </DropdownMenuPortal>
               </DropdownMenu>
             </>
           ) : (
