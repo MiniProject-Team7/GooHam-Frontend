@@ -39,18 +39,28 @@ export function Navigation() {
     try {
       const email = useAuthStore.getState().email; // 현재 이메일 직접 가져오기
 
+      const token = localStorage.getItem("accessToken");
+      if (!token) {
+        console.warn("No access token found in localStorage");
+        return;
+      }
       // axios 대신 axiosInstance 사용
       const response = await axiosInstance.post(
         "/users/logout",
-        { member_email: email },
-        { withCredentials: true }
+        {}, // body
+        {
+          withCredentials: true,
+          headers: {
+            "Content-Type": "application/json",
+          },
+        }
       );
 
       if (response.status === 200) {
         // 로그아웃 성공 시 쿠키 및 localStorage 삭제
         // document.cookie = "accessToken=; expires=Thu, 01 Jan 1970 00:00:00 GMT; path=/";
         // document.cookie = "Refresh_Token=; expires=Thu, 01 Jan 1970 00:00:00 GMT; path=/";
-        // localStorage.removeItem("accessToken");
+        localStorage.removeItem("accessToken");
 
         clearAuth();
         console.log("로그아웃 성공" + email);

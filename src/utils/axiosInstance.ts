@@ -55,7 +55,7 @@ axiosInstance.interceptors.response.use(
         return axiosInstance(originalRequest);
       } catch (refreshError) {
         localStorage.removeItem("accessToken");
-        window.location.href = "/login";
+        window.location.href = "/account/sigin";
         return Promise.reject(refreshError);
       }
     }

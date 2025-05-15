@@ -62,20 +62,28 @@ export default function SigninPage() {
     }
 
     try {
-      const response = await axiosInstance.post<LoginResponse>("/users/login", {
-        member_email: email,
-        member_password: password,
-      });
+      const response = await axiosInstance.post<LoginResponse>(
+        "/users/login",
+        {
+          member_email: email,
+          member_password: password,
+        },
+        { withCredentials: true }
+      );
 
       const result = response.data;
       console.log("API 응답:", JSON.stringify(result, null, 2)); // 전체 응답 확인
       if (result.status === "success") {
         console.log("데이터 확인:", result.data); // data 객체 확인
         const userEmail = result.data?.user?.member_email;
-        console.log("데이터 확인:", result.data); // data 객체 확인
-        if (userEmail) {
-          setAuthEmail(userEmail); // 스토어에 이메일 저장
+
+        const accessToken = result.data?.token;
+        if (userEmail && accessToken) {
+          setAuthEmail(userEmail); // Zustand 저장
           setIsLoggedIn(true);
+
+          localStorage.setItem("accessToken", accessToken); // 쿠키에서 accessToken 추출
+
           router.push("/");
         } else {
           console.log("로그인실패패");
