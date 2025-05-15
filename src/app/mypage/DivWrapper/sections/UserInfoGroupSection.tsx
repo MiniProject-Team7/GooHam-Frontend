@@ -1,3 +1,4 @@
+"use client";
 import React, { JSX } from "react";
 import { Card, CardContent } from "../../../../components/ui/card";
 import { Switch } from "../../../../components/ui/switch";
