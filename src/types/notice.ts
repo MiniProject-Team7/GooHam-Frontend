@@ -8,4 +8,5 @@ export interface Notice {
   postTitle: string;     // 게시물 제목
   createdAt: string;     // ISO timestamp
   link: string;          // 클릭 시 이동할 URL
+  is_read: boolean;
 }
