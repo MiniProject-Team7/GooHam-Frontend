@@ -18,6 +18,11 @@ import {
 import { Avatar, AvatarImage, AvatarFallback } from "@/components/ui/avatar";
 import { Bell, LogOut, User } from "lucide-react";
 import { cn } from "@/lib/utils";
+import { useRouter } from "next/navigation";
+// import axios from "axios";
+import { useAuthStore } from "./useAuthStore";
+import axiosInstance from "@/utils/axiosInstance";
+
 import { Notice } from "@/types/notice";
 
 const navItems = [
@@ -121,8 +126,48 @@ function formatNoticeContent(n: Notice): FormattedNotice {
 }
 
 export function Navigation() {
+  const router = useRouter();
   const pathname = usePathname();
-  const isLoggedIn = true; // TODO: 실제 인증 상태로 대체
+
+  const isLoggedIn = useAuthStore((state) => state.isLoggedIn);
+  const clearAuth = useAuthStore((state) => state.clear); // 로그아웃 상태 초기화용
+  //const email = useAuthStore((state) => state.email); // email 값 가져오기
+
+  const handleLogout = async () => {
+    try {
+      const email = useAuthStore.getState().email; // 현재 이메일 직접 가져오기
+
+      const token = localStorage.getItem("accessToken");
+      if (!token) {
+        console.warn("No access token found in localStorage");
+        return;
+      }
+      // axios 대신 axiosInstance 사용
+      const response = await axiosInstance.post(
+        "/users/logout",
+        {}, // body
+        {
+          withCredentials: true,
+          headers: {
+            "Content-Type": "application/json",
+          },
+        }
+      );
+
+      if (response.status === 200) {
+        // 로그아웃 성공 시 쿠키 및 localStorage 삭제
+        // document.cookie = "accessToken=; expires=Thu, 01 Jan 1970 00:00:00 GMT; path=/";
+        // document.cookie = "Refresh_Token=; expires=Thu, 01 Jan 1970 00:00:00 GMT; path=/";
+        localStorage.removeItem("accessToken");
+
+        clearAuth();
+        console.log("로그아웃 성공" + email);
+        router.push("/account/signin");
+      }
+    } catch (error) {
+      console.error("로그아웃 실패", error);
+    }
+  };
 
   const sorted = React.useMemo(
       () =>
@@ -138,28 +183,8 @@ export function Navigation() {
 
   return (
     <header className="sticky top-0 z-50 w-full bg-white">
-      {/* 
-        sticky       : 화면 상단에 고정
-        top-0        : 위에서 0 위치
-        z-50         : 위에 떠야 하는 z-index
-        w-full       : 전체 너비
-        border-b     : 하단 테두리
-        bg-background: Tailwind theme 배경색 사용
-      */}
       <div className="mx-auto w-full flex h-20 max-w-7xl items-center justify-between ">
-        {/*
-          mx-auto     : 중앙 정렬
-          flex        : 가로 정렬
-          h-16        : 높이 64px
-          max-w-7xl   : 최대 너비 제한
-          items-center: 수직 가운데 정렬
-          justify-between: 좌우 끝 정렬
-          px-6        : 좌우 패딩
-        */}
-
-        {/* 왼쪽: 로고 + 메뉴 */}
         <div className="flex items-center gap-15">
-          {/* gap-10: 로고와 메뉴 사이 간격 */}
           <Link href="/">
             <Avatar className="w-40 h-40 focus:outline-none focus:ring-0 cursor-pointer">
               <AvatarImage src="/logo.png" alt="GooHam Logo" />
@@ -175,26 +200,8 @@ export function Navigation() {
                     href={item.href}
                     className={cn(
                       "relative px-8 py-1.5 text-heading-sm font-medium transition-colors hover:text-primary-500!",
-                      // 기본 스타일:
-                      // relative: after 요소를 위한 기준 위치
-                      // px-3: 좌우 여백
-                      // py-1.5: 상하 여백
-                      // text-sm: 작은 글씨
-                      // font-medium: 기본 중간 굵기
-                      // transition-colors: 색상 변화 애니메이션
-                      // hover:text-primary: 호버 시 주요 색상
-
                       pathname === item.href &&
                         `text-primary-500! font-bold after:absolute after:-bottom-5.5 after:left-1/2 after:translate-x-[-50%] after:h-0.5 after:w-full after:bg-primary-500 after:content-[""]`
-                      // SELECTED_ITEM_CLASSNAME
-                      // 선택된 메뉴 스타일:
-                      // text-primary: 텍스트 강조
-                      // font-bold: 글자 두껍게
-                      // after:absolute: after 하단 라인 위치
-                      // after:bottom-0: 아래쪽 정렬
-                      // after:left-1/2 + after:-translate-x-1/2: 가운데 정렬
-                      // after:h-0.5: 2px 높이
-                      // after:bg-primary: 강조색
                     )}
                   >
                     {item.name}
@@ -261,9 +268,9 @@ export function Navigation() {
                   </DropdownMenuContent>
               </DropdownMenu>
 
-              {/* 프로필 이미지 */}
               <DropdownMenu>
                 <DropdownMenuTrigger asChild>
+
                 {/* Avatar 컴포넌트 사용 */}
                   <Avatar className="w-10 h-10 cursor-pointer">
                     {avatarUrl ? (
@@ -306,9 +313,11 @@ export function Navigation() {
                       <User className="w-4 h-4 text-title-md" /> 마이페이지
                     </Link>
                   </DropdownMenuItem>
+
                   <DropdownMenuSeparator />
                   {/* 로그아웃 */}
                   <DropdownMenuItem
+                    onClick={handleLogout}
                     onSelect={() => {
                       // TODO: 실제 로그아웃 로직 호출
                       console.log("로그아웃!");
@@ -322,6 +331,11 @@ export function Navigation() {
               </DropdownMenu>
             </>
           ) : (
+            <Link
+              href="/account/signin"
+              className="text-sm text-muted-foreground hover:text-primary"
+            >
+
             <Link href="/account/signin" className="text-md text-muted-foreground hover:text-primary">
               {/* 로그인 링크: 흐린 색 → hover 시 강조색 */}
               로그인
