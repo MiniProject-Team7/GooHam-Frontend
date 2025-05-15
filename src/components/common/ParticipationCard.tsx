@@ -32,7 +32,7 @@ const handleApprove = (id: number) => {
   };
     
 return (
-    <Card className="flex flex-col w-full gap-4 p-4 rounded-lg border-none">
+    <Card className="flex flex-col w-full gap-4 p-4 rounded-lg border border-gray-22">
       {/* 신청자 아바타 + 정보 */}
       <div className="flex items-center gap-3">
         <Avatar className="w-12 h-12">

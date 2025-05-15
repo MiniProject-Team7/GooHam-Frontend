@@ -131,7 +131,9 @@ export default function HomePage() {
             {posts.map((post) => (
               <Card
                 key={post.id}
-                className="rounded-2xl w-100 h-65 overflow-hidden flex flex-col hover:shadow-lg"
+                className="rounded-2xl w-100 h-65 
+                overflow-hidden flex flex-col hover:shadow-lg
+                border border-gray-22"
               >
                 {/* 1) 헤더 */}
                 <CardHeader className="flex items-start justify-between px-4 pt-4 pb-2">
@@ -186,7 +188,7 @@ export default function HomePage() {
 
         {/* 2-2) 사이드바 프로필 (sticky) */}
         <aside className="sticky top-6 self-start mt-12 justify-self-end">
-          <Card className="p-6 w-90 rounded-2xl">
+          <Card className="p-6 w-90 rounded-2xl border border-gray-22">
             {/* 1) 카드 제목 */}
             <CardTitle className="text-lg font-bold mb-4">마이 프로필</CardTitle>
 
