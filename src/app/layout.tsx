@@ -17,8 +17,10 @@ export default function RootLayout({
     <html lang="en">
       <body>
         <Navigation />
-        <main className = "min-h-[calc(100vh-80px-267px)] ">{children}</main>
-        <Footer />
+        <div className = "overflow-y-scroll max-h-[calc(100vh-80px)]">
+          <main className = "min-h-[calc(100vh-80px-267px)] ">{children}</main>
+          <Footer />
+        </div>
       </body>
     </html>
   );
