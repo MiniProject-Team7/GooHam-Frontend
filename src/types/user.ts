@@ -1,8 +1,8 @@
 export interface Member {
   email: string;
-  password: string;
   name: string;
   nickname: string;
-  phone?: string;
+  phone: string;
+  birthDate: string;
   introduce?: string;
 }

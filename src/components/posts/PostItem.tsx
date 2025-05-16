@@ -6,10 +6,10 @@ import { Badge } from "../ui/badge";
 import { Calendar, MapPin } from "lucide-react";
 
 const statusStyles: Record<string, string> = {
-  모집예정: "bg-yellow-100 text-yellow-700",
-  모집중: "bg-green-100 text-green-800",
-  모집완료: "bg-red-100 text-red-800",
-  종료: "bg-gray-200 text-gray-700",
+  "모집 예정": "bg-yellow-100 text-yellow-700",
+  "모집 중": "bg-green-100 text-green-800",
+  "모집 완료": "bg-red-100 text-red-800",
+  "종료": "bg-gray-200 text-gray-700",
 };
 
 const PostItem = ({ post }: { post: Post }) => {
