@@ -1,6 +1,5 @@
 // api/postApi.ts
-import { apiClient } from "@/components/common/appClient";
-import { API_BASE_URL } from "@/components/common/config";
+import axiosInstance from "@/utils/axiosInstance"
 import {
   RawPost,
   RawPageResponse,
@@ -34,11 +33,11 @@ const mapRawToPost = (raw: RawPost): Post => ({
 export const fetchPostsByUser = async (
   userId: number
 ): Promise<Post[]> => {
-  const { data: resp } = await apiClient.get<{
+  const { data: resp } = await axiosInstance.get<{
     status: string
     message: string
     data: RawPageResponse<RawPost>
-  }>("/gooham/posts", {
+  }>("/posts", {
     params: { userId },
   })
 
@@ -59,11 +58,11 @@ export const fetchPostsByCategory = async (
   // categoryId 만 추가
   const params = { ...base, categoryId: opts.categoryId }
 
-  const { data: resp } = await apiClient.get<{
+  const { data: resp } = await axiosInstance.get<{
     status: string
     message: string
     data: RawPageResponse<RawPost>
-  }>("gooham/posts", {
+  }>("/posts", {
     params,
   })
 
@@ -80,11 +79,11 @@ export const fetchPostsByCategory = async (
  * 3) 전체 검색 (페이징 없이 전체 가져오기)
  */
 export const fetchAllPosts = async (): Promise<Post[]> => {
-  const { data: resp } = await apiClient.get<{
+  const { data: resp } = await axiosInstance.get<{
     status: string
     message: string
     data: RawPageResponse<RawPost>
-  }>("gooham/posts", { // no params → 서버가 전체를 반환하도록 설정되어 있어야 합니다
+  }>("/posts", { // no params → 서버가 전체를 반환하도록 설정되어 있어야 합니다
   })
 
   return resp.data.content.map(mapRawToPost)
