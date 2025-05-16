@@ -10,40 +10,6 @@ import PostCard from "@/components/common/PostCard";
 import { dummyPosts } from "@/app/posts/postData";
 
 // 게시글 데이터
-const posts = [
-  {
-    id: 3,
-    userName: "홍길동",
-    title: "서울 한강 러닝 같이 하실 분",
-    content: "이번 주말에 한강에서 러닝하실 분을 모집합니다!",
-    image: "/images/cat.jpg",
-    maxParticipants: 5,
-    currentParticipants: 2,
-    categoryName: "스포츠",
-    status: "모집 완료",
-    scheduleStart: "2025-05-10 09:00",
-    scheduleEnd: "2025-05-10T11:00:00",
-    location: "서울 여의도 한강공원",
-    createdAt: "2025-05-01T14:00:00",
-    updatedAt: "2025-05-01T14:00:00",
-  },
-  {
-    id: 2,
-    userName: "이영희",
-    title: "비건 카페 탐방 같이 가실 분",
-    content: "비건 디저트를 좋아하시는 분들과 소모임을 갖고 싶어요!",
-    image: "/images/cat.jpg",
-    maxParticipants: 3,
-    currentParticipants: 1,
-    categoryName: "음식",
-    status: "모집 중",
-    scheduleStart: "2025-05-15 14:00",
-    scheduleEnd: "2025-05-15T16:00:00",
-    location: "서울 성수동 카페 거리",
-    createdAt: "2025-05-05T10:30:00",
-    updatedAt: "2025-05-05T10:30:00",
-  },
-];
 
 // 댓글 데이터
 const comments = [
