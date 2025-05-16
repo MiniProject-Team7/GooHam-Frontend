@@ -77,16 +77,16 @@ export default function HomePage() {
   return (
     <div className="relative w-full max-w-7xl mx-auto py-6">
       {/* 1행: 캐러셀 (가로 전체) */}
-      <div>
+      <div className="overflow-hidden rounded-2xl">
         <Carousel
           opts={{ loop: true, align: "center" }}
-          className="relative w-full max-w-full mx-auto h-64"
+          className="relative w-full max-w-full mx-auto h-64 overflow-hidden"
           setApi={handleApiInit}
         >
           <CarouselContent className="flex gap-6 h-64">
             {cards.map((slide, idx) => (
               <CarouselItem key={idx} className="pl-4">
-                <div className="h-full w-full bg-yellow-200 rounded-lg p-6 flex flex-col items-center justify-center">
+                <div className="h-full w-full bg-yellow-200 rounded-2xl p-6 flex flex-col items-center justify-center">
                   <h3 className="text-heading-lg mb-2 text-center">
                     {slide.title}
                   </h3>
@@ -131,7 +131,9 @@ export default function HomePage() {
             {posts.map((post) => (
               <Card
                 key={post.id}
-                className="rounded-2xl w-100 h-65 overflow-hidden flex flex-col hover:shadow-lg"
+                className="rounded-2xl w-100 h-65 
+                overflow-hidden flex flex-col hover:shadow-lg
+                border border-gray-22"
               >
                 {/* 1) 헤더 */}
                 <CardHeader className="flex items-start justify-between px-4 pt-4 pb-2">
@@ -186,7 +188,7 @@ export default function HomePage() {
 
         {/* 2-2) 사이드바 프로필 (sticky) */}
         <aside className="sticky top-6 self-start mt-12 justify-self-end">
-          <Card className="p-6 w-90 rounded-2xl">
+          <Card className="p-6 w-90 rounded-2xl border border-gray-22">
             {/* 1) 카드 제목 */}
             <CardTitle className="text-lg font-bold mb-4">마이 프로필</CardTitle>
 
