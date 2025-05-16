@@ -13,6 +13,7 @@ type FormDataType = {
   name: string;
   birth: string;
   nickname: string;
+  phone: string;
   email: string;
   intro: string;
   avatar: string;
@@ -31,6 +32,7 @@ const formFields: FormField[] = [
   { key: "name", label: "이름", placeholder: "Name" },
   { key: "birth", label: "생년월일", placeholder: "Birth" },
   { key: "nickname", label: "닉네임", placeholder: "NickName" },
+  { key: "phone", label: "전화번호", placeholder: "Phone" },
   { key: "email", label: "이메일", placeholder: "E-Mail" },
   { key: "intro", label: "자기소개", placeholder: "Text", isTextarea: true },
   { key: "categories", label: "카테고리", placeholder: "", noInput: true },
@@ -41,6 +43,7 @@ export const EditView = ({ setIsEditing }: { setIsEditing: (v: boolean) => void 
     name: "",
     birth: "",
     nickname: "",
+    phone: "",
     email: "",
     intro: "",
     avatar: "https://c.animaapp.com/yTfAUR4U/img/image-4@2x.png",

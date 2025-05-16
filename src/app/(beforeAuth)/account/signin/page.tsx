@@ -36,6 +36,7 @@ export default function SigninPage() {
 
   const setIsLoggedIn = useAuthStore((state) => state.setIsLoggedIn);
   const setAuthEmail = useAuthStore((state) => state.setEmail); // 이름 변경
+  const setAuthName = useAuthStore((state) => state.setName);
 
   const handleLogin = async () => {
     setEmailEmpty(false);
@@ -72,10 +73,12 @@ export default function SigninPage() {
       if (result.status === "success") {
         console.log("데이터 확인:", result.data); // data 객체 확인
         const userEmail = result.data?.user?.member_email;
+        const userName = result.data?.user.member_name;
 
         const accessToken = result.data?.token;
-        if (userEmail && accessToken) {
+        if (userEmail && accessToken && userName) {
           setAuthEmail(userEmail); // Zustand 저장
+          setAuthName(userName);
           setIsLoggedIn(true);
 
           localStorage.setItem("accessToken", accessToken); // 쿠키에서 accessToken 추출
