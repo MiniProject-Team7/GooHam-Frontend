@@ -62,7 +62,7 @@ export const EditView = ({ setIsEditing }: { setIsEditing: (v: boolean) => void 
   };
 
   return (
-    <Card className="border border-solid border-gray-22 rounded-xl mb-[24px]">
+    <Card className="w-[787px] box-border border border-solid border-gray-22 rounded-xl mb-[24px]">
       <CardContent className="px-[12px] pt-[48px] pb-[24px]">
         <div className="flex flex-col items-center mb-10">
           <Avatar className="w-[100px] h-[100px]">

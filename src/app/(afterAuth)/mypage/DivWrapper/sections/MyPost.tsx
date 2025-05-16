@@ -92,8 +92,8 @@ export const MyPost = (): JSX.Element => {
       </div>
 
       {/* 탭 영역 */}
-      <Tabs defaultValue="posts" className="mt-8">
-        <TabsList className="w-full justify-start gap-6 bg-transparent h-auto p-0">
+      <Tabs defaultValue="posts" className="mt-8 bg-white">
+        <TabsList className="w-full justify-start gap-6 bg-white h-auto p-0">
           <TabsTrigger
             value="posts"
             className="cursor-pointer text-title-lg tracking-wide leading-[24px] data-[state=active]:text-primary-500 transition-all duration-300"
