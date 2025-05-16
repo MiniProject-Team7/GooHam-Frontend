@@ -62,6 +62,9 @@ module.exports = {
         background: {
           DEFAULT: "#F9FAFB",
         },
+        accountBackground:{
+          DEFAULT: "#FFCCCC",
+        },
         black: "#222222",
         white: "#FFFFFF",
         gray: {
