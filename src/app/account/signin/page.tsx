@@ -83,6 +83,7 @@ export default function SigninPage() {
           setIsLoggedIn(true);
 
           localStorage.setItem("accessToken", accessToken); // 쿠키에서 accessToken 추출
+          localStorage.setItem("userEmail", userEmail); // 이메일 저장
 
           router.push("/");
         } else {
