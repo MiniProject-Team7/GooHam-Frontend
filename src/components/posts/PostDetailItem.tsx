@@ -85,7 +85,7 @@ const PostDetailItem = ({ post }: { post: Post }) => {
           {post.location}
         </div>
         <div>
-          <span className="font-semibold">모집 마감</span>
+          <span className="font-semibold">모집 상태</span>
           <br />
           {post.status}
         </div>
