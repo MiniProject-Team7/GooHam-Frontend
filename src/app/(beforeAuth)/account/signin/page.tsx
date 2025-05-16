@@ -20,6 +20,8 @@ export default function SigninPage() {
   const [loginError, setLoginError] = useState(false);
   const [showPwd, setShowPwd] = useState(false);
 
+  // const dummyUser = { email: "user@example.com", password: "password123" };
+
   const validateEmail = (value: string) => /^[^\s@]+@[^\s@]+\.[^\s@]+$/.test(value);
 
   type LoginResponse = {
@@ -37,10 +39,12 @@ export default function SigninPage() {
   const setIsLoggedIn = useAuthStore((state) => state.setIsLoggedIn);
   const setAuthEmail = useAuthStore((state) => state.setEmail); // 이름 변경
 
+  // 로그인 API 연동
   const handleLogin = async () => {
     setEmailEmpty(false);
     setPasswordEmpty(false);
     setLoginError(false);
+
     let hasEmpty = false;
     if (!email) {
       setEmailEmpty(true);
@@ -79,11 +83,10 @@ export default function SigninPage() {
           setIsLoggedIn(true);
 
           localStorage.setItem("accessToken", accessToken); // 쿠키에서 accessToken 추출
-          localStorage.setItem("userEmail", userEmail); // 이메일 저장
 
           router.push("/");
         } else {
-          console.log("로그인실패");
+          console.log("로그인실패패");
           setLoginError(true);
         }
       }
@@ -111,25 +114,25 @@ export default function SigninPage() {
               <Input
                 id="signin-email"
                 type="email"
-                placeholder="이메일을 입력해 주세요"
+                placeholder="이메일을 입력해주세요"
                 value={email}
-                className={emailEmpty || loginError ? "border-red-500 focus:border-red-500" : ""}
+                className={emailEmpty ? "border-red-500 focus:border-red-500" : ""}
                 onChange={(e) => {
                   setEmail(e.target.value);
                   setEmailEmpty(false);
                   setLoginError(false);
                 }}
               />
+              {emailEmpty && <p className="mt-1 text-sm text-red-500"></p>}
             </div>
-
-            <div className="relative flex flex-col">
+            <div className="flex flex-col">
               {/* <label htmlFor="signin-password" className="mb-1 font-medium">비밀번호</label> */}
               <Input
                 id="signin-password"
                 type={showPwd ? "text" : "password"}
-                placeholder="비밀번호를 입력해 주세요"
+                placeholder="비밀번호를 입력해주세요"
                 value={password}
-                className={passwordEmpty || loginError ? "border-red-500 focus:border-red-500" : ""}
+                className={passwordEmpty ? "border-red-500 focus:border-red-500" : ""}
                 onChange={(e) => {
                   setPassword(e.target.value);
                   setPasswordEmpty(false);
@@ -147,6 +150,7 @@ export default function SigninPage() {
                   <Eye className="w-5 h-5 text-gray-500" />
                 )}
               </button>
+              {passwordEmpty && <p className="mt-1 text-sm text-red-500"></p>}
             </div>
             <div className="flex justify-end">
               <Link href="/account/repassword" className="text-sm text-gray-300 hover:underline">
@@ -155,23 +159,16 @@ export default function SigninPage() {
             </div>
           </CardContent>
 
-          {emailEmpty && (
-            <p className="px-6 text-center text-sm text-red-500">이메일을 입력해 주세요.</p>
-          )}
-          {!emailEmpty && passwordEmpty && (
-            <p className="px-6 text-center text-sm text-red-500">비밀번호를 입력해 주세요.</p>
-          )}
           {loginError && !emailEmpty && !passwordEmpty && (
             <p className="px-6 text-center text-sm text-red-500">
               이메일 또는 비밀번호가 잘못 되었습니다. 이메일과 비밀번호를 정확히 입력해 주세요.
             </p>
           )}
-
-          <CardFooter className="mt-auto mb-5 flex flex-col gap-3">
-            <Button className="block w-3/4 mx-auto" onClick={handleLogin}>
+          <CardFooter className="mt-auto flex flex-col gap-3">
+            <Button className="w-full" onClick={handleLogin}>
               로그인하기
             </Button>
-            <Link href="/account/signup" className="block w-3/4 mx-auto">
+            <Link href="/account/signup" className="block w-full">
               <Button variant="outline" className="w-full border-gray-300 focus:border-gray-300">
                 이메일로 회원가입
               </Button>

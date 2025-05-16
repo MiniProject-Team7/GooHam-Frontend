@@ -1,7 +1,7 @@
 "use client";
 
 import React, { JSX, useState, useRef } from "react";
-import { Card, CardContent } from "../../../components/ui/card";
+import { Card, CardContent } from "../../../../components/ui/card";
 import { FormContainerSection } from "./sections/FormContainerSection";
 import { SettingsGroupSection } from "./sections/SettingsGroupSection";
 import { UserInfoGroupSection } from "./sections/UserInfoGroupSection";

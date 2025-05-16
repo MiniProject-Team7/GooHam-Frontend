@@ -1,4 +1,4 @@
-import { dummyComments, dummyParticipants, dummyPosts } from "@/app/posts/postData";
+import { dummyComments, dummyParticipants, dummyPosts } from "@/app/(afterAuth)/posts/postData";
 import CommentForm from "@/components/comments/CommentForm";
 import CommentList from "@/components/comments/CommentList";
 import JoinProfileCard from "@/components/posts/JoinProfileCard";
