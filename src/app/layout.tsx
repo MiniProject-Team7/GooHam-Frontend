@@ -1,27 +1,9 @@
-import type { Metadata } from "next";
-import { Navigation } from "@/components/common/Navigation";
-import "../styles/global.css";
-import { Footer } from "@/components/common/footer";
+import "@/styles/global.css";
 
-export const metadata: Metadata = {
-  title: "GooHam",
-  description: "구함",
-};
-
-export default function RootLayout({
-  children,
-}: Readonly<{
-  children: React.ReactNode;
-}>) {
+export default function RootLayout({ children }: { children: React.ReactNode }) {
   return (
     <html lang="en">
-      <body>
-        <Navigation />
-        <div className = "overflow-y-scroll max-h-[calc(100vh-80px)]">
-          <main className = "min-h-[calc(100vh-80px-267px)] ">{children}</main>
-          <Footer />
-        </div>
-      </body>
+      <body>{children}</body>
     </html>
   );
 }

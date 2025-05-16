@@ -7,7 +7,7 @@ import { Textarea } from "@/components/ui/textarea";
 import { Label } from "@/components/ui/label";
 import { Plus } from "lucide-react";
 import { Badge } from "@/components/ui/badge";
-import { ActionButtonSection } from "@/app/mypage/DivWrapper/sections/ActionButtonSection";
+import { ActionButtonSection } from "@/app/(afterAuth)/mypage/DivWrapper/sections/ActionButtonSection";
 import { useRouter } from "next/navigation";
 import FileInput from "./FileInput";
 
