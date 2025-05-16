@@ -18,6 +18,13 @@ export default function FileInput({ files, setFiles }: FileInputProps) {
     const validFiles: File[] = [];
 
     for (const file of Array.from(selectedFiles)) {
+      const isDuplicate = files.some((f) => f.name === file.name); // 이미 같은 이름의 파일이 있는지 확인
+
+      if (isDuplicate) {
+        alert(`이미 '${file.name}' 파일이 추가되어 있습니다.`);
+        continue;
+      }
+
       if (validateFile(file)) {
         console.log(`유효한 파일: ${file.name}`);
         validFiles.push(file);
@@ -32,7 +39,7 @@ export default function FileInput({ files, setFiles }: FileInputProps) {
     }
 
     // // 동일 파일 다시 선택 가능하게 초기화
-    // e.target.value = "";
+    e.target.value = "";
   };
 
   const handleDelete = (name: string) => {
