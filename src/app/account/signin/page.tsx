@@ -110,9 +110,9 @@ export default function SigninPage() {
             </p>
           )}
 
-          <CardFooter className="mt-auto flex flex-col gap-3">
-            <Button className="w-full" onClick={handleLogin}>로그인하기</Button>
-            <Link href="/account/signup" className="block w-full">
+          <CardFooter className="mt-auto mb-5 flex flex-col gap-3">
+            <Button className="block w-3/4 mx-auto" onClick={handleLogin}>로그인하기</Button>
+            <Link href="/account/signup" className="block w-3/4 mx-auto">
               <Button variant="outline" className="w-full border-gray-300 focus:border-gray-300">이메일로 회원가입</Button>
             </Link>
           </CardFooter>

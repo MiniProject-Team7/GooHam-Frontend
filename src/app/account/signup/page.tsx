@@ -123,7 +123,7 @@ export default function Signup1Page() {
           <h1 className="text-center text-2xl font-bold mt-[20px] mb-[30px]">GooHam 회원가입</h1>
           <CardContent className="space-y-4">
             <div className="flex flex-col">
-              <label htmlFor="signup-email" className="mb-1 font-medium">이메일</label>
+              <label htmlFor="signup-email" className="mb-1 font-bold">이메일</label>
               <Input
                 id="signup-email"
                 type="email"
@@ -134,8 +134,8 @@ export default function Signup1Page() {
               />
             </div>
 
-            <div className="flex flex-col">
-              <label htmlFor="signup-password" className="mb-1 font-medium">비밀번호</label>
+            <div className="mt-8 flex flex-col">
+              <label htmlFor="signup-password" className="mb-1 font-bold">비밀번호</label>
               <div className="relative">
               <Input
                 id="signup-password"
@@ -205,8 +205,8 @@ export default function Signup1Page() {
             </div>
 
           <CardFooter className="mt-auto flex flex-col gap-3 px-6">
-            <Link href="/account/signin" className="block w-full"><Button variant="outline" className="w-full border-gray-300">로그인으로 돌아가기</Button></Link>
-            <Button className="w-full" onClick={handleNext}>다음 단계 진행하기</Button>
+            <Link href="/account/signin" className="block w-3/4 mx-auto"><Button variant="outline" className="w-full border-gray-300">로그인으로 돌아가기</Button></Link>
+            <Button className="block w-3/4 mx-auto" onClick={handleNext}>다음 단계 진행하기</Button>
           </CardFooter>
         </Card>
         )}
@@ -215,7 +215,7 @@ export default function Signup1Page() {
                   <h1 className="text-center text-2xl font-bold mb-[10px]">GooHam 회원가입</h1>
                   <CardContent className="space-y-4">
                     <div className="flex flex-col">
-                      <label htmlFor="signup-name" className="mb-1 font-medium">이름*</label>
+                      <label htmlFor="signup-name" className="mb-1 font-bold">이름*</label>
                       <Input
                         id="signup-name"
                         placeholder="이름을 입력해 주세요"
@@ -225,7 +225,7 @@ export default function Signup1Page() {
                       />
                     </div>
                     <div className="flex flex-col">
-                      <label htmlFor="signup-nickname" className="mb-1 font-medium">닉네임*</label>
+                      <label htmlFor="signup-nickname" className="mb-1 font-bold">닉네임*</label>
                       <Input
                         id="signup-nickname"
                         placeholder="닉네임을 입력해 주세요"
@@ -235,7 +235,7 @@ export default function Signup1Page() {
                       />
                     </div>
                     <div className="flex flex-col">
-                      <label htmlFor="signup-birth" className="mb-1 font-medium">생년월일*</label>
+                      <label htmlFor="signup-birth" className="mb-1 font-bold">생년월일*</label>
                       <Input
                         id="signup-birth"
                         type="date"
@@ -245,7 +245,7 @@ export default function Signup1Page() {
                       />
                     </div>
                     <div className="flex flex-col">
-                      <label htmlFor="signup-phone" className="mb-1 font-medium">전화번호*</label>
+                      <label htmlFor="signup-phone" className="mb-1 font-bold">전화번호*</label>
                       <Input
                         id="signup-phone"
                         type="tel"
@@ -270,7 +270,7 @@ export default function Signup1Page() {
                   </div>
         
                   <div className="mt-4 px-6">
-                    <p className="mb-1 font-medium">관심 카테고리</p>
+                    <p className="mb-1 font-bold">관심 카테고리</p>
                     <div className="border-t border-gray-300 my-2" />
                     <ActionButtonSection
                       selected={selectedCats}
@@ -282,8 +282,8 @@ export default function Signup1Page() {
                   </div>
         
                   <CardFooter className="mt-auto flex flex-col gap-3 px-6">
-                    <Button variant="outline" className="w-full border-gray-300" onClick={handleBackToStep1}>뒤로 가기</Button>
-                    <Button className="w-full" onClick={handleSignup}>회원가입 완료하기</Button>
+                    <Button variant="outline" className="block w-3/4 mx-auto border-gray-300" onClick={handleBackToStep1}>뒤로 가기</Button>
+                    <Button className="block w-3/4 mx-auto" onClick={handleSignup}>회원가입 완료하기</Button>
                   </CardFooter>
                 </Card>
                 )}
@@ -296,8 +296,8 @@ export default function Signup1Page() {
               <p className="text-center text-lg font-bold">회원가입이 완료되었습니다!</p>
             </CardContent>
             <CardFooter className="mt-auto flex flex-col gap-3 px-6 mr-[45px] ml-[45px]">
-              <Link href="/" className="block w-full"><Button variant="outline" className="w-full border-gray-300">메인 가기</Button></Link>
-              <Link href="/account/signin" className="block w-full"><Button className="w-full">로그인 하기</Button></Link>
+              <Link href="/" className="block w-4/4 mx-auto"><Button variant="outline" className="w-full border-gray-300">메인 가기</Button></Link>
+              <Link href="/account/signin" className="block w-4/4 mx-auto"><Button className="w-full">로그인 하기</Button></Link>
             </CardFooter>
           </Card>
         )}
