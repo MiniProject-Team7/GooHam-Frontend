@@ -1,10 +1,10 @@
 "use client";
 import React, { useEffect, useState } from "react";
 import axiosInstance from "@/utils/axiosInstance";
-import { Avatar, AvatarFallback, AvatarImage } from "../../../../components/ui/avatar";
+import { Avatar, AvatarFallback, AvatarImage } from "../../../../../components/ui/avatar";
 // import { Badge } from "../../../../components/ui/badge";
-import { Button } from "../../../../components/ui/button";
-import { Card, CardContent } from "../../../../components/ui/card";
+import { Button } from "../../../../../components/ui/button";
+import { Card, CardContent } from "../../../../../components/ui/card";
 import { useAuthStore } from "@/components/common/useAuthStore";
 
 // Data for category badges

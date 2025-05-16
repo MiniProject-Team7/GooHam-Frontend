@@ -194,7 +194,9 @@ export function Navigation() {
 
           <NavigationMenu>
             <NavigationMenuList>
-              {navItems.map((item) => (
+              {navItems
+              .filter(item => isLoggedIn || (item.name !== "마이페이지" && item.name!== "참여관리"))
+              .map((item) => (
                 <NavigationMenuItem key={item.href}>
                   <Link
                     href={item.href}
@@ -331,11 +333,6 @@ export function Navigation() {
               </DropdownMenu>
             </>
           ) : (
-            <Link
-              href="/account/signin"
-              className="text-sm text-muted-foreground hover:text-primary"
-            >
-
             <Link href="/account/signin" className="text-md text-muted-foreground hover:text-primary">
               {/* 로그인 링크: 흐린 색 → hover 시 강조색 */}
               로그인

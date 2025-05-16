@@ -1,12 +1,12 @@
 "use client";
 
 import React, { useState } from "react";
-import { Input } from "../../../../components/ui/input";
-import { Textarea } from "../../../../components/ui/textarea";
+import { Input } from "../../../../../components/ui/input";
+import { Textarea } from "../../../../../components/ui/textarea";
 import { ActionButtonSection } from "./ActionButtonSection";
-import { Avatar, AvatarFallback, AvatarImage } from "../../../../components/ui/avatar";
-import { Button } from "../../../../components/ui/button";
-import { Card, CardContent } from "../../../../components/ui/card";
+import { Avatar, AvatarFallback, AvatarImage } from "../../../../../components/ui/avatar";
+import { Button } from "../../../../../components/ui/button";
+import { Card, CardContent } from "../../../../../components/ui/card";
 
 // 타입 정의
 type FormDataType = {

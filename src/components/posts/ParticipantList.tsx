@@ -1,6 +1,6 @@
 "use client";
 import { useState } from "react";
-import { Participant } from "@/app/posts/postData";
+import { Participant } from "@/app/(afterAuth)/posts/postData";
 import { Card } from "@/components/ui/card";
 import { Avatar, AvatarFallback, AvatarImage } from "../ui/avatar";
 

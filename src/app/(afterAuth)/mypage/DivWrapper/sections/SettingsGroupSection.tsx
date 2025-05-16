@@ -1,7 +1,7 @@
 "use client";
 import React, { JSX } from "react";
-import { Button } from "../../../../components/ui/button";
-import { Card, CardContent } from "../../../../components/ui/card";
+import { Button } from "../../../../../components/ui/button";
+import { Card, CardContent } from "../../../../../components/ui/card";
 
 export const SettingsGroupSection = (): JSX.Element => {
   // Data for the password section
