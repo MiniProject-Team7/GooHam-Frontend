@@ -1,54 +1,96 @@
 "use client";
-import React from "react";
+import React, { useEffect, useState } from "react";
+import axiosInstance from "@/utils/axiosInstance";
 import { Avatar, AvatarFallback, AvatarImage } from "../../../../components/ui/avatar";
-import { Badge } from "../../../../components/ui/badge";
+// import { Badge } from "../../../../components/ui/badge";
 import { Button } from "../../../../components/ui/button";
 import { Card, CardContent } from "../../../../components/ui/card";
+import { useAuthStore } from "@/components/common/useAuthStore";
 
 // Data for category badges
-const categories = ["스포츠", "일상", "자기계발"];
+// const categories = ["스포츠", "일상", "자기계발"];
+
+// 타입 정의
+type MyPageData = {
+  member_name: string;
+  birth_date: string;
+  member_nickname: string;
+  member_email: string;
+  member_introduce: string;
+  categories: string[];
+  profile_image: string;
+};
 
 export const ReadOnlyView = ({ setIsEditing }: { setIsEditing: (v: boolean) => void }) => {
+  const [data, setData] = useState<MyPageData | null>(null);
+  const [loading, setLoading] = useState(false);
+  const [error, setError] = useState<string | null>(null);
+  const email = useAuthStore((state) => state.email);
+  console.log("email:", email);
+
+  useEffect(() => {
+    if (!email) {
+      setError("로그인이 필요합니다.");
+      return;
+    }
+    setLoading(true);
+
+    setLoading(true);
+    axiosInstance
+      .get<MyPageData>(`/users/mypage/detail?member_email=${email}`)
+      .then((res) => {
+        setData(res.data);
+        setError(null);
+      })
+      .catch((err) => {
+        setError("데이터를 불러오는 데 실패했습니다.");
+        console.error(err);
+      });
+    setLoading(false);
+  }, [email]);
+
+  if (loading) return <div>로딩 중...</div>;
+  if (error) return <div>{error}</div>;
+  if (!data) return <div>데이터가 없습니다.</div>;
+
   return (
     <div>
       {/* Basic Information Section */}
 
-      <Card className="border border-gray-22 rounded-xl mb-10">
+      <Card className="w-[787px] box-border border border-gray-22 rounded-xl mb-10 ">
         <CardContent className="p-10">
           <div className="flex flex-col items-center mb-8">
             <Avatar className="w-[100px] h-[100px]">
-              <AvatarImage src="https://c.animaapp.com/3EAByKyp/img/image-4@2x.png" alt="Profile" />
-              <AvatarFallback>홍길동</AvatarFallback>
+              <AvatarImage src={data.profile_image} alt="Profile" />
+              <AvatarFallback>{data.member_name}</AvatarFallback>
             </Avatar>
           </div>
 
           <div className="grid grid-cols-[max-content_1fr_max-content_1fr] gap-y-6 gap-x-6">
             {/* 이름 */}
             <div className="text-title-md font-semibold text-gray-40 col-span-1">이름</div>
-            <div className="text-title-md font-medium col-span-1">홍길동</div>
+            <div className="text-title-md font-medium col-span-1">{data.member_name}</div>
 
             {/* 생년월일 */}
             <div className="text-title-md font-semibold text-gray-40 col-span-1">생년월일</div>
-            <div className="text-title-md font-medium col-span-1">2000.00.00</div>
+            <div className="text-title-md font-medium col-span-1">{data.birth_date}</div>
 
             {/* 닉네임 */}
             <div className="text-title-md font-semibold text-gray-40 col-span-1">닉네임</div>
-            <div className="text-title-md font-medium col-span-1">길동짱</div>
+            <div className="text-title-md font-medium col-span-1">{data.member_nickname}</div>
 
             {/* 이메일 */}
             <div className="text-title-md font-semibold text-gray-40 col-span-1">이메일</div>
-            <div className="text-title-md font-medium col-span-1">honghong@test.com</div>
+            <div className="text-title-md font-medium col-span-1">{data.member_email}</div>
 
             {/* 자기소개 (1줄 전체) */}
             <div className="text-title-md font-semibold text-gray-40 col-span-1">자기소개</div>
-            <div className="text-title-md font-medium col-span-3">
-              안녕하세요! 취미로 코딩하는 남자, 홍길동입니다. 좋은 인연 많이 만들고 싶습니다~
-            </div>
+            <div className="text-title-md font-medium col-span-3">{data.member_introduce}</div>
 
             {/* 카테고리 (1줄 전체) */}
-            <div className="text-title-md font-semibold text-gray-40 col-span-1">카테고리</div>
+            {/* <div className="text-title-md font-semibold text-gray-40 col-span-1">카테고리</div>
             <div className="flex gap-2 flex-wrap col-span-3">
-              {categories.map((category, index) => (
+              {data.categories.map((category, index) => (
                 <Badge
                   key={index}
                   variant="outline"
@@ -57,7 +99,7 @@ export const ReadOnlyView = ({ setIsEditing }: { setIsEditing: (v: boolean) => v
                   {category}
                 </Badge>
               ))}
-            </div>
+            </div> */}
           </div>
 
           <div className="flex justify-end mt-6">

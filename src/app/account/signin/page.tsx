@@ -86,7 +86,7 @@ export default function SigninPage() {
 
           router.push("/");
         } else {
-          console.log("로그인실패패");
+          console.log("로그인실패");
           setLoginError(true);
         }
       }

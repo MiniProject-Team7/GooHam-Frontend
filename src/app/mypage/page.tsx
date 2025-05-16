@@ -2,6 +2,7 @@
 
 import { useEffect, useState } from "react";
 import { useRouter } from "next/navigation"; // next/navigation에서 useRouter 사용
+import { DivWrapper } from "./DivWrapper/DivWrapper";
 
 const MyPage = () => {
   const router = useRouter();
@@ -16,7 +17,7 @@ const MyPage = () => {
 
     const token = localStorage.getItem("accessToken") || sessionStorage.getItem("accessToken");
     if (!token) {
-      router.push("/login"); // 로그인 페이지로 리다이렉트
+      router.push("/account/signin"); // 로그인 페이지로 리다이렉트
     }
   }, [router, isClient]);
 
@@ -24,7 +25,7 @@ const MyPage = () => {
     return <div>Loading...</div>; // 클라이언트 환경이 아니면 로딩 화면
   }
 
-  return <div>MyPage Content</div>;
+  return <DivWrapper />;
 };
 
 export default MyPage;
