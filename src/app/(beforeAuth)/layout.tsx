@@ -1,19 +1,16 @@
-import type { Metadata } from "next";
-import "@/styles/global.css";
+// components/Providers.tsx
+"use client"
 
-export const metadata: Metadata = {
-  title: "GooHam",
-  description: "구함",
-};
+import { QueryClient, QueryClientProvider } from "@tanstack/react-query"
+import { ReactNode, useState } from "react"
 
-export default function AuthLayout({
-  children,
-}: Readonly<{
-  children: React.ReactNode;
-}>) {
+export default function Providers({ children }: { children: ReactNode }) {
+  // 클라이언트 컴포넌트이므로, useState로 한 번만 생성
+  const [queryClient] = useState(() => new QueryClient())
+
   return (
-    <div className = "overflow-y-scroll max-h-[calc(100vh)]">
+    <QueryClientProvider client={queryClient}>
       {children}
-    </div>
-  );
+    </QueryClientProvider>
+  )
 }
