@@ -1,4 +1,5 @@
-import { Card } from "@/components/ui/card";
+"use client";
+import { Card, CardContent } from "@/components/ui/card";
 import { Button } from "@/components/ui/button";
 import { Badge } from "@/components/ui/badge";
 import { Post } from "@/types/post";
@@ -6,8 +7,13 @@ import { Avatar, AvatarFallback } from "../ui/avatar";
 import { AvatarImage } from "@radix-ui/react-avatar";
 import { Member } from "@/types/user";
 import { Calendar, MapPin, Shapes, Users } from "lucide-react";
+import { ConfirmDialog } from "@/app/participation/Alertmessage";
 
 const JoinProfileCard = ({ post }: { post: Post }) => {
+  const handleApply = () => {
+    console.log("참여 신청 완료!");
+  };
+
   return (
     <Card className="p-4 w-full rounded-xl text-sm bg-white gap-2">
       <div className="flex items-center gap-2">
@@ -42,12 +48,18 @@ const JoinProfileCard = ({ post }: { post: Post }) => {
         <Badge>{post.categoryName}</Badge>
       </div>
       <div className="flex justify-center">
-        <Button variant="default" className="flex w-[80%] mb-2 ">
-          참여 신청하기
-        </Button>
+        <ConfirmDialog
+          trigger={
+            <Button variant="default" className="flex w-[80%] mb-2">
+              참여 신청하기
+            </Button>
+          }
+          title="참여 신청하시겠습니까?"
+          description="이 모임에 참여를 신청합니다."
+          onConfirm={handleApply}
+        />
       </div>
     </Card>
   );
 };
-
 export default JoinProfileCard;
