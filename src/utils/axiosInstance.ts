@@ -1,9 +1,10 @@
 // utils/axiosInstance.ts
 import axios from "axios";
+import { API_BASE_URL } from "@/components/common/config";
 
 // Axios 인스턴스 생성
 const axiosInstance = axios.create({
-  baseURL: "http://localhost:8080/gooham", // API 루트 경로
+  baseURL: `${API_BASE_URL}/gooham`, // API 루트 경로
   withCredentials: true, // 쿠키 인증 필요 시 true
 });
 

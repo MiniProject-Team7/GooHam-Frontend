@@ -83,7 +83,11 @@ export const fetchAllPosts = async (): Promise<Post[]> => {
     status: string
     message: string
     data: RawPageResponse<RawPost>
-  }>("/posts", { // no params → 서버가 전체를 반환하도록 설정되어 있어야 합니다
+  }>("/posts", { 
+    params: {
+      page: 0,
+      size: 4,
+    }
   })
 
   return resp.data.content.map(mapRawToPost)

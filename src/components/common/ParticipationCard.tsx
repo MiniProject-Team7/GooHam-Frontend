@@ -19,12 +19,18 @@ interface ParticipationCardProps {
   onReject?: (id: number) => void;
 }
 
-export function ParticipationCard({ data, onApprove, onReject }: ParticipationCardProps) {
-  const handleApprove = (id: number) => {
-    // console.log("Approve clicked for", id);
+export function ParticipationCard({
+  data,
+  onApprove,
+  onReject,
+}: ParticipationCardProps) {    
+const handleApprove = () => {
+     console.log("Approve clicked for", data.id)
+     onApprove?.(data.id)  // 여기서 prop 호출
   };
-  const handleReject = (id: number) => {
-    // console.log("Reject clicked for", id);
+  const handleReject = () => {
+     console.log("Reject clicked for", data.id);
+     onReject?.(data.id)   // 여기서 prop 호출
   };
 
   return (
@@ -44,25 +50,17 @@ export function ParticipationCard({ data, onApprove, onReject }: ParticipationCa
       {/* 승인/거절 버튼 */}
       <CardFooter className="flex justify-start gap-2 px-2">
         <ConfirmDialog
-          trigger={
-            <Button variant="default" size="sm">
-              승인하기
-            </Button>
-          }
-          title="승인하시겠습니까?"
-          description="신청자를 승인합니다."
-          onConfirm={() => handleApprove(data.id)}
-        />
-        <ConfirmDialog
-          trigger={
-            <Button variant="outline" size="sm">
-              거절하기
-            </Button>
-          }
-          title="거절하시겠습니까?"
-          description="이 작업은 돌이킬 수 없습니다."
-          onConfirm={() => handleReject(data.id)}
-        />
+            trigger={<Button variant="default" size="sm">승인하기</Button>}
+            title="승인하시겠습니까?"
+            description="신청자를 승인합니다."
+            onConfirm={() => handleApprove()}
+            />
+            <ConfirmDialog
+            trigger={<Button variant="outline" size="sm">거절하기</Button>}
+            title="거절하시겠습니까?"
+            description="이 작업은 돌이킬 수 없습니다."
+            onConfirm={() => handleReject()}
+            />
       </CardFooter>
     </Card>
   );
