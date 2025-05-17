@@ -32,22 +32,18 @@ const handleApprove = () => {
      console.log("Reject clicked for", data.id);
      onReject?.(data.id)   // 여기서 prop 호출
   };
-    
-return (
+
+  return (
     <Card className="flex flex-col w-full gap-4 p-4 rounded-lg border border-gray-22">
       {/* 신청자 아바타 + 정보 */}
       <div className="flex items-center gap-3">
         <Avatar className="w-12 h-12">
           <AvatarImage src={data.applicantAvatar} alt={data.applicantName} />
-          <AvatarFallback>
-            {data.applicantName.slice(0, 2)}
-          </AvatarFallback>
+          <AvatarFallback>{data.applicantName.slice(0, 2)}</AvatarFallback>
         </Avatar>
         <div>
           <div className="text-sm font-medium">{data.applicantName}</div>
-          <div className="text-xs text-muted-foreground">
-            신청일: {data.appliedDate}
-          </div>
+          <div className="text-xs text-muted-foreground">신청일: {data.appliedDate}</div>
         </div>
       </div>
 
@@ -65,7 +61,6 @@ return (
             description="이 작업은 돌이킬 수 없습니다."
             onConfirm={() => handleReject()}
             />
-
       </CardFooter>
     </Card>
   );
