@@ -7,7 +7,7 @@ import { Button } from "@/components/ui/button";
 import { Input } from "@/components/ui/input";
 import { Textarea } from "@/components/ui/textarea";
 import { Comment } from "@/types/comment";
-import { ConfirmDialog } from "@/app/participation/Alertmessage";
+import { ConfirmDialog } from "@/app/(afterAuth)/participation/Alertmessage";
 
 const CommentItem = ({ comment }: { comment: Comment }) => {
   const [isEditing, setIsEditing] = useState(false);

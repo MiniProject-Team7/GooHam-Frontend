@@ -7,7 +7,7 @@ import { Avatar, AvatarFallback } from "../ui/avatar";
 import { AvatarImage } from "@radix-ui/react-avatar";
 import { Member } from "@/types/user";
 import { Calendar, MapPin, Shapes, Users } from "lucide-react";
-import { ConfirmDialog } from "@/app/participation/Alertmessage";
+import { ConfirmDialog } from "@/app/(afterAuth)/participation/Alertmessage";
 import { useState } from "react";
 
 const JoinProfileCard = ({ post }: { post: Post }) => {

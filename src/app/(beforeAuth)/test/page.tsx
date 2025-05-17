@@ -2,7 +2,7 @@
 "use client"
 
 import { useState } from "react"
-import { useUserPosts, useCategoryPosts, useAllPosts, useRefreshPosts } from "@/components/data/usePosts"
+import { useUserPosts, useCategoryPosts, useAllPosts, useRefreshPosts } from "@/components/hooks/usePosts"
 import type { Post } from "@/types/post"
 
 export default function TestPostsPage() {

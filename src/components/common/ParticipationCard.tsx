@@ -4,7 +4,7 @@ import * as React from "react";
 import { Card, CardFooter } from "@/components/ui/card";
 import { Avatar, AvatarImage, AvatarFallback } from "@/components/ui/avatar";
 import { Button } from "@/components/ui/button";
-import { ConfirmDialog } from "@/app/participation/Alertmessage";
+import { ConfirmDialog } from "@/app/(afterAuth)/participation/Alertmessage";
 
 export interface Application {
   id: number;
@@ -24,11 +24,13 @@ export function ParticipationCard({
   onApprove,
   onReject,
 }: ParticipationCardProps) {    
-const handleApprove = (id: number) => {
-    // console.log("Approve clicked for", id);
+const handleApprove = () => {
+     console.log("Approve clicked for", data.id)
+     onApprove?.(data.id)  // 여기서 prop 호출
   };
-  const handleReject = (id: number) => {
-    // console.log("Reject clicked for", id);
+  const handleReject = () => {
+     console.log("Reject clicked for", data.id);
+     onReject?.(data.id)   // 여기서 prop 호출
   };
     
 return (
@@ -55,13 +57,13 @@ return (
             trigger={<Button variant="default" size="sm">승인하기</Button>}
             title="승인하시겠습니까?"
             description="신청자를 승인합니다."
-            onConfirm={() => handleApprove(data.id)}
+            onConfirm={() => handleApprove()}
             />
             <ConfirmDialog
             trigger={<Button variant="outline" size="sm">거절하기</Button>}
             title="거절하시겠습니까?"
             description="이 작업은 돌이킬 수 없습니다."
-            onConfirm={() => handleReject(data.id)}
+            onConfirm={() => handleReject()}
             />
 
       </CardFooter>
