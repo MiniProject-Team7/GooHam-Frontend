@@ -1,8 +1,8 @@
-import { useQuery, useQueryClient } from "@tanstack/react-query"
-import { fetchPostsByCategory, fetchPostsByUser, fetchAllPosts } from "@/components/api/Postapi"
-import { Post, FetchPostsResult } from "@/types/post"
-import { PageRequestParams } from "@/types/pagination"
-import type { FetchPostsByCategoryOpts } from "@/components/api/Postapi"
+import { useQuery, useQueryClient } from "@tanstack/react-query";
+import { fetchPostsByCategory, fetchPostsByUser, fetchAllPosts } from "@/components/api/PostApi";
+import { Post, FetchPostsResult } from "@/types/post";
+import { PageRequestParams } from "@/types/pagination";
+import type { FetchPostsByCategoryOpts } from "@/components/api/PostApi";
 
 const QUERY_KEY_BASE = "posts"
 

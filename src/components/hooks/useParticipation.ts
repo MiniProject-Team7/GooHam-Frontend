@@ -4,7 +4,7 @@ import {
   fetchParticipationStatus,
   approveParticipation,
   rejectParticipation,
-} from "@/components/api/Participationapi";
+} from "@/components/api/ParticipationApi";
 import type {
   RawParticipation,
   PageResponse,
