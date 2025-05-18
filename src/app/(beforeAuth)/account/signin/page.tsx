@@ -28,6 +28,7 @@ export default function SigninPage() {
       user: {
         member_email: string;
         member_name: string;
+        user_id: number;
       };
       token: string;
     };
@@ -37,11 +38,13 @@ export default function SigninPage() {
   const setIsLoggedIn = useAuthStore((state) => state.setIsLoggedIn);
   const setAuthEmail = useAuthStore((state) => state.setEmail); // 이름 변경
   const setAuthName = useAuthStore((state) => state.setName);
+  const setAuthId = useAuthStore((state) => state.setUserId);
 
   const handleLogin = async () => {
     setEmailEmpty(false);
     setPasswordEmpty(false);
     setLoginError(false);
+
     let hasEmpty = false;
     if (!email) {
       setEmailEmpty(true);
@@ -74,12 +77,14 @@ export default function SigninPage() {
         console.log("데이터 확인:", result.data); // data 객체 확인
         const userEmail = result.data?.user?.member_email;
         const userName = result.data?.user.member_name;
+        const userId = result.data?.user?.user_id;
 
         const accessToken = result.data?.token;
-        if (userEmail && accessToken && userName) {
+        if (userEmail && accessToken && userName && userId !== undefined) {
           setAuthEmail(userEmail); // Zustand 저장
           setAuthName(userName);
           setIsLoggedIn(true);
+          setAuthId(userId);
 
           localStorage.setItem("accessToken", accessToken); // 쿠키에서 accessToken 추출
           localStorage.setItem("userEmail", userEmail); // 이메일 저장
