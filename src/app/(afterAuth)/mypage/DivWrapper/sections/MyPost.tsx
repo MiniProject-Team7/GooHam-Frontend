@@ -9,8 +9,6 @@ import { Tabs, TabsContent, TabsList, TabsTrigger } from "../../../../../compone
 import PostCard from "@/components/common/PostCard";
 import { dummyPosts } from "@/app/(afterAuth)/posts/postData";
 
-// 게시글 데이터
-
 // 댓글 데이터
 const comments = [
   {

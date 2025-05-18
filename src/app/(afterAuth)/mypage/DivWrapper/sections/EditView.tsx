@@ -1,23 +1,26 @@
 "use client";
 
-import React, { useState } from "react";
+import React, { useEffect, useRef, useState } from "react";
 import { Input } from "../../../../../components/ui/input";
 import { Textarea } from "../../../../../components/ui/textarea";
-import { ActionButtonSection } from "./ActionButtonSection";
+import { ActionButtonSection, categories } from "./ActionButtonSection";
 import { Avatar, AvatarFallback, AvatarImage } from "../../../../../components/ui/avatar";
 import { Button } from "../../../../../components/ui/button";
 import { Card, CardContent } from "../../../../../components/ui/card";
+import { useAuthStore } from "@/components/common/useAuthStore";
+import axiosInstance from "@/utils/axiosInstance";
 
 // 타입 정의
 type FormDataType = {
-  name: string;
-  birth: string;
-  nickname: string;
-  phone: string;
-  email: string;
-  intro: string;
-  avatar: string;
-  categories: string[];
+  id: string;
+  member_name: string;
+  birth_date: string;
+  member_nickname: string;
+  member_phone: string;
+  member_email: string;
+  member_introduce: string;
+  interests: { category_id: number; name: string }[];
+  profile_image: string;
 };
 
 type FormField = {
@@ -29,50 +32,133 @@ type FormField = {
 };
 
 const formFields: FormField[] = [
-  { key: "name", label: "이름", placeholder: "Name" },
-  { key: "birth", label: "생년월일", placeholder: "Birth" },
-  { key: "nickname", label: "닉네임", placeholder: "NickName" },
-  { key: "phone", label: "전화번호", placeholder: "Phone" },
-  { key: "email", label: "이메일", placeholder: "E-Mail" },
-  { key: "intro", label: "자기소개", placeholder: "Text", isTextarea: true },
-  { key: "categories", label: "카테고리", placeholder: "", noInput: true },
+  { key: "member_name", label: "이름", placeholder: "Name" },
+  { key: "birth_date", label: "생년월일", placeholder: "Birth" },
+  { key: "member_nickname", label: "닉네임", placeholder: "NickName" },
+  { key: "member_phone", label: "전화번호", placeholder: "Phone" },
+  { key: "member_email", label: "이메일", placeholder: "E-Mail" },
+  { key: "member_introduce", label: "자기소개", placeholder: "Text", isTextarea: true },
+  { key: "interests", label: "카테고리", placeholder: "", noInput: true },
 ];
 
 export const EditView = ({ setIsEditing }: { setIsEditing: (v: boolean) => void }) => {
-  const [formData, setFormData] = useState<FormDataType>({
-    name: "",
-    birth: "",
-    nickname: "",
-    phone: "",
-    email: "",
-    intro: "",
-    avatar: "https://c.animaapp.com/yTfAUR4U/img/image-4@2x.png",
-    categories: [],
-  });
+  const [form, setForm] = useState<FormDataType | null>(null);
+  const [loading, setLoading] = useState(false);
+  const email = useAuthStore((state) => state.email);
+  const fileInputRef = useRef<HTMLInputElement | null>(null);
 
-  const handleChange = (key: keyof FormDataType, value: string) => {
-    setFormData((prev) => ({
-      ...prev,
-      [key]: value,
-    }));
+  useEffect(() => {
+    if (!email) return;
+    axiosInstance
+      .get<FormDataType>(`/users/mypage/detail?member_email=${email}`)
+      .then((res) => {
+        const currentInterests = res.data.interests
+          .map((interest) => {
+            const matchingCategory = categories.find((cat) => cat.name === interest.name);
+            if (matchingCategory) {
+              return {
+                id: matchingCategory.id,
+                name: matchingCategory.name,
+              };
+            }
+            return null;
+          })
+          .filter(Boolean);
+
+        setForm({
+          ...res.data,
+          interests: [],
+        });
+
+        setTimeout(() => {
+          document.querySelector(".action-button-section")?.dispatchEvent(
+            new CustomEvent("set-interests", {
+              detail: currentInterests,
+            })
+          );
+        }, 100);
+      })
+      .catch((err) => console.error("데이터 로딩 오류:", err));
+  }, [email]);
+
+  const handleChange = (e: React.ChangeEvent<HTMLInputElement | HTMLTextAreaElement>) => {
+    if (!form) return;
+    const { name, value } = e.target;
+    setForm({ ...form, [name]: value });
   };
 
-  const handleAvatarChange = () => {
-    const newUrl = prompt("새 프로필 이미지 URL을 입력하세요", formData.avatar);
-    if (newUrl) {
-      setFormData((prev) => ({ ...prev, avatar: newUrl }));
+  const handleImageUpload = async (e: React.ChangeEvent<HTMLInputElement>) => {
+    const file = e.target.files?.[0];
+    if (!file || !form) return;
+
+    const previewURL = URL.createObjectURL(file);
+    setForm({ ...form, profile_image: previewURL });
+
+    const formData = new FormData();
+    formData.append("file", file);
+    formData.append("member_id", form.id);
+
+    try {
+      const res = await axiosInstance.post<{ url: string }>(
+        "/users/mypage/uploadProfileImage",
+        formData,
+        {
+          headers: {
+            "Content-Type": "multipart/form-data",
+          },
+        }
+      );
+
+      const uploadedURL = res.data.url;
+      setForm((prev) => (prev ? { ...prev, profile_image: uploadedURL } : prev));
+    } catch (err) {
+      console.error("프로필 이미지 업로드 실패:", err);
+      alert("이미지 업로드에 실패했습니다.");
     }
   };
+
+  const handleSubmit = () => {
+    if (!form) return;
+    setLoading(true);
+
+    const categoryIds = form.interests.map((interest) => interest.category_id);
+
+    if (categoryIds.every((id) => id === 0)) {
+      alert("유효한 카테고리를 선택해주세요.");
+      setLoading(false);
+      return;
+    }
+
+    const payload = {
+      ...form,
+      categoryIds: categoryIds,
+    };
+
+    axiosInstance
+      .post("/users/mypage/updateInfo", payload)
+      .then(() => {
+        alert("수정이 완료되었습니다.");
+        setIsEditing(false);
+      })
+      .catch((err) => {
+        console.error("API 오류:", err);
+        alert("수정 중 오류가 발생했습니다: " + (err.response?.data?.message || err.message));
+      });
+    setLoading(false);
+  };
+
+  if (!form) return <div>로딩 중...</div>;
 
   return (
     <Card className="w-[787px] box-border border border-solid border-gray-22 rounded-xl mb-[24px]">
       <CardContent className="px-[12px] pt-[48px] pb-[24px]">
         <div className="flex flex-col items-center mb-10">
           <Avatar className="w-[100px] h-[100px]">
-            <AvatarImage src={formData.avatar} alt="Profile" />
+            <AvatarImage src={form.profile_image} alt="Profile" />
             <AvatarFallback>User</AvatarFallback>
           </Avatar>
-          <Button variant="ghost" className="mt-5" onClick={handleAvatarChange}>
+
+          <Button variant="ghost" className="mt-5" onClick={() => fileInputRef.current?.click()}>
             <img
               className="w-10 h-[35px]"
               alt="Create"
@@ -80,6 +166,14 @@ export const EditView = ({ setIsEditing }: { setIsEditing: (v: boolean) => void 
             />
             <span className="text-base text-gray-50">프로필 사진 수정하기</span>
           </Button>
+
+          <input
+            type="file"
+            ref={fileInputRef}
+            accept="image/*"
+            className="hidden"
+            onChange={handleImageUpload}
+          />
         </div>
 
         <div className="space-y-8 px-[110px]">
@@ -87,12 +181,19 @@ export const EditView = ({ setIsEditing }: { setIsEditing: (v: boolean) => void 
             noInput ? (
               <div key={key}>
                 <label className="text-title-md text-gray-50">{label}</label>
-                <div>
+                <div className="action-button-section">
                   <ActionButtonSection
-                    selected={formData.categories}
-                    onChange={(selected: string[]) =>
-                      setFormData((prev) => ({ ...prev, categories: selected }))
-                    }
+                    selected={form.interests.map((interest) => ({
+                      id: interest.category_id,
+                      name: interest.name,
+                    }))}
+                    onChange={(selected: { id: number; name: string }[]) => {
+                      const updatedInterests = selected.map((c) => ({
+                        category_id: c.id,
+                        name: c.name,
+                      }));
+                      setForm((prev) => (prev ? { ...prev, interests: updatedInterests } : prev));
+                    }}
                   />
                 </div>
               </div>
@@ -103,15 +204,17 @@ export const EditView = ({ setIsEditing }: { setIsEditing: (v: boolean) => void 
                   <Textarea
                     className="flex-1 ml-[109px] h-[297px] rounded-lg border border-gray-300"
                     placeholder={placeholder}
-                    value={formData[key] as string}
-                    onChange={(e) => handleChange(key, e.target.value)}
+                    value={form[key] as string}
+                    onChange={handleChange}
+                    name={key}
                   />
                 ) : (
                   <Input
                     className="flex-1 ml-[109px] h-12 rounded-lg border border-gray-22"
                     placeholder={placeholder}
-                    value={formData[key] as string}
-                    onChange={(e) => handleChange(key, e.target.value)}
+                    value={form[key] as string}
+                    onChange={handleChange}
+                    name={key}
                   />
                 )}
               </div>
@@ -120,7 +223,13 @@ export const EditView = ({ setIsEditing }: { setIsEditing: (v: boolean) => void 
         </div>
 
         <div className="flex justify-end gap-4 mb-[24px] mt-[26px]">
-          <Button variant="default" size="lg" className="text-white rounded-xl px-12 py-3">
+          <Button
+            variant="default"
+            size="lg"
+            className="text-white rounded-xl px-12 py-3"
+            onClick={handleSubmit}
+            disabled={loading}
+          >
             수정
           </Button>
           <Button

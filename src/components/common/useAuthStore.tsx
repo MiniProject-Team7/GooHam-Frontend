@@ -20,7 +20,7 @@ export const useAuthStore = create<AuthState>()(
       setEmail: (email) => set({ email }),
       setName: (name) => set({ name }),
       setIsLoggedIn: (status) => set({ isLoggedIn: status }),
-      clear: () => set({ email: null, isLoggedIn: false }),
+      clear: () => set({ email: null, name: "", isLoggedIn: false }),
     }),
     {
       name: "auth-storage",

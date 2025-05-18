@@ -4,6 +4,7 @@ import { Button } from "../../../../../components/ui/button";
 import { Card, CardContent } from "../../../../../components/ui/card";
 import { useAuthStore } from "@/components/common/useAuthStore";
 import axiosInstance from "@/utils/axiosInstance";
+import Link from "next/link";
 
 type MyPageData = {
   created_at: string;
@@ -73,13 +74,15 @@ export const SettingsGroupSection = (): JSX.Element => {
               </p>
             </div>
 
-            <Button
-              variant="default" // 버튼의 variant를 설정 (primary 버튼 스타일)
-              size="default" // 버튼의 크기 설정 (기본 크기)
-              className="text-white rounded-xl py-[13px] px-8" // 추가적인 클래스 적용
-            >
-              비밀번호 변경
-            </Button>
+            <Link href="/account/repassword">
+              <Button
+                variant="default"
+                size="default"
+                className="text-white rounded-xl py-[13px] px-8"
+              >
+                비밀번호 변경
+              </Button>
+            </Link>
           </div>
         </CardContent>
       </Card>

@@ -1,6 +1,6 @@
 "use client";
 
-import React from "react";
+import React, { useState, useEffect } from "react";
 import { Button } from "../../../../../components/ui/button";
 import {
   Bike,
@@ -28,7 +28,7 @@ const iconMap: { [key: string]: React.ReactNode } = {
   기타: <CircleEllipsis size={40} />,
 };
 
-const categories = [
+export const categories = [
   { id: 1, name: "스포츠" },
   { id: 2, name: "일상" },
   { id: 3, name: "자기계발" },
@@ -41,31 +41,65 @@ const categories = [
   { id: 10, name: "기타" },
 ];
 
+type Category = { id: number; name: string };
+
 type Props = {
-  selected: string[];
-  onChange: (selected: string[]) => void;
-  className?: string; // 추가
+  selected: Category[];
+  onChange: (selected: Category[]) => void;
+  className?: string;
 };
 
 export const ActionButtonSection = ({ selected, onChange, className }: Props) => {
-  const handleCategoryClick = (name: string) => {
-    if (selected.includes(name)) {
-      onChange(selected.filter((category) => category !== name));
+  const [showWarning, setShowWarning] = useState(false);
+
+  useEffect(() => {
+    const handleSetInterests = (event: CustomEvent<Category[]>) => {
+      if (event.detail && Array.isArray(event.detail)) {
+        console.log("이벤트로 설정된 관심사:", event.detail);
+        onChange(event.detail);
+      }
+    };
+
+    const element = document.querySelector(".action-button-section");
+    if (element) {
+      element.addEventListener("set-interests", handleSetInterests as EventListener);
+    }
+
+    return () => {
+      if (element) {
+        element.removeEventListener("set-interests", handleSetInterests as EventListener);
+      }
+    };
+  }, [onChange]);
+
+  const handleCategoryClick = (category: Category) => {
+    const isSelected = selected.some((c) => c.name === category.name);
+    if (isSelected) {
+      onChange(selected.filter((c) => c.name !== category.name));
+      setShowWarning(false);
     } else {
-      onChange([...selected, name]);
+      if (selected.length >= 3) {
+        setShowWarning(true);
+        return;
+      }
+
+      onChange([...selected, { id: category.id, name: category.name }]);
+      setShowWarning(false);
     }
   };
+
+  console.log("렌더링 시 선택된 카테고리:", selected);
 
   return (
     <section className="w-full py-5 rounded-[5px] overflow-hidden">
       <div className={`grid gap-[10px] px-1 ${className ?? "grid-cols-5"}`}>
         {categories.map((category) => {
-          const isSelected = selected.includes(category.name);
+          const isSelected = selected.some((c) => c.name === category.name);
           return (
             <Button
               key={category.id}
               variant="outline"
-              onClick={() => handleCategoryClick(category.name)}
+              onClick={() => handleCategoryClick(category)}
               className={`flex flex-col items-center justify-center w-[70px] h-[70px] py-[6px] px-[15px] rounded-lg border shrink-0 bg-white${
                 isSelected
                   ? " border-primary-500 text-primary-500"
@@ -80,6 +114,12 @@ export const ActionButtonSection = ({ selected, onChange, className }: Props) =>
           );
         })}
       </div>
+
+      {showWarning && (
+        <p className="mt-3 text-sm text-primary-500 font-medium">
+          카테고리는 최대 3개까지 선택할 수 있습니다.
+        </p>
+      )}
     </section>
   );
 };
