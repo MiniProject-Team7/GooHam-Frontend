@@ -3,15 +3,23 @@
 import { useState } from "react";
 import { Button } from "@/components/ui/button";
 import { Textarea } from "@/components/ui/textarea";
+import { useCreateComment } from "../hooks/useComment";
+import { useAuthStore } from "../common/useAuthStore";
 
-const CommentForm = () => {
+const CommentForm = ({ postId }: { postId: number }) => {
   const [content, setContent] = useState("");
-
+  const { mutate: createComment, isLoading } = useCreateComment(postId);
+  const userId = useAuthStore((state) => state.userId);
   const handleSubmit = () => {
     if (!content.trim()) return;
-    // api 호출
-    console.log("댓글 작성:", content);
-    setContent("");
+    if (!userId) return;
+    createComment(
+      { postId, userId, content },
+      {
+        onSuccess: () => setContent(""),
+        onError: (error) => alert("댓글 작성 실패: " + error.message),
+      }
+    );
   };
 
   return (
