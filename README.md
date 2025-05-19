@@ -1,4 +1,4 @@
-[![GOOHAM](./4.png)](http://localhost:3000/)
+[![GOOHAM](./5.png)](http://localhost:3000/)
 
 # GOOHAM
 유레카의 다양한 파티를 구합니다, 구함!
