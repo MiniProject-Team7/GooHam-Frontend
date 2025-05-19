@@ -44,6 +44,7 @@ const formFields: FormField[] = [
 export const EditView = ({ setIsEditing }: { setIsEditing: (v: boolean) => void }) => {
   const [form, setForm] = useState<FormDataType | null>(null);
   const [loading, setLoading] = useState(false);
+  const [selectedFile, setSelectedFile] = useState<File | null>(null);
   const email = useAuthStore((state) => state.email);
   const fileInputRef = useRef<HTMLInputElement | null>(null);
 
@@ -87,63 +88,62 @@ export const EditView = ({ setIsEditing }: { setIsEditing: (v: boolean) => void 
     setForm({ ...form, [name]: value });
   };
 
-  const handleImageUpload = async (e: React.ChangeEvent<HTMLInputElement>) => {
+  const handleImageUpload = (e: React.ChangeEvent<HTMLInputElement>) => {
     const file = e.target.files?.[0];
     if (!file || !form) return;
 
     const previewURL = URL.createObjectURL(file);
     setForm({ ...form, profile_image: previewURL });
-
-    const formData = new FormData();
-    formData.append("file", file);
-    formData.append("member_id", form.id);
-
-    try {
-      const res = await axiosInstance.post<{ url: string }>(
-        "/users/mypage/uploadProfileImage",
-        formData,
-        {
-          headers: {
-            "Content-Type": "multipart/form-data",
-          },
-        }
-      );
-
-      const uploadedURL = res.data.url;
-      setForm((prev) => (prev ? { ...prev, profile_image: uploadedURL } : prev));
-    } catch (err) {
-      console.error("프로필 이미지 업로드 실패:", err);
-      alert("이미지 업로드에 실패했습니다.");
-    }
+    setSelectedFile(file);
   };
 
-  const handleSubmit = () => {
+  const handleSubmit = async () => {
     if (!form) return;
     setLoading(true);
 
     const categoryIds = form.interests.map((interest) => interest.category_id);
-
     if (categoryIds.every((id) => id === 0)) {
       alert("유효한 카테고리를 선택해주세요.");
       setLoading(false);
       return;
     }
 
-    const payload = {
-      ...form,
-      categoryIds: categoryIds,
-    };
+    let imageUrl = form.profile_image;
 
-    axiosInstance
-      .post("/users/mypage/updateInfo", payload)
-      .then(() => {
-        alert("수정이 완료되었습니다.");
-        setIsEditing(false);
-      })
-      .catch((err) => {
-        console.error("API 오류:", err);
-        alert("수정 중 오류가 발생했습니다: " + (err.response?.data?.message || err.message));
-      });
+    try {
+      if (selectedFile) {
+        const imageFormData = new FormData();
+        imageFormData.append("profileImage", selectedFile);
+        imageFormData.append("member_id", form.id);
+
+        const imageRes = await axiosInstance.post<{ url: string }>(
+          "/users/mypage/uploadProfileImage",
+          imageFormData,
+          {
+            headers: {
+              "Content-Type": "multipart/form-data",
+            },
+          }
+        );
+
+        imageUrl = imageRes.data.url;
+      }
+
+      const payload = {
+        ...form,
+        profile_image: imageUrl,
+        categoryIds: categoryIds,
+      };
+
+      await axiosInstance.post("/users/mypage/updateInfo", payload);
+
+      alert("수정이 완료되었습니다.");
+      setIsEditing(false);
+    } catch (err: any) {
+      console.error("API 오류:", err);
+      alert("수정 중 오류가 발생했습니다: " + (err.response?.data?.message || err.message));
+    }
+
     setLoading(false);
   };
 
@@ -166,6 +166,13 @@ export const EditView = ({ setIsEditing }: { setIsEditing: (v: boolean) => void 
             />
             <span className="text-base text-gray-50">프로필 사진 수정하기</span>
           </Button>
+          <input
+            type="file"
+            accept="image/*"
+            ref={fileInputRef}
+            onChange={handleImageUpload}
+            style={{ display: "none" }}
+          />
         </div>
 
         <div className="space-y-8 px-[110px]">
