@@ -2,7 +2,7 @@
 "use client";
 import * as React from "react";
 import Link from "next/link";
-import { useState } from "react";
+// import { useState } from "react";
 import { usePathname, useRouter } from "next/navigation";
 import {
   NavigationMenu,
@@ -27,6 +27,7 @@ import axiosInstance from "@/utils/axiosInstance";
 import { useFetchUserProfile } from "@/components/common/useProfileStore";
 import { useNotifications, useMarkAsRead } from "@/components/hooks/useNotification";
 import { mapRawListToNotices, formatNoticeContent } from "@/components/common/noticeStore";
+import { usePresignedUrls } from "@/components/hooks/usePresignedImage";
 import type { Notice } from "@/types/notification";
 
 const navItems = [
@@ -36,7 +37,7 @@ const navItems = [
 ];
 
 export function Navigation() {
-  const { data: profile, isLoading: profileLoading } = useFetchUserProfile();
+  const { data: profile } = useFetchUserProfile();
 
   const router = useRouter();
   const pathname = usePathname();
@@ -61,7 +62,7 @@ export function Navigation() {
   };
 
   // Fetch notifications and markRead mutation
-  const { data: raws = [], isLoading } = useNotifications(userId);
+  const { data: raws = [], isLoading } = useNotifications(userId ?? 0);
   const markRead = useMarkAsRead();
   // Map, sort, limit to 10
   const sorted = React.useMemo<Notice[]>(() =>
@@ -71,9 +72,16 @@ export function Navigation() {
     [raws]
   );
 
-  const [avatarUrl, setAvatarUrl] = useState<string | null>("/images/default_profile.png");
-  const userName  = "홍길동";
-  const userIntro = "안녕하세요. 20살 홍길동입니다.";
+  const defaultAvatar = "/images/default_profile.png";
+  const imageKey = profile?.profileImage;
+  const presigned = usePresignedUrls(imageKey ?? "");
+  
+  const avatarSrc = React.useMemo(() => {
+    if (presigned === null) return defaultAvatar;
+    if (Array.isArray(presigned)) return presigned[0] ?? defaultAvatar;
+    return presigned;
+  }, [presigned]);
+
 
   return (
     <header className="sticky top-0 z-50 w-full bg-white">
@@ -115,7 +123,7 @@ export function Navigation() {
                     <Bell className="h-6 w-6 text-foreground" />
                   </button>
                 </DropdownMenuTrigger>
-                <DropdownMenuContent align="end" sideOffset={4} className="w-100 h-90 bg-white border-gray-22 p-2 overflow-hidden">
+                <DropdownMenuContent align="end" sideOffset={4} className="w-100 max-h-90 bg-white border-gray-22 p-2 overflow-hidden">
                   <div className="px-3 py-3 text-title-md">알림 목록</div>
                   <DropdownMenuSeparator />
                   {isLoading ? (
@@ -130,7 +138,7 @@ export function Navigation() {
                           <DropdownMenuItem asChild key={n.id} className="p-0">
                             <Link
                               href={n.link}
-                              onClick={() => markRead.mutate({ id: Number(n.id), userId })}
+                              onClick={() => userId !== undefined && markRead.mutate({ id: Number(n.id), userId })}
                               className="flex w-full items-start justify-between px-2 py-2 hover:bg-accent/10 rounded"
                             >
                               <p className="text-sm flex-1">{content}</p>
@@ -152,8 +160,13 @@ export function Navigation() {
               <DropdownMenu>
                 <DropdownMenuTrigger asChild>
                   <Avatar className="w-10 h-10 cursor-pointer">
-                    {avatarUrl ? (
-                      <AvatarImage src={avatarUrl} alt="User Avatar" onError={() => setAvatarUrl(null)} />
+                    {imageKey ? (
+                      <AvatarImage src={avatarSrc} alt={profile?.nickname} />
+                    ) : defaultAvatar ? (
+                      <AvatarImage
+                        src={defaultAvatar}
+                        alt={profile?.nickname}
+                      />
                     ) : (
                       <AvatarFallback><User className="w-4 h-4" /></AvatarFallback>
                     )}
@@ -163,14 +176,23 @@ export function Navigation() {
                   <div className="flex flex-col items-center px-4 py-3 gap-3">
                     <div className="text-title-md text-black self-start mb-2">나의 정보</div>
                     <Avatar className="w-15 h-15">
-                      {avatarUrl ? (
-                        <AvatarImage src={profile?.profileImage} alt="User Avatar" />
+                      {imageKey ? (
+                        <AvatarImage src={avatarSrc} alt={profile?.nickname} />
+                      ) : defaultAvatar ? (
+                        <AvatarImage
+                          src={defaultAvatar}
+                          alt={profile?.nickname}
+                        />
                       ) : (
-                        <AvatarFallback><User className="w-4 h-4" /></AvatarFallback>
+                        <AvatarFallback>
+                          <User className="w-4 h-4" />
+                        </AvatarFallback>
                       )}
                     </Avatar>
                     <div className="text-title-md text-black truncate">{profile?.nickname}</div>
-                    <div className="text-lable-md text-gray-22 truncate">{profile?.introduce}</div>
+                    <div className="text-label-md w-50 text-gray-22 overflow-hidden whitespace-nowrap truncate">
+                      {profile?.introduce}
+                    </div>
                   </div>
                   <DropdownMenuSeparator />
                   <DropdownMenuItem asChild>

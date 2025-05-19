@@ -24,6 +24,7 @@ export function ParticipationCard({
   onApprove,
   onReject,
 }: ParticipationCardProps) {    
+
 const handleApprove = () => {
      console.log("Approve clicked for", data.id)
      onApprove?.(data.id)  // 여기서 prop 호출
@@ -37,10 +38,6 @@ const handleApprove = () => {
     <Card className="flex flex-col w-full gap-4 p-4 rounded-lg border border-gray-22">
       {/* 신청자 아바타 + 정보 */}
       <div className="flex items-center gap-3">
-        <Avatar className="w-12 h-12">
-          <AvatarImage src={data.applicantAvatar} alt={data.applicantName} />
-          <AvatarFallback>{data.applicantName.slice(0, 2)}</AvatarFallback>
-        </Avatar>
         <div>
           <div className="text-sm font-medium">{data.applicantName}</div>
           <div className="text-xs text-muted-foreground">신청일: {data.appliedDate}</div>

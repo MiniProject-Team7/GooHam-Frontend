@@ -16,10 +16,6 @@ const ParticipantList = ({ participants }: { participants: Participant[] }) => {
       <ul className="divide-y divide-gray-22">
         {visibleParticipants.map((participant, idx) => (
           <li key={idx} className="flex items-center gap-2 px-3 py-4">
-            <Avatar>
-              <AvatarImage src={participant.profileImg} />
-              <AvatarFallback>{participant.name}</AvatarFallback>
-            </Avatar>
             {participant.name}
           </li>
         ))}
