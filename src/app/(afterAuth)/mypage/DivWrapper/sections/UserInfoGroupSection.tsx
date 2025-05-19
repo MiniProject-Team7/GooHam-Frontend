@@ -1,4 +1,5 @@
 "use client";
+
 import React, { JSX, useEffect, useState } from "react";
 import { Card, CardContent } from "../../../../../components/ui/card";
 import { Switch } from "../../../../../components/ui/switch";
@@ -50,7 +51,6 @@ export const UserInfoGroupSection = (): JSX.Element => {
   };
 
   if (loading) return <div>로딩 중...</div>;
-
   return (
     <section className="w-full max-w-[836px] my-8">
       <h2 className="mb-6 font-bold text-heading-md text-black">알림 설정</h2>

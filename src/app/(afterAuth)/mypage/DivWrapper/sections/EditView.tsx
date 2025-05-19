@@ -166,14 +166,6 @@ export const EditView = ({ setIsEditing }: { setIsEditing: (v: boolean) => void 
             />
             <span className="text-base text-gray-50">프로필 사진 수정하기</span>
           </Button>
-
-          <input
-            type="file"
-            ref={fileInputRef}
-            accept="image/*"
-            className="hidden"
-            onChange={handleImageUpload}
-          />
         </div>
 
         <div className="space-y-8 px-[110px]">

@@ -1,5 +1,6 @@
 "use client";
 
+
 import React, { useState, useEffect } from "react";
 import { Button } from "../../../../../components/ui/button";
 import {
@@ -27,6 +28,7 @@ const iconMap: { [key: string]: React.ReactNode } = {
   행사: <PartyPopper size={40} />,
   기타: <CircleEllipsis size={40} />,
 };
+
 
 export const categories = [
   { id: 1, name: "스포츠" },
@@ -114,12 +116,6 @@ export const ActionButtonSection = ({ selected, onChange, className }: Props) =>
           );
         })}
       </div>
-
-      {showWarning && (
-        <p className="mt-3 text-sm text-primary-500 font-medium">
-          카테고리는 최대 3개까지 선택할 수 있습니다.
-        </p>
-      )}
     </section>
   );
 };

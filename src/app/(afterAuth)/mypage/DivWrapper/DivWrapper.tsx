@@ -51,6 +51,7 @@ export const DivWrapper = (): JSX.Element => {
 
             {activeMenu === "기본 정보" ||
             activeMenu === "계정 정보" ||
+
             activeMenu === "알림 설정" ||
             activeMenu === "계정 삭제" ? (
               <Card className="rounded-xl">
