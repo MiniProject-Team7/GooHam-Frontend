@@ -226,10 +226,10 @@ GooHam-Frontend
    test/ : test code 개발 브랜치
 ```
 📎 브랜치 규칙 🌟
- - 브랜치는 `feature/이슈번호-기능명` 형태의 이름을 사용한다
+ - 브랜치는 `feature/이슈번호-기능명` 형태의 이름을 사용합니다.
     (Ex. **feature/1-login**, fix/2-edit-nickname, test/1-login)
- - 브랜치를 사용한 개발을 완료한 후, PR까지 완료하면 해당 브랜치는 삭제한다
- - 전체적인 흐름은 feature → develop → main 순으로 진행된다
+ - 브랜치를 사용한 개발을 완료한 후, PR까지 완료하면 해당 브랜치는 삭제합니다.
+ - 전체적인 흐름은 feature → develop → main 순으로 진행됩니다.
  - 커밋은 모두 소문자로 작성한다. *ex) feat: 로그인 API 생성, fix: 잘못된 응답값 수정*
 
 📎 커밋컨벤션 (커밋 규칙)
