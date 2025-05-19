@@ -1,5 +1,5 @@
 import PostDetailPageClient from "./PostDetailPageClient";
 
-export default function Page({ params }: { params: { id: string } }) {
+export default function PostDetail({ params }: { params: { id: string } }) {
   return <PostDetailPageClient postId={Number(params.id)} />;
 }

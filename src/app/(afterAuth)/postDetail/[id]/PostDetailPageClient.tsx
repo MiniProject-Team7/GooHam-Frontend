@@ -8,9 +8,7 @@ import CommentForm from "@/components/comments/CommentForm";
 import CommentList from "@/components/comments/CommentList";
 import JoinProfileCard from "@/components/posts/JoinProfileCard";
 import ParticipantList from "@/components/posts/ParticipantList";
-import { dummyParticipants } from "../../posts/postData";
-import { fetchParticipations } from "@/components/api/Participationapi";
-import { useAcceptedParticipations, useParticipations } from "@/components/hooks/useParticipation";
+import { useAcceptedParticipations } from "@/components/hooks/useParticipation";
 
 export default function ClientPostDetail({ postId }: { postId: number }) {
   const [post, setPost] = useState(null);
