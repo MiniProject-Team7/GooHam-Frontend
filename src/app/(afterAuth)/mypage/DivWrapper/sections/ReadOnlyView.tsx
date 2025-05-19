@@ -69,7 +69,6 @@ export const ReadOnlyView = ({ setIsEditing }: { setIsEditing: (v: boolean) => v
             </Avatar>
           </div>
 
-
           <div className="grid grid-cols-[max-content_1fr_max-content_1fr] gap-y-10 gap-x-6">
             {/* 이름 */}
             <div className="text-title-md font-semibold text-gray-40 col-span-1">이름</div>
@@ -80,6 +79,36 @@ export const ReadOnlyView = ({ setIsEditing }: { setIsEditing: (v: boolean) => v
             <div className="text-title-md font-medium col-span-1">{data.birth_date}</div>
 
             {/* 닉네임 */}
+
+            <div className="text-title-md font-semibold text-gray-40 col-span-1 mt-[10px]">
+              닉네임
+            </div>
+            <div className="text-title-md font-medium col-span-1 mt-[10px]">
+              {data.member_nickname}
+            </div>
+
+            {/* 전화번호호 */}
+            <div className="text-title-md font-semibold text-gray-40 col-span-1 mt-[10px]">
+              전화번호
+            </div>
+            <div className="text-title-md font-medium col-span-1 mt-[10px]">
+              {data.member_phone}
+            </div>
+
+            {/* 이메일 */}
+            <div className="text-title-md font-semibold text-gray-40 col-span-1 mt-[10px]">
+              이메일
+            </div>
+            <div className="text-title-md font-medium col-span-1 mt-[10px]">
+              {data.member_email}
+            </div>
+
+            {/* 카테고리 (1줄 전체) */}
+            <div className="text-title-md font-semibold text-gray-40 col-span-1 mt-[10px]">
+              카테고리
+            </div>
+            <div className="flex gap-2 flex-wrap col-span-1 mt-[5px]">
+              {data.interests.map((interest, index) => (
                 <Badge
                   key={index}
                   variant="outline"
