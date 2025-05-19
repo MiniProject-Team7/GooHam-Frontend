@@ -1,6 +1,5 @@
 "use client";
 
-
 import React, { useState, useEffect } from "react";
 import { Button } from "../../../../../components/ui/button";
 import {
@@ -29,7 +28,6 @@ const iconMap: { [key: string]: React.ReactNode } = {
   기타: <CircleEllipsis size={40} />,
 };
 
-
 export const categories = [
   { id: 1, name: "스포츠" },
   { id: 2, name: "일상" },
@@ -43,7 +41,7 @@ export const categories = [
   { id: 10, name: "기타" },
 ];
 
-type Category = { id: number; name: string };
+export type Category = { id: number; name: string };
 
 type Props = {
   selected: Category[];

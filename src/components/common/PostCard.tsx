@@ -47,7 +47,7 @@ const PostCard = ({ post }: { post: Post }) => {
 
           <div className="flex items-center gap-2 text-sm text-gray-40 mt-2">
             <Calendar className="w-4 h-4" />
-            <span>{post.scheduleStart}</span>
+            <span>{post.eventStart.replace("T", " ").slice(0, 16)}</span>
           </div>
           <div className="flex items-center gap-2 text-sm text-gray-40 mt-2">
             <MapPin className="w-4 h-4" />
