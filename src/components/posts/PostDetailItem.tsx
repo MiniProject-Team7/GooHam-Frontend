@@ -1,35 +1,41 @@
 "use client";
+import * as React from "react";
+import Link from "next/link";
 import { Card } from "@/components/ui/card";
 import { Badge } from "@/components/ui/badge";
+import { Carousel, CarouselApi, CarouselContent, CarouselItem, CarouselNext, CarouselPrevious } from "@/components/ui/carousel";
+import { usePresignedUrls } from "@/components/hooks/usePresignedImage";
 import { Post } from "@/types/post";
-import {
-  Carousel,
-  CarouselApi,
-  CarouselContent,
-  CarouselItem,
-  CarouselNext,
-  CarouselPrevious,
-} from "../ui/carousel";
-import { useCallback, useState } from "react";
+
+const DEFAULT_POST_IMAGE = "/images/default_post.png";
 
 const PostDetailItem = ({ post }: { post: Post }) => {
-  const [selectedIndex, setSelectedIndex] = useState(0);
-  const [slideCount, setSlideCount] = useState(0);
-  const [emblaApi, setEmblaApi] = useState<CarouselApi | null>(null);
+  // 1) presigned URL 훅 호출 (post.images: string[])
+  const presigned = usePresignedUrls(post.images);
+  
+  // 2) carousel state
+  const [selectedIndex, setSelectedIndex] = React.useState(0);
+  const [slideCount, setSlideCount]       = React.useState(0);
+  const [emblaApi, setEmblaApi]           = React.useState<CarouselApi | null>(null);
 
-  const handleApiInit = useCallback((api: CarouselApi) => {
+  const handleApiInit = React.useCallback((api: CarouselApi) => {
     setEmblaApi(api);
     setSlideCount(api.scrollSnapList().length);
-    // onSelect 콜백 등록
-    api.on("select", () => {
-      setSelectedIndex(api.selectedScrollSnap());
-    });
+    api.on("select", () => setSelectedIndex(api.selectedScrollSnap()));
   }, []);
+
+  // 3) 필요한 만큼만 URL 배열로 정규화
+  const urls = React.useMemo<string[]>(() => {
+    if (!presigned) return post.images.map(() => DEFAULT_POST_IMAGE);
+    if (Array.isArray(presigned)) {
+      return presigned.map((u) => u ?? DEFAULT_POST_IMAGE);
+    }
+    // (string) 단일값이 들어왔다면 첫 요소로 복제
+    return post.images.map(() => presigned);
+  }, [presigned, post.images]);
 
   return (
     <Card className="w-full p-6 rounded-xl mx-auto bg-white">
-      {/* <img src={post.image} alt={post.title} className="w-full h-80 object-cover rounded-xl" /> */}
-
       <div>
         <Carousel
           opts={{ loop: true, align: "center" }}
@@ -37,11 +43,11 @@ const PostDetailItem = ({ post }: { post: Post }) => {
           setApi={handleApiInit}
         >
           <CarouselContent className="flex gap-6 h-64">
-            {post.images.map((image, idx) => (
+            {urls.map((src, idx) => (
               <CarouselItem key={idx} className="pl-4">
                 <div className="h-full w-full overflow-hidden rounded-xl">
                   <img
-                    src={image}
+                    src={src}
                     alt={`${post.title} - ${idx + 1}`}
                     className="w-full h-64 object-cover"
                   />
@@ -50,8 +56,14 @@ const PostDetailItem = ({ post }: { post: Post }) => {
             ))}
           </CarouselContent>
 
-          <CarouselPrevious variant="ghost" className="left-2 bg-white/50 hover:bg-white/70" />
-          <CarouselNext variant="ghost" className="right-2 bg-white/50 hover:bg-white/70" />
+          <CarouselPrevious
+            variant="ghost"
+            className="left-2 bg-white/50 hover:bg-white/70"
+          />
+          <CarouselNext
+            variant="ghost"
+            className="right-2 bg-white/50 hover:bg-white/70"
+          />
 
           <div className="absolute bottom-4 left-1/2 -translate-x-1/2 bg-black/30 text-white rounded px-5 py-1 text-sm">
             {selectedIndex + 1} / {slideCount}
