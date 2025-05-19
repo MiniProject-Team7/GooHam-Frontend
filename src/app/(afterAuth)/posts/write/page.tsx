@@ -6,17 +6,25 @@ import { Input } from "@/components/ui/input";
 import { Textarea } from "@/components/ui/textarea";
 import { Label } from "@/components/ui/label";
 import { Badge } from "@/components/ui/badge";
-import { ActionButtonSection } from "@/app/(afterAuth)/mypage/DivWrapper/sections/ActionButtonSection";
+import {
+  ActionButtonSection,
+  Category,
+} from "@/app/(afterAuth)/mypage/DivWrapper/sections/ActionButtonSection";
 import { useRouter } from "next/navigation";
 import FileInput from "./FileInput";
 import { CreatePostRequest } from "@/types/post";
 import { createPost } from "@/components/api/postWriteApi";
+import { useAuthStore } from "@/components/common/useAuthStore";
+import { CheckDialog } from "../../participation/Alertmessage";
 
 export default function PostWrite() {
-  const [selected, setSelected] = useState<string[]>([]);
+  const [selected, setSelected] = useState<Category[]>([]);
   const [files, setFiles] = useState<File[]>([]);
   const [errors, setErrors] = useState<{ [key: string]: boolean }>({});
   const [imageError, setImageError] = useState<string>("");
+  const userId = useAuthStore((state) => state.userId);
+  const [dialogOpen, setDialogOpen] = useState(false);
+  const [dialogMessage, setDialogMessage] = useState({ title: "", description: "" });
 
   const categories = [
     { id: 1, name: "스포츠" },
@@ -118,11 +126,9 @@ export default function PostWrite() {
   const handleRegister = async () => {
     try {
       if (!validateFields()) return;
-
-      console.log("myPostData =?????\n", myPostData);
-      console.log(files);
+      if (!userId) return;
       const req: CreatePostRequest = {
-        userId: 1,
+        userId: userId,
         title: myPostData.title,
         content: myPostData.content,
         categoryId: categories.find((cat) => cat.name === myPostData.categoryName)!.id,
@@ -136,11 +142,22 @@ export default function PostWrite() {
       };
       await createPost(req);
       alert("게시글 등록 성공!");
+      setDialogMessage({
+        title: "게시글 등록 성공!",
+        description: "게시글이 정상적으로 등록되었습니다.",
+      });
+      setDialogOpen(true);
+
       //  TODO. 이거 dialog로 변경
       router.push("/posts");
     } catch (e) {
       console.error(e);
       alert("실패!");
+      setDialogMessage({
+        title: "등록 실패",
+        description: "게시글 등록 중 문제가 발생했습니다.",
+      });
+      setDialogOpen(true);
       //  TODO. 이거 dialog로 변경
     }
   };
@@ -247,12 +264,11 @@ export default function PostWrite() {
           <ActionButtonSection
             selected={selected}
             onChange={(selectedArr) => {
-              // 배열에서 마지막 클릭된 값 하나만 사용
-              const latest = selectedArr[selectedArr.length - 1] ?? "";
-              setSelected(latest ? [latest] : []);
+              const latest = selectedArr[selectedArr.length - 1] ?? { id: 0, name: "" };
+              setSelected(latest.name ? [latest] : []);
               setMyPostData((prev) => ({
                 ...prev,
-                categoryName: latest,
+                categoryName: latest.name,
               }));
             }}
             className="w-[80%] grid-cols-10"
@@ -292,6 +308,17 @@ export default function PostWrite() {
           </div>
         </div>
       </div>
+      <CheckDialog
+        open={dialogOpen}
+        setOpen={setDialogOpen}
+        title={dialogMessage.title}
+        description={dialogMessage.description}
+        onConfirm={() => {
+          if (dialogMessage.title === "게시글 등록 성공!") {
+            router.push("/posts");
+          }
+        }}
+      />
     </div>
   );
 }
