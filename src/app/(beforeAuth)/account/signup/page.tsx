@@ -179,7 +179,7 @@ export default function Signup1Page() {
 
     try {
   setIsLoading(true);
-  const res = await axiosInstance.post<SignupResponse>("/gooham/users/join", payload);
+  const res = await axiosInstance.post<SignupResponse>("/users/join", payload);
   if (res.data.status === "success") {
     setStep(3);
   } else {

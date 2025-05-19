@@ -18,7 +18,7 @@ import { useAuthStore } from "../common/useAuthStore";
 import { Button } from "../ui/button";
 import { Pen } from "lucide-react";
 import { useUserPosts } from "../hooks/usePosts";
-import { deletePost } from "../api/postWriteApi";
+import { deletePost } from "../api/PostWriteApi";
 import { useRouter } from "next/navigation";
 import { CheckDialog } from "@/app/(afterAuth)/participation/Alertmessage";
 
@@ -101,9 +101,9 @@ const PostDetailItem = ({ post }: { post: Post }) => {
           <CarouselPrevious variant="ghost" className="left-2 bg-white/50 hover:bg-white/70" />
           <CarouselNext variant="ghost" className="right-2 bg-white/50 hover:bg-white/70" />
 
-          <div className="absolute bottom-4 left-1/2 -translate-x-1/2 bg-black/30 text-white rounded px-5 py-1 text-sm">
+          {/* <div className="absolute bottom-4 left-1/2 -translate-x-1/2 bg-black/30 text-white rounded px-5 py-1 text-sm">
             {selectedIndex + 1} / {slideCount}
-          </div>
+          </div> */}
         </Carousel>
       </div>
       <div className="flex items-center justify-between mb-1">
