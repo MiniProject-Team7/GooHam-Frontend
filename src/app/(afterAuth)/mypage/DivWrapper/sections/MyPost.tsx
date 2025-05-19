@@ -85,7 +85,7 @@ export const MyPost = (): JSX.Element => {
           status: string;
           message: string;
           data: Post[];
-        }>(`/posts/${user}`);
+        }>(`/posts/users/${user}`);
         // console.log(res.data);
         setMyPosts(
           res.data.data.map((post) => ({
@@ -162,20 +162,20 @@ export const MyPost = (): JSX.Element => {
         <TabsList className="w-full justify-start gap-6 bg-white h-auto p-0">
           <TabsTrigger
             value="posts"
-            className="cursor-pointer text-title-lg tracking-wide leading-[24px] data-[state=active]:text-primary-500 transition-all duration-300"
+            className="bg-white cursor-pointer text-title-lg tracking-wide leading-[24px] data-[state=active]:text-primary-500 transition-all duration-300"
           >
             작성한 게시글
           </TabsTrigger>
           <TabsTrigger
             value="comments"
-            className="cursor-pointer text-title-lg tracking-wide leading-[24px] data-[state=active]:text-primary-500 transition-all duration-300"
+            className="bg-white cursor-pointer text-title-lg tracking-wide leading-[24px] data-[state=active]:text-primary-500 transition-all duration-300"
           >
             작성한 댓글
           </TabsTrigger>
         </TabsList>
 
         {/* 작성한 게시글 */}
-        <TabsContent value="posts" className="mt-6 space-y-6 overflow-x-auto">
+        <TabsContent value="posts" className="mt-6 space-y-6 ml-[55px]">
           {Array.isArray(myPosts) &&
             myPosts.map((post) => (
               <div key={post.id} className="inline-block min-w-[690px] max-w-[940px] mx-auto">
