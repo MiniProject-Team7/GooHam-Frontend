@@ -10,7 +10,7 @@ import { ActionButtonSection } from "@/app/(afterAuth)/mypage/DivWrapper/section
 import { useRouter } from "next/navigation";
 import FileInput from "./FileInput";
 import { CreatePostRequest } from "@/types/post";
-import { createPost } from "@/components/api/PostWriteApi";
+import { createPost } from "@/components/api/postWriteApi";
 
 export default function PostWrite() {
   const [selected, setSelected] = useState<string[]>([]);
@@ -136,9 +136,12 @@ export default function PostWrite() {
       };
       await createPost(req);
       alert("게시글 등록 성공!");
+      //  TODO. 이거 dialog로 변경
+      router.push("/posts");
     } catch (e) {
       console.error(e);
       alert("실패!");
+      //  TODO. 이거 dialog로 변경
     }
   };
 

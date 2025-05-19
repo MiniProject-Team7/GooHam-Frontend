@@ -1,11 +1,11 @@
 import CommentItem from "@/components/comments/CommentItem";
 import { Comment } from "@/types/comment";
 
-const CommentList = ({ comments }: { comments: Comment[] }) => {
+const CommentList = ({ comments, postId }: { comments: Comment[]; postId: number }) => {
   return (
     <div>
-      {comments.map((comment, index) => (
-        <CommentItem key={index} comment={comment} />
+      {comments?.map((comment, index) => (
+        <CommentItem key={index} comment={comment} postId={postId} />
       ))}
     </div>
   );
