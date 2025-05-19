@@ -22,8 +22,14 @@ import { deletePost } from "../api/postWriteApi";
 import { useRouter } from "next/navigation";
 import { CheckDialog } from "@/app/(afterAuth)/participation/Alertmessage";
 
+const DEFAULT_POST_IMAGE = "/images/default_post.png";
+
 const PostDetailItem = ({ post }: { post: Post }) => {
   const router = useRouter();
+  // 1) presigned URL 훅 호출 (post.images: string[])
+  const presigned = usePresignedUrls(post.images);
+
+  // 2) carousel state
   const [selectedIndex, setSelectedIndex] = useState(0);
   const [slideCount, setSlideCount] = useState(0);
   const [emblaApi, setEmblaApi] = useState<CarouselApi | null>(null);
@@ -37,13 +43,10 @@ const PostDetailItem = ({ post }: { post: Post }) => {
     isError: userPostIsError,
   } = useUserPosts(userId);
 
-  const handleApiInit = useCallback((api: CarouselApi) => {
+  const handleApiInit = React.useCallback((api: CarouselApi) => {
     setEmblaApi(api);
     setSlideCount(api.scrollSnapList().length);
-    // onSelect 콜백 등록
-    api.on("select", () => {
-      setSelectedIndex(api.selectedScrollSnap());
-    });
+    api.on("select", () => setSelectedIndex(api.selectedScrollSnap()));
   }, []);
   async function handleDeletePost() {
     try {
@@ -62,6 +65,17 @@ const PostDetailItem = ({ post }: { post: Post }) => {
       setDialogOpen(true);
     }
   }
+
+  // 3) 필요한 만큼만 URL 배열로 정규화
+  const urls = React.useMemo<string[]>(() => {
+    if (!presigned) return post.images.map(() => DEFAULT_POST_IMAGE);
+    if (Array.isArray(presigned)) {
+      return presigned.map((u) => u ?? DEFAULT_POST_IMAGE);
+    }
+    // (string) 단일값이 들어왔다면 첫 요소로 복제
+    return post.images.map(() => presigned);
+  }, [presigned, post.images]);
+
   return (
     <Card className="w-full p-6 rounded-xl mx-auto bg-white">
       <div>
@@ -71,11 +85,11 @@ const PostDetailItem = ({ post }: { post: Post }) => {
           setApi={handleApiInit}
         >
           <CarouselContent className="flex gap-6 h-64">
-            {post.images.map((image, idx) => (
+            {urls.map((src, idx) => (
               <CarouselItem key={idx} className="pl-4">
                 <div className="h-full w-full overflow-hidden rounded-xl">
                   <img
-                    src={image}
+                    src={src}
                     alt={`${post.title} - ${idx + 1}`}
                     className="w-full h-64 object-cover"
                   />

@@ -46,10 +46,6 @@ const JoinProfileCard = ({ post }: { post: Post }) => {
   return (
     <Card className="p-4 w-full rounded-xl text-sm bg-white gap-2">
       <div className="flex items-center gap-2">
-        <Avatar className="w-20 h-20">
-          <AvatarImage src="/public/images/cat.jpg" />
-          <AvatarFallback>{post.userName}</AvatarFallback>
-        </Avatar>
         <div>
           <div className="pl-2 pt-2 text-lg font-semibold mb-2">{post.userName}</div>
           {/* <p className="text-sm text-gray-500">2001.01.08</p> */}

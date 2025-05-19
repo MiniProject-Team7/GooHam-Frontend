@@ -101,18 +101,16 @@ export default function RepasswordPage() {
       return;
     }
     try {
-      // 백엔드 API 경로로 수정: /gooham/users/verifyCode
-      // 백엔드는 code를 int로 받으므로 parseInt 사용
       const response = await axiosInstance.post("/users/verifyCode", {
         email,
         code: parseInt(code, 10),
       });
 
       // 타입스크립트 타입 처리
-      const responseData = response.data as string;
+      // const responseData = response.data as string;
 
       // 백엔드 응답 처리
-      if (responseData === "인증 성공") {
+      if (response.data === "인증되었습니다.") {
         setCodeError("");
         setCodeVerified(true);
         if (timerRef.current) {
