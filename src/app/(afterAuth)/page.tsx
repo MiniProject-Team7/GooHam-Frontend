@@ -8,9 +8,11 @@ import { Avatar, AvatarImage, AvatarFallback } from "@/components/ui/avatar";
 import { Button } from "@/components/ui/button";
 import { Calendar, MapPin } from "lucide-react";
 import { statusToBadgeVariant } from "@/utils/statusVariant";
-
 import { useAllPosts } from "@/components/hooks/usePosts";
+import { useFetchUserProfile } from "@/components/common/useProfileStore";
+import { usePresignedUrls } from "@/components/hooks/usePresignedImage";
 import type { Post } from "@/types/post";
+
 
 const cards = [
   { title: "첫 번째 카드", desc: "이곳에 설명이 들어갑니다." },
@@ -23,6 +25,18 @@ export default function HomePage() {
   const [selectedIndex, setSelectedIndex] = React.useState(0);
   const [slideCount, setSlideCount] = React.useState(0);
 
+  const { data: profile } = useFetchUserProfile();
+  
+  const imageKey = profile?.profileImage;
+  const presigned = usePresignedUrls(imageKey ?? "");
+  
+  const defaultAvatar = "/images/default_image.png";
+
+  const avatarSrc = React.useMemo(() => {
+    if (presigned === null) return defaultAvatar;
+    if (Array.isArray(presigned)) return presigned[0] ?? defaultAvatar;
+    return presigned;
+  }, [presigned]);
   
   // Embla가 초기화된 후 API를 저장하고, 슬라이드 개수 세팅
   const handleApiInit = React.useCallback((api: CarouselApi) => {
@@ -96,14 +110,8 @@ export default function HomePage() {
                   {/* 1) 헤더 */}
                   <CardHeader className="flex items-start justify-between px-4 pt-4 pb-2">
                     <div className="flex items-center space-x-3">
-                      <Avatar className="w-12 h-12 ring-1 ring-gray-200">
-                        <AvatarImage src={post.images[0]} alt="작성자 아바타" />
-                        <AvatarFallback>JD</AvatarFallback>
-                      </Avatar>
-                      <div>
                         <CardTitle className="text-base">{post.title}</CardTitle>
                         <div className="text-xs text-muted-foreground">{post.userName}</div>
-                      </div>
                     </div>
                     <CardAction>
                       <Badge variant={statusToBadgeVariant(post.status)} className="px-3 py-1 rounded-full text-xs">
@@ -152,11 +160,11 @@ export default function HomePage() {
             {/* 2) 프로필 정보 */}
             <div className="flex flex-col items-center space-y-3 mb-6">
               <Avatar className="w-20 h-20">
-                <AvatarImage src="/my-avatar.png" alt="내 아바타" />
+                <AvatarImage src={avatarSrc} alt="내 아바타" />
                 <AvatarFallback>ME</AvatarFallback>
               </Avatar>
-              <h3 className="text-base font-semibold">홍길동</h3>
-              <p className="text-sm text-muted-foreground">hong@email.com</p>
+              <h3 className="text-base font-semibold">{profile?.nickname}</h3>
+              <p className="text-sm text-muted-foreground">{profile?.email}</p>
               <Button variant="edit" size="sm" className="mt-2 w-full">
                 프로필 수정하기
               </Button>
@@ -166,7 +174,7 @@ export default function HomePage() {
             <div className="space-y-2">
               <div className="text-sm font-medium">관심 카테고리</div>
               <div className="flex flex-wrap gap-2">
-                {["스포츠", "일상", "자기계발"].map((cat) => (
+                {profile?.interests.map((cat) => (
                   <Badge
                     key={cat}
                     variant="default"

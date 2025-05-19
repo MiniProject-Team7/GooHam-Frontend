@@ -24,6 +24,7 @@ export function ParticipationCard({
   onApprove,
   onReject,
 }: ParticipationCardProps) {    
+
 const handleApprove = () => {
      console.log("Approve clicked for", data.id)
      onApprove?.(data.id)  // 여기서 prop 호출
