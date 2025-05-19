@@ -4,7 +4,7 @@ import { useState } from "react";
 import { Avatar, AvatarFallback, AvatarImage } from "@/components/ui/avatar";
 import { Card } from "../ui/card";
 import { Button } from "@/components/ui/button";
-import { Input } from "@/components/ui/input";
+//import { Input } from "@/components/ui/input";
 import { Textarea } from "@/components/ui/textarea";
 import { Comment } from "@/types/comment";
 import { ConfirmDialog } from "@/app/(afterAuth)/participation/Alertmessage";

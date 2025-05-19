@@ -1,7 +1,49 @@
 "use client";
 
+interface ApiError {
+  response: {
+    status: number;
+    data: { message: string };
+  };
+}
+
+function isApiError(err: unknown): err is ApiError {
+  // 1) err가 객체인지 확인
+  if (typeof err !== "object" || err === null) return false;
+
+  // 2) response 프로퍼티가 있는지 확인
+  if (!("response" in err)) return false;
+
+  // 3) response를 unknown으로 받아서
+  const response = (err as { response?: unknown }).response;
+  if (typeof response !== "object" || response === null) return false;
+
+  // 4) response.status 와 response.data 프로퍼티 검사
+  if (!("status" in response) || !("data" in response)) return false;
+
+  return true;
+}
+
+interface SignupResponse {
+  status: "success" | "error" | string;
+  message: string;
+  data: {
+    member_email: string;
+    member_nickname: string;
+    member_name: string;
+    member_phone: string;
+    member_introduce: string;
+    birth_date: string;
+    created_at: string;
+    profile_image: string;
+  };
+}
+
+
 import React, { useState } from "react";
 // import { useRouter } from "next/navigation";
+// import axios, { AxiosError } from "axios";
+import axiosInstance from "@/utils/axiosInstance";
 import Image from "next/image";
 import Link from "next/link";
 import { Card, CardContent, CardFooter } from "@/components/ui/card";
@@ -9,7 +51,7 @@ import { Input } from "@/components/ui/input";
 import { Checkbox } from "@/components/ui/checkbox";
 import { Button } from "@/components/ui/button";
 import { Eye, EyeOff, PartyPopper } from "lucide-react";
-import { ActionButtonSection } from "@/app/mypage/DivWrapper/sections/ActionButtonSection";
+import { ActionButtonSection } from "@/app/(afterAuth)/mypage/DivWrapper/sections/ActionButtonSection";
 
 
 export default function Signup1Page() {
@@ -35,13 +77,8 @@ export default function Signup1Page() {
   const [nickname, setNickname] = useState("");
   const [birth, setBirth] = useState("");
   const [phone, setPhone] = useState("");
-  
-  const [nameError, setNameError] = useState("");
-  const [nicknameError, setNicknameError] = useState("");
-  const [birthError, setBirthError] = useState("");
-  const [phoneError, setPhoneError] = useState("");
-  const [categoryError, setCategoryError] = useState("");
-  const [selectedCats, setSelectedCats] = useState<string[]>([]);
+
+  const [isLoading, setIsLoading] = useState(false);
 
   const toggleAll = () => {
     const next = !agreeAll;
@@ -61,6 +98,7 @@ export default function Signup1Page() {
     if (!email) { setEmailError("required"); ok = false; }
     if (!password) { setPasswordError("required"); ok = false; }
     if (!confirmPwd) { setConfirmError("required"); ok = false; }
+
     if (!ok) return;
 
     if (!/^\S+@\S+\.com$/.test(email)) {
@@ -75,7 +113,8 @@ export default function Signup1Page() {
 
     if (!agreeTerms || !agreePrivacy) {
       setTermsError("required");
-      return;  
+      return;
+
     }
 
     setStep(2);
@@ -85,13 +124,30 @@ export default function Signup1Page() {
     setStep(1);
   };
 
-  const handleSignup = () => {
-    setNameError("");
-    setNicknameError("");
-    setBirthError("");
-    setPhoneError("");
-    setCategoryError("");
+  // const handleSignup = () => {
+  //   setNameError("");
+  //   setNicknameError("");
+  //   setBirthError("");
+  //   setPhoneError("");
+  //   setCategoryError("");
 
+  //   let ok = true;
+  //   if (!name)    { setNameError("required"); ok = false; }
+  //   if (!nickname){ setNicknameError("required"); ok = false; }
+  //   if (!birth)   { setBirthError("required"); ok = false; }
+  //   if (!phone)   { setPhoneError("required"); ok = false; }
+  //   if (selectedCats.length < 1 || selectedCats.length > 3) {
+  //     setCategoryError("required");
+  //     ok = false;
+  //   }
+  //   if (!ok) return;
+
+  //   setStep(3);
+  // };
+
+  const handleSignup = async () => {
+    // 클라이언트 유효성 검사
+    setNameError(""); setNicknameError(""); setBirthError(""); setPhoneError(""); setCategoryError("");
     let ok = true;
     if (!name)    { setNameError("required"); ok = false; }
     if (!nickname){ setNicknameError("required"); ok = false; }
@@ -103,7 +159,45 @@ export default function Signup1Page() {
     }
     if (!ok) return;
 
+    // payload 구성
+    const payload = {
+      member_email: email,
+      member_password: password,
+      member_name: name,
+      member_nickname: nickname,
+      member_phone: phone,
+      member_introduce: "",
+      profile_image: "",
+      birth_date: birth,
+    };
+
+    try {
+  setIsLoading(true);
+  const res = await axiosInstance.post<SignupResponse>("/gooham/users/join", payload);
+  if (res.data.status === "success") {
     setStep(3);
+  } else {
+    alert(res.data.message);
+  }
+} catch (error: unknown) {
+  if (isApiError(error)) {
+    const { status, data: { message } } = error.response;
+    if (status === 409) {
+      if (message.includes("이메일")) setEmailError("duplicate");
+      else if (message.includes("닉네임")) setNicknameError("duplicate");
+      else alert(message);
+    } else {
+      alert(message || "회원가입 중 오류가 발생했습니다.");
+    }
+  } else {
+    console.error("알 수 없는 오류:", error);
+    alert("회원가입 중 알 수 없는 오류가 발생했습니다.");
+  }
+} finally {
+  setIsLoading(false);
+}
+
+
   };
 
   const handleCatChange = (newSelected: string[]) => {
@@ -168,6 +262,7 @@ export default function Signup1Page() {
           </CardContent>
 
           <div className="px-6">
+
               {emailError === "required" ? (
                 <p className="text-center text-sm text-red-500">이메일을 입력해 주세요.</p>
               ) : emailError === "invalid" ? (
@@ -283,12 +378,13 @@ export default function Signup1Page() {
         
                   <CardFooter className="mt-auto flex flex-col gap-3 px-6">
                     <Button variant="outline" className="block w-3/4 mx-auto border-gray-300" onClick={handleBackToStep1}>뒤로 가기</Button>
-                    <Button className="block w-3/4 mx-auto" onClick={handleSignup}>회원가입 완료하기</Button>
+                    <Button className="block w-3/4 mx-auto" onClick={handleSignup} disabled={isLoading}>{isLoading ? "가입 중..." : "회원가입 완료하기"}</Button>
                   </CardFooter>
                 </Card>
                 )}
 
             {step === 3 && (
+
           <Card className="w-[500px] mt-[50px] mr-[100px] p-6 flex flex-col border-none shadow-none">
             <h1 className="text-center text-2xl font-bold mt-[30px] mb-[1px]">GooHam 회원가입</h1>
             <CardContent className="flex flex-col items-center space-y-4 py-8">
@@ -305,3 +401,4 @@ export default function Signup1Page() {
     </div>
   );
 }
+
