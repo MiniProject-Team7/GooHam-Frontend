@@ -13,7 +13,7 @@ import {
 } from "@/components/ui/carousel";
 import { usePresignedUrls } from "@/components/hooks/usePresignedImage";
 import { Post } from "@/types/post";
-import { useCallback, useState } from "react";
+import { useEffect, useState, useCallback } from "react";
 import { useAuthStore } from "../common/useAuthStore";
 import { Button } from "../ui/button";
 import { Pen } from "lucide-react";
@@ -43,11 +43,6 @@ const PostDetailItem = ({ post }: { post: Post }) => {
     isError: userPostIsError,
   } = useUserPosts(userId);
 
-  const handleApiInit = React.useCallback((api: CarouselApi) => {
-    setEmblaApi(api);
-    setSlideCount(api.scrollSnapList().length);
-    api.on("select", () => setSelectedIndex(api.selectedScrollSnap()));
-  }, []);
   async function handleDeletePost() {
     try {
       await deletePost(post.id, Number(userId));
@@ -76,35 +71,54 @@ const PostDetailItem = ({ post }: { post: Post }) => {
     return post.images.map(() => presigned);
   }, [presigned, post.images]);
 
+  const handleApiInit = useCallback((api: CarouselApi) => {
+    setEmblaApi(api);
+    setSlideCount(api.scrollSnapList().length);
+    setSelectedIndex(api.selectedScrollSnap());
+    api.on("select", () => {
+      setSelectedIndex(api.selectedScrollSnap());
+    });
+  }, []);
+
+  // 3. 이미지 URL이 바뀌었을 때 슬라이드 개수 초기화
+  useEffect(() => {
+    if (emblaApi) {
+      setSlideCount(emblaApi.scrollSnapList().length);
+      setSelectedIndex(emblaApi.selectedScrollSnap());
+    }
+  }, [emblaApi, urls]);
+
   return (
     <Card className="w-full p-6 rounded-xl mx-auto bg-white">
       <div>
-        <Carousel
-          opts={{ loop: true, align: "center" }}
-          className="relative w-full max-w-full mx-auto h-64"
-          setApi={handleApiInit}
-        >
-          <CarouselContent className="flex gap-6 h-64">
-            {urls.map((src, idx) => (
-              <CarouselItem key={idx} className="pl-4">
-                <div className="h-full w-full overflow-hidden rounded-xl">
-                  <img
-                    src={src}
-                    alt={`${post.title} - ${idx + 1}`}
-                    className="w-full h-64 object-cover"
-                  />
-                </div>
-              </CarouselItem>
-            ))}
-          </CarouselContent>
+        {urls.length > 0 && (
+          <Carousel
+            opts={{ loop: true, align: "center" }}
+            className="relative w-full max-w-full mx-auto h-64"
+            setApi={handleApiInit}
+          >
+            <CarouselContent className="flex gap-6 h-64">
+              {urls.map((src, idx) => (
+                <CarouselItem key={idx} className="pl-4">
+                  <div className="h-full w-full overflow-hidden rounded-xl">
+                    <img
+                      src={src}
+                      alt={`${post.title} - ${idx + 1}`}
+                      className="w-full h-64 object-cover"
+                    />
+                  </div>
+                </CarouselItem>
+              ))}
+            </CarouselContent>
 
-          <CarouselPrevious variant="ghost" className="left-2 bg-white/50 hover:bg-white/70" />
-          <CarouselNext variant="ghost" className="right-2 bg-white/50 hover:bg-white/70" />
+            <CarouselPrevious variant="ghost" className="left-2 bg-white/50 hover:bg-white/70" />
+            <CarouselNext variant="ghost" className="right-2 bg-white/50 hover:bg-white/70" />
 
-          <div className="absolute bottom-4 left-1/2 -translate-x-1/2 bg-black/30 text-white rounded px-5 py-1 text-sm">
-            {selectedIndex + 1} / {slideCount}
-          </div>
-        </Carousel>
+            <div className="absolute bottom-4 left-1/2 -translate-x-1/2 bg-black/30 text-white rounded px-5 py-1 text-sm">
+              {selectedIndex + 1} / {slideCount}
+            </div>
+          </Carousel>
+        )}
       </div>
       <div className="flex items-center justify-between mb-1">
         <div className="text-2xl font-bold mb-1">{post.title}</div>
