@@ -1,5 +1,7 @@
-This is a [Next.js](https://nextjs.org) project bootstrapped with [`create-next-app`](https://nextjs.org/docs/app/api-reference/cli/create-next-app).
+[![GOOHAM](./4.png)](http://localhost:3000/)
 
+# GOOHAM
+유레카의 다양한 파티를 구합니다, 구함!
 ## Getting Started
 
 First, run the development server:
