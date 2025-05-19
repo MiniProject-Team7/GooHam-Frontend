@@ -1,20 +1,17 @@
 [![GOOHAM](./5.png)](http://localhost:3000/)
 
-# GOOHAM
-유레카의 다양한 파티를 구합니다, 구함!
-## Getting Started
-
-First, run the development server:
-
-```bash
-npm run dev
-# or
-yarn dev
-# or
-pnpm dev
-# or
-bun dev
+# 0. Getting Started (시작하기)
 ```
+$ npm run dev
+```
+[서비스 링크](http://localhost:3000/)
+
+# 1. Project Overview (프로젝트 개요)
+- 프로젝트 이름: GOOHAM
+- 프로젝트 설명: 유레카의 다양한 주제와 관심사를 바탕으로 팀원을 모집하고, 함께할 사람들을 손쉽게 찾을 수 있는 플랫폼
+
+# 2. Team Members (팀원 및 팀 소개)
+[![GOOHAM](./6.png)]
 
 Open [http://localhost:3000](http://localhost:3000) with your browser to see the result.
 
