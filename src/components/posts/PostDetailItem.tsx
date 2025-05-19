@@ -72,7 +72,7 @@ const PostDetailItem = ({ post }: { post: Post }) => {
         <div>
           <span className="font-semibold">이벤트 일정</span>
           <br />
-          {post.scheduleStart}
+          {post.eventStart}
         </div>
         <div>
           <span className="font-semibold">참여 인원</span>
