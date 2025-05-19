@@ -9,7 +9,6 @@ import { Textarea } from "@/components/ui/textarea";
 import { Comment } from "@/types/comment";
 import { ConfirmDialog } from "@/app/(afterAuth)/participation/Alertmessage";
 import { useComment, useCreateComment } from "../hooks/useComment";
-import { updateComment } from "../api/commentApi";
 import { useAuthStore } from "../common/useAuthStore";
 
 const CommentItem = ({ comment, postId }: { comment: Comment; postId: number }) => {
@@ -19,7 +18,6 @@ const CommentItem = ({ comment, postId }: { comment: Comment; postId: number }) 
   const [isDeleted, setIsDeleted] = useState(false);
 
   const [content, setContent] = useState("");
-
   const { updateComment, deleteComment } = useComment(postId);
 
   const userId = useAuthStore((state) => state.userId);
@@ -96,7 +94,7 @@ const CommentItem = ({ comment, postId }: { comment: Comment; postId: number }) 
       ) : (
         <p className="mt-2 text-black">{currentContent}</p>
       )}
-      {comment.userId === userId && (
+      {comment.userId === Number(userId) && (
         <div className="flex justify-end gap-2">
           {isEditing ? (
             <>
