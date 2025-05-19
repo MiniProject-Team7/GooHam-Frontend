@@ -85,7 +85,7 @@ export const MyPost = (): JSX.Element => {
           status: string;
           message: string;
           data: Post[];
-        }>(`/posts/my/${user}`);
+        }>(`/posts/${user}`);
         // console.log(res.data);
         setMyPosts(
           res.data.data.map((post) => ({

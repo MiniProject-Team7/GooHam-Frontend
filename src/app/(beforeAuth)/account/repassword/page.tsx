@@ -10,8 +10,6 @@ import { Eye, EyeOff, LockKeyhole } from "lucide-react";
 import axiosInstance from "@/utils/axiosInstance";
 import { useAuthStore } from "@/components/common/useAuthStore";
 
-// const DUMMY_CODE = "123456";
-
 export default function RepasswordPage() {
   const [step, setStep] = useState(1);
 
@@ -69,7 +67,21 @@ export default function RepasswordPage() {
     }
 
     try {
-      await axiosInstance.post("/users/verifyCode", { email }); // ← 실제 API 경로
+      // 백엔드 API 경로로 수정: /gooham/users/generateCode
+      const response = await axiosInstance.post("/users/generateCode", { email });
+
+      // 타입스크립트 타입 처리
+      const responseData = response.data as string;
+
+      // 백엔드 응답 처리
+      if (responseData === "없는 계정의 이메일입니다.") {
+        setEmailError("notfound");
+        return;
+      } else if (responseData === "이미 삭제된 계정입니다.") {
+        setEmailError("deleted");
+        return;
+      }
+
       setEmailError("");
       setCodeSent(true);
       startTimer();
@@ -89,12 +101,26 @@ export default function RepasswordPage() {
       return;
     }
     try {
-      await axiosInstance.post("/users/verifyCode", { email, code });
-      setCodeError("");
-      setCodeVerified(true);
-      if (timerRef.current) {
-        clearInterval(timerRef.current);
-        timerRef.current = null;
+      // 백엔드 API 경로로 수정: /gooham/users/verifyCode
+      // 백엔드는 code를 int로 받으므로 parseInt 사용
+      const response = await axiosInstance.post("/users/verifyCode", {
+        email,
+        code: parseInt(code, 10),
+      });
+
+      // 타입스크립트 타입 처리
+      const responseData = response.data as string;
+
+      // 백엔드 응답 처리
+      if (responseData === "인증 성공") {
+        setCodeError("");
+        setCodeVerified(true);
+        if (timerRef.current) {
+          clearInterval(timerRef.current);
+          timerRef.current = null;
+        }
+      } else {
+        setCodeError("wrong");
       }
     } catch (err) {
       console.error(err);
@@ -114,13 +140,31 @@ export default function RepasswordPage() {
       return;
     }
     try {
-      await axiosInstance.post("/users/change_password", {
-        email,
+      // 백엔드 API 경로로 수정: /gooham/users/change_password
+      // 백엔드 요청 파라미터에 맞게 수정
+      const response = await axiosInstance.post("/users/change_password", {
+        member_email: email, // 백엔드에서 'member_email'로 받음
         newPassword: newPwd,
       });
-      setStep(2); // 완료 화면으로 이동
+
+      // 타입스크립트 타입 처리 - 응답 데이터 타입 추가
+      interface ResponseType {
+        message?: string;
+        [key: string]: unknown;
+      }
+
+      // 응답 처리 (타입 단언 사용)
+      const responseData = response.data as ResponseType;
+
+      if (responseData.message && responseData.message.includes("성공")) {
+        setStep(2); // 완료 화면으로 이동
+      } else {
+        // 에러 처리
+        setConfirmPwdError("changefail");
+      }
     } catch (err) {
       console.error(err);
+      setConfirmPwdError("changefail");
     }
   };
 
@@ -175,6 +219,15 @@ export default function RepasswordPage() {
                   )}
                   {emailError === "invalid" && (
                     <p className="text-sm text-red-500 mt-1">이메일 양식을 확인해 주세요.</p>
+                  )}
+                  {emailError === "notfound" && (
+                    <p className="text-sm text-red-500 mt-1">등록되지 않은 이메일입니다.</p>
+                  )}
+                  {emailError === "deleted" && (
+                    <p className="text-sm text-red-500 mt-1">삭제된 계정입니다.</p>
+                  )}
+                  {emailError === "sendfail" && (
+                    <p className="text-sm text-red-500 mt-1">인증번호 발송에 실패했습니다.</p>
                   )}
                 </div>
                 <Button className="block w-3/4 mx-auto " onClick={sendCode}>
@@ -285,6 +338,9 @@ export default function RepasswordPage() {
 
                 {confirmPwdError === "required" && (
                   <p className="px-2 text-sm text-red-500">비밀번호를 입력해 주세요.</p>
+                )}
+                {confirmPwdError === "changefail" && (
+                  <p className="px-2 text-sm text-red-500">비밀번호 변경에 실패했습니다.</p>
                 )}
                 {pwdMismatch && (
                   <p className="px-2 text-sm text-red-500">비밀번호가 일치하지 않습니다.</p>
