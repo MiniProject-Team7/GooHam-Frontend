@@ -75,10 +75,6 @@ const CommentItem = ({ comment, postId }: { comment: Comment; postId: number }) 
   return (
     <Card className="p-4 mb-4 bg-white">
       <div className="flex items-center gap-2">
-        <Avatar>
-          <AvatarImage src={comment.profileImg} />
-          <AvatarFallback>{comment.userName[0]}</AvatarFallback>
-        </Avatar>
         <div>
           <p className="font-semibold">{comment.userName}</p>
           <p className="text-sm text-black">{comment.createdAt}</p>

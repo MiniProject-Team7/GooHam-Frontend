@@ -6,6 +6,9 @@ import { API_BASE_URL } from "@/components/common/config";
 const axiosInstance = axios.create({
   baseURL: `${API_BASE_URL}/gooham`, // API 루트 경로
   withCredentials: true, // 쿠키 인증 필요 시 true
+  headers: {                    
+    "Content-Type": "application/json",
+  },
 });
 
 // 토큰 자동 추가

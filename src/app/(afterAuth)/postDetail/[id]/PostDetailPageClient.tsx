@@ -10,6 +10,7 @@ import JoinProfileCard from "@/components/posts/JoinProfileCard";
 import ParticipantList from "@/components/posts/ParticipantList";
 import { useAcceptedParticipations } from "@/components/hooks/useParticipation";
 
+
 export default function ClientPostDetail({ postId }: { postId: number }) {
   const [post, setPost] = useState(null);
   const [comments, setComments] = useState([]);
