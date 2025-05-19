@@ -7,16 +7,30 @@ import { Avatar, AvatarFallback } from "../ui/avatar";
 import { AvatarImage } from "@radix-ui/react-avatar";
 import { Member } from "@/types/user";
 import { Calendar, MapPin, Shapes, Users } from "lucide-react";
-import { ConfirmDialog } from "@/app/(afterAuth)/participation/Alertmessage";
+import { CheckDialog, ConfirmDialog } from "@/app/(afterAuth)/participation/Alertmessage";
 import { useState } from "react";
+import { requestParticipation } from "../api/Participationapi";
+import { useAuthStore } from "../common/useAuthStore";
 
 const JoinProfileCard = ({ post }: { post: Post }) => {
   const [applied, setApplied] = useState(false);
-  const handleApply = () => {
-    console.log("참여 신청 완료!");
-    setApplied(true);
-  };
 
+  const handleApply = async () => {
+    try {
+      const userId = useAuthStore((state) => state.userId);
+      if (!userId) {
+        alert("로그인이 필요합니다.");
+        return;
+      }
+
+      await requestParticipation({ userId, postId: post.id });
+      console.log("참여 신청 완료!");
+      setApplied(true);
+    } catch (error) {
+      console.error("참여 신청 중 오류 발생:", error);
+      alert("참여 신청에 실패했습니다.");
+    }
+  };
   return (
     <Card className="p-4 w-full rounded-xl text-sm bg-white gap-2">
       <div className="flex items-center gap-2">
@@ -31,7 +45,7 @@ const JoinProfileCard = ({ post }: { post: Post }) => {
       </div>
       <div className="flex items-center gap-2 text-sm text-gray-50 mt-2">
         <Calendar className="w-4 h-4" />
-        <span>{post.scheduleStart}</span>
+        <span>{post.eventStart}</span>
       </div>
       <div className="flex items-center gap-2 text-sm text-gray-50 mt-2">
         <Users className="w-4 h-4" />
