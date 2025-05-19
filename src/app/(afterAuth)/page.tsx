@@ -15,9 +15,11 @@ import type { Post } from "@/types/post";
 
 
 const cards = [
-  { title: "첫 번째 카드", desc: "이곳에 설명이 들어갑니다." },
-  { title: "두 번째 카드", desc: "원하는 컴포넌트를 자유롭게 넣어보세요." },
-  { title: "세 번째 카드", desc: "버튼이나 리스트도 OK!" },
+  { img: "Carousel_1.png", category: 1 },
+  { img: "Carousel_2.png", category: 2 },
+  { img: "Carousel_3.png", category: 3 },
+  { img: "Carousel_4.png", category: 4 },
+  { img: "Carousel_5.png", category: 5 },
 ];
 
 export default function HomePage() {
@@ -37,6 +39,8 @@ export default function HomePage() {
     if (Array.isArray(presigned)) return presigned[0] ?? defaultAvatar;
     return presigned;
   }, [presigned]);
+
+  console.log("imageUrl:" , avatarSrc);
   
   // Embla가 초기화된 후 API를 저장하고, 슬라이드 개수 세팅
   const handleApiInit = React.useCallback((api: CarouselApi) => {
@@ -62,13 +66,12 @@ export default function HomePage() {
           <CarouselContent className="flex gap-6 h-64">
             {cards.map((slide, idx) => (
               <CarouselItem key={idx} className="pl-4">
-                <div className="h-full w-full bg-yellow-200 rounded-2xl p-6 flex flex-col items-center justify-center">
-                  <h3 className="text-heading-lg mb-2 text-center">
-                    {slide.title}
-                  </h3>
-                  <p className="text-body-md-regular mb-4 text-center">
-                    {slide.desc}
-                  </p>
+                <div className="h-full w-full rounded-2xl overflow-hidden shadow-md hover:shadow-lg transition duration-300">
+                  <img
+                    src={`/images/${slide.img}`}
+                    alt={`카테고리 ${slide.category}`}
+                    className="w-full h-full object-cover"
+                  />
                 </div>
               </CarouselItem>
             ))}
@@ -160,8 +163,11 @@ export default function HomePage() {
             {/* 2) 프로필 정보 */}
             <div className="flex flex-col items-center space-y-3 mb-6">
               <Avatar className="w-20 h-20">
-                <AvatarImage src={avatarSrc} alt="내 아바타" />
-                <AvatarFallback>ME</AvatarFallback>
+                {avatarSrc ? (
+                  <AvatarImage src={avatarSrc} alt="내 아바타" />
+                ) : (
+                  <AvatarFallback>ME</AvatarFallback>
+                )}
               </Avatar>
               <h3 className="text-base font-semibold">{profile?.nickname}</h3>
               <p className="text-sm text-muted-foreground">{profile?.email}</p>

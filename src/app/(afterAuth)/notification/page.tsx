@@ -1,4 +1,3 @@
-// app/(afterAuth)/notifications/page.tsx
 "use client";
 
 import * as React from "react";
@@ -9,44 +8,51 @@ import { Card, CardContent } from "@/components/ui/card";
 import { Separator } from "@/components/ui/separator";
 import { Button } from "@/components/ui/button";
 
-import { useMarkAsRead, useNotifications, useClearNotifications } from "@/components/hooks/useNotification";
+import {
+  useMarkAsRead,
+  useNotifications,
+  useClearNotifications,
+} from "@/components/hooks/useNotification";
 import { mapRawListToNotices, formatNoticeContent } from "@/components/common/noticeStore";
 import type { Notice } from "@/types/notification";
+import { useFetchUserProfile } from "@/components/common/useProfileStore";
 
 export default function NotificationsPage() {
-  // ① 유저 ID는 auth 스토어에서 꺼내오세요
-  const userId = /* your auth store selector */ 1;
+  // ✅ 사용자 정보 가져오기
+  const {
+    data: profile,
+    isLoading: isProfileLoading,
+    isError: isProfileError,
+  } = useFetchUserProfile();
 
-  // ② 서버에서 알림 목록 fetch
-  const { data: raws = [], isLoading, isError } = useNotifications(userId);
+  const userId = profile?.id;
 
-  // ③ RawNotification[] → Notice[]
-  const notices: Notice[] = React.useMemo(
-    () => mapRawListToNotices(raws),
-    [raws]
-  );
+  // ✅ 알림 목록 가져오기
+  const {
+    data: raws = [],
+    isLoading: isNotiLoading,
+    isError: isNotiError,
+  } = useNotifications(userId ?? 0);
+
+  const notices: Notice[] = React.useMemo(() => mapRawListToNotices(raws), [raws]);
 
   const markRead = useMarkAsRead();
-
-  // ④ “읽은 알림 삭제” 훅
   const clearAll = useClearNotifications();
 
-  // pagination
   const [page, setPage] = useState(1);
-  const perPage     = 10;
-  const totalPages  = Math.ceil(notices.length / perPage);
-  const start       = (page - 1) * perPage;
-  const current     = notices.slice(start, start + perPage);
+  const perPage = 10;
+  const totalPages = Math.ceil(notices.length / perPage);
+  const start = (page - 1) * perPage;
+  const current = notices.slice(start, start + perPage);
 
-  // 로딩 / 에러 처리
-  if (isLoading) return <p className="p-8">알림을 불러오는 중…</p>;
-  if (isError)   return <p className="p-8 text-red-500">알림 불러오기 실패</p>;
+  // ✅ 로딩/에러 처리
+  if (isProfileLoading || isNotiLoading) return <p className="p-8">알림을 불러오는 중…</p>;
+  if (isProfileError || isNotiError) return <p className="p-8 text-red-500">알림 불러오기 실패</p>;
 
-  // ⑤ “읽은 알림 삭제” 핸들러
+  // ✅ 읽은 알림 삭제 핸들러
   const handleDeleteRead = () => {
-    // 서버에 요청
+    if (!userId) return;
     clearAll.mutate(userId);
-    // React-Query가 무효화 후 자동으로 최신 데이터를 다시 fetch합니다.
   };
 
   return (
@@ -61,35 +67,34 @@ export default function NotificationsPage() {
 
       {/* 알림 리스트 */}
       <div className="flex-1 min-h-0 overflow-y-auto space-y-4 mb-10">
-        {current.map((n) => {
-          const { content, time } = formatNoticeContent(n);
-          return (
-            <React.Fragment key={n.id}>
-              <Card
-                className={`mb-0 ${
-                  n.is_read ? "bg-gray-22 text-gray-500" : "bg-white text-black"
-                }`}
-              >
-                <CardContent className="py-4">
-                  {/* ① onClick에서 읽음 처리 호출 */}
-                  <Link
-                    href={n.link}
-                    onClick={() =>
-                      markRead.mutate({ id: Number(n.id), userId })
-                    }
-                    className="flex justify-between items-start"
-                  >
-                    <div className="text-base">{content}</div>
-                    <time className="text-xs text-gray-400 whitespace-nowrap">
-                      {time}
-                    </time>
-                  </Link>
-                </CardContent>
-              </Card>
-              {n !== current[current.length - 1] && <Separator />}
-            </React.Fragment>
-          );
-        })}
+        {current.length === 0 ? (
+          <p className="text-center text-gray-500">알림이 없습니다.</p>
+        ) : (
+          current.map((n) => {
+            const { content, time } = formatNoticeContent(n);
+            return (
+              <React.Fragment key={n.id}>
+                <Card
+                  className={`mb-0 ${
+                    n.is_read ? "bg-gray-22 text-gray-500" : "bg-white text-black"
+                  }`}
+                >
+                  <CardContent className="py-4">
+                    <Link
+                      href={n.link}
+                      onClick={() => markRead.mutate({ id: Number(n.id), userId: userId! })}
+                      className="flex justify-between items-start"
+                    >
+                      <div className="text-base">{content}</div>
+                      <time className="text-xs text-gray-400 whitespace-nowrap">{time}</time>
+                    </Link>
+                  </CardContent>
+                </Card>
+                {n !== current[current.length - 1] && <Separator />}
+              </React.Fragment>
+            );
+          })
+        )}
       </div>
 
       {/* Pagination */}

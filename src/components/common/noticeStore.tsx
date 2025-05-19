@@ -8,7 +8,7 @@ type FormattedNotice = {
 
 export function mapRawToNotice(raw: RawNotification): Notice {
   // link를 타입별로 다르게 만듭니다.
-  const link = `/posts/${raw.postId}`;
+  const link = `/postDetail/${raw.postId}`;
 
   return {
     id: raw.id.toString(),

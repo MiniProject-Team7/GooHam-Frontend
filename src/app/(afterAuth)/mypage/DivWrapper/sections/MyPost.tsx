@@ -9,6 +9,7 @@ import { Tabs, TabsContent, TabsList, TabsTrigger } from "@/components/ui/tabs";
 import PostCard from "@/components/common/PostCard";
 import { useAuthStore } from "@/components/common/useAuthStore";
 import { usePresignedUrls } from "@/components/hooks/usePresignedImage";
+import { fetchPostsByUser } from "@/components/api/PostApi";
 import type { Post } from "@/types/post";
 
 export interface UserComment {
@@ -87,17 +88,13 @@ export const MyPost = (): JSX.Element => {
     if (!userId) return;
 
     // 내 게시글
-    axiosInstance
-      .get<{ status: string; message: string; data: Post[] }>(`/posts/users/${userId}`)
-      .then((res) => {
-        setMyPosts(
-          res.data.data.map((p) => ({
-            ...p,
-            images: p.images ?? [],
-          }))
-        );
-      })
-      .catch((err) => console.error("게시글 불러오기 실패", err));
+    fetchPostsByUser(userId)
+    .then((posts) => {
+      setMyPosts(posts);
+    })
+    .catch((err) => {
+      console.error("게시글 불러오기 실패", err);
+    });
 
     // 내 댓글 (페이징 전부)
     setLoadingComments(true);

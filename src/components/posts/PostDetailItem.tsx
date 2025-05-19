@@ -18,7 +18,7 @@ import { useAuthStore } from "../common/useAuthStore";
 import { Button } from "../ui/button";
 import { Pen } from "lucide-react";
 import { useUserPosts } from "../hooks/usePosts";
-import { deletePost } from "../api/postWriteApi";
+import { deletePost } from "../api/PostWriteApi";
 import { useRouter } from "next/navigation";
 import { CheckDialog } from "@/app/(afterAuth)/participation/Alertmessage";
 

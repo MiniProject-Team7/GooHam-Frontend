@@ -1,4 +1,3 @@
-// app/(afterAuth)/participation/page.tsx
 "use client";
 
 import * as React from "react";
@@ -13,6 +12,7 @@ import {
   useApproveParticipation,
   useRejectParticipation,
 } from "@/components/hooks/useParticipation";
+import { useFetchUserProfile } from "@/components/common/useProfileStore";
 import type { Post } from "@/types/post";
 import type { RawParticipation, ParticipationMutationVars } from "@/types/participation";
 
@@ -20,12 +20,26 @@ const postsPerPage = 2;
 const appsPerPost = 8;
 
 export default function ParticipationManagementPage() {
-  const userId = 1;
-  const { data: posts = [], isLoading, isError } = useUserPosts(userId);
+  const {
+    data: profile,
+    isLoading: isProfileLoading,
+    isError: isProfileError,
+  } = useFetchUserProfile();
+
+  const userId = profile?.id;
+
+  const {
+    data: posts = [],
+    isLoading: isPostsLoading,
+    isError: isPostsError,
+  } = useUserPosts(userId ?? 0);
+
   const [page, setPage] = React.useState(1);
 
-  if (isLoading) return <p className="p-8">게시물을 불러오는 중…</p>;
-  if (isError) return <p className="p-8 text-red-500">게시물 불러오기 실패</p>;
+  if (isProfileLoading || isPostsLoading) return <p className="p-8">데이터를 불러오는 중…</p>;
+  if (isProfileError || isPostsError) return <p className="p-8 text-red-500">데이터 불러오기 실패</p>;
+
+  if (posts.length === 0) return <p className="p-8 text-center text-gray-500">작성한 게시물이 없습니다.</p>;
 
   const totalPages = Math.ceil(posts.length / postsPerPage);
   const startIdx = (page - 1) * postsPerPage;
@@ -38,7 +52,7 @@ export default function ParticipationManagementPage() {
           key={post.id}
           post={post}
           appsPerPost={appsPerPost}
-          userId={userId}
+          userId={userId!}
         />
       ))}
 
