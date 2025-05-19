@@ -70,3 +70,18 @@ export interface CreatePostRequest {
   eventStart: string;
   images: File[];
 }
+
+export interface CreatePatchRequest {
+  postId: number;
+  userId: number;
+  title: string;
+  content: string;
+  categoryId: number;
+  maxParticipants: number;
+  status: string;
+  scheduleStart: string;
+  scheduleEnd: string;
+  location: string;
+  eventStart: string;
+  images: File[];
+}

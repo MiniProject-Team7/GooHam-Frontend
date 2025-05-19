@@ -7,7 +7,7 @@ import { Button } from "@/components/ui/button";
 //import { Input } from "@/components/ui/input";
 import { Textarea } from "@/components/ui/textarea";
 import { Comment } from "@/types/comment";
-import { ConfirmDialog } from "@/app/(afterAuth)/participation/Alertmessage";
+import { CheckDialog, ConfirmDialog } from "@/app/(afterAuth)/participation/Alertmessage";
 import { useComment, useCreateComment } from "../hooks/useComment";
 import { useAuthStore } from "../common/useAuthStore";
 
@@ -19,6 +19,8 @@ const CommentItem = ({ comment, postId }: { comment: Comment; postId: number }) 
 
   const [content, setContent] = useState("");
   const { updateComment, deleteComment } = useComment(postId);
+  const [dialogOpen, setDialogOpen] = useState(false);
+  const [dialogMessage, setDialogMessage] = useState({ title: "", description: "" });
 
   const userId = useAuthStore((state) => state.userId);
 
@@ -42,7 +44,13 @@ const CommentItem = ({ comment, postId }: { comment: Comment; postId: number }) 
           setCurrentContent(editedContent);
           setIsEditing(false);
         },
-        onError: (error) => alert("댓글 수정 실패: " + error.message),
+        onError: (error) => {
+          alert("댓글 수정 실패: " + error.message);
+          setDialogMessage({
+            title: "댓글 수정 실패",
+            description: error.message || "알 수 없는 오류",
+          });
+        },
       }
     );
   };
@@ -60,7 +68,13 @@ const CommentItem = ({ comment, postId }: { comment: Comment; postId: number }) 
         onSuccess: () => {
           setIsDeleted(true);
         },
-        onError: (error) => alert("댓글 삭제 실패: " + error.message),
+        onError: (error) => {
+          alert("댓글 삭제 실패: " + error.message);
+          setDialogMessage({
+            title: "댓글 삭제 실패",
+            description: error.message || "알 수 없는 오류",
+          });
+        },
       }
     );
   };
@@ -130,6 +144,13 @@ const CommentItem = ({ comment, postId }: { comment: Comment; postId: number }) 
           )}
         </div>
       )}
+      <CheckDialog
+        open={dialogOpen}
+        setOpen={setDialogOpen}
+        title={dialogMessage.title}
+        description={dialogMessage.description}
+        onConfirm={() => {}}
+      />
     </Card>
   );
 };

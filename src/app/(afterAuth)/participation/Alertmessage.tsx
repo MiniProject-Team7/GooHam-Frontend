@@ -56,7 +56,6 @@ export function CheckDialog({ open, setOpen, title, description, onConfirm }: Ch
     <AlertDialog open={open} onOpenChange={setOpen}>
       <AlertDialogContent>
         <AlertDialogHeader>
-          <CircleCheck className="mx-auto text-green-500" />
           <AlertDialogTitle className="text-center">{title}</AlertDialogTitle>
           {description && (
             <AlertDialogDescription className="text-center">{description}</AlertDialogDescription>

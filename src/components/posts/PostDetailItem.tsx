@@ -18,30 +18,53 @@ import { useAuthStore } from "../common/useAuthStore";
 import { Button } from "../ui/button";
 import { Pen } from "lucide-react";
 import { useUserPosts } from "../hooks/usePosts";
+import { deletePost } from "../api/postWriteApi";
+import { useRouter } from "next/navigation";
+import { CheckDialog } from "@/app/(afterAuth)/participation/Alertmessage";
 
 const DEFAULT_POST_IMAGE = "/images/default_post.png";
 
 const PostDetailItem = ({ post }: { post: Post }) => {
+  const router = useRouter();
   // 1) presigned URL 훅 호출 (post.images: string[])
   const presigned = usePresignedUrls(post.images);
-  
-    // 2) carousel state
+
+  // 2) carousel state
   const [selectedIndex, setSelectedIndex] = useState(0);
   const [slideCount, setSlideCount] = useState(0);
   const [emblaApi, setEmblaApi] = useState<CarouselApi | null>(null);
   const userId = useAuthStore((state) => state.userId);
+  const [dialogOpen, setDialogOpen] = useState(false);
+  const [dialogMessage, setDialogMessage] = useState({ title: "", description: "" });
+
   const {
     data: posts = [],
     isLoading: userPostIsLoading,
     isError: userPostIsError,
   } = useUserPosts(userId);
 
-
   const handleApiInit = React.useCallback((api: CarouselApi) => {
     setEmblaApi(api);
     setSlideCount(api.scrollSnapList().length);
     api.on("select", () => setSelectedIndex(api.selectedScrollSnap()));
   }, []);
+  async function handleDeletePost() {
+    try {
+      await deletePost(post.id, Number(userId));
+      setDialogMessage({
+        title: "게시글 삭제 성공!",
+        description: "게시글이 정상적으로 삭제되었습니다.",
+      });
+      setDialogOpen(true);
+    } catch (error) {
+      // alert("게시글 삭제 실패: " + (error.message || "알 수 없는 오류"));
+      setDialogMessage({
+        title: "게시글 삭제 실패",
+        description: error.message || "알 수 없는 오류",
+      });
+      setDialogOpen(true);
+    }
+  }
 
   // 3) 필요한 만큼만 URL 배열로 정규화
   const urls = React.useMemo<string[]>(() => {
@@ -75,14 +98,8 @@ const PostDetailItem = ({ post }: { post: Post }) => {
             ))}
           </CarouselContent>
 
-          <CarouselPrevious
-            variant="ghost"
-            className="left-2 bg-white/50 hover:bg-white/70"
-          />
-          <CarouselNext
-            variant="ghost"
-            className="right-2 bg-white/50 hover:bg-white/70"
-          />
+          <CarouselPrevious variant="ghost" className="left-2 bg-white/50 hover:bg-white/70" />
+          <CarouselNext variant="ghost" className="right-2 bg-white/50 hover:bg-white/70" />
 
           <div className="absolute bottom-4 left-1/2 -translate-x-1/2 bg-black/30 text-white rounded px-5 py-1 text-sm">
             {selectedIndex + 1} / {slideCount}
@@ -94,7 +111,7 @@ const PostDetailItem = ({ post }: { post: Post }) => {
         {!userPostIsLoading &&
           posts.some((userPost) => String(userPost.id) === String(post.id)) && (
             <div className="flex flex-row">
-              <Link href="/posts/write">
+              <Link href={`/posts/edit/${post.id}`}>
                 <Button
                   variant="outline"
                   className="ml-auto flex items-center gap-1 text-md rounded-[20px] mx-2"
@@ -105,17 +122,13 @@ const PostDetailItem = ({ post }: { post: Post }) => {
                   <Pen className="w-2 h-2" /> 수정
                 </Button>
               </Link>
-              <Link href="/posts/write">
-                <Button
-                  variant="outline"
-                  className="ml-auto flex items-center gap-1 text-md rounded-[20px]"
-                  onClick={() => {
-                    console.log("글 수정 버튼 클릭");
-                  }}
-                >
-                  삭제
-                </Button>
-              </Link>
+              <Button
+                variant="outline"
+                className="ml-auto flex items-center gap-1 text-md rounded-[20px]"
+                onClick={handleDeletePost}
+              >
+                삭제
+              </Button>
             </div>
           )}
       </div>
@@ -148,6 +161,17 @@ const PostDetailItem = ({ post }: { post: Post }) => {
         </div>
       </div>
       <div className="mt-6 text-gray-700 whitespace-pre-wrap">{post.content}</div>
+      <CheckDialog
+        open={dialogOpen}
+        setOpen={setDialogOpen}
+        title={dialogMessage.title}
+        description={dialogMessage.description}
+        onConfirm={() => {
+          if (dialogMessage.title === "게시글 삭제 성공!") {
+            router.push("/posts");
+          }
+        }}
+      />
     </Card>
   );
 };

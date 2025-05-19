@@ -4,8 +4,8 @@ import { Comment } from "@/types/comment";
 const CommentList = ({ comments, postId }: { comments: Comment[]; postId: number }) => {
   return (
     <div>
-      {comments?.map((comment, index) => (
-        <CommentItem key={index} comment={comment} postId={postId} />
+      {comments?.map((comment) => (
+        <CommentItem key={comment.id} comment={comment} postId={postId} />
       ))}
     </div>
   );
