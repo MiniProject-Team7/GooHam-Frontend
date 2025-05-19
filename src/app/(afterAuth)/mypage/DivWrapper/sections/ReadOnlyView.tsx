@@ -35,6 +35,7 @@ export const ReadOnlyView = ({
   const presignedProfile = usePresignedUrls(data?.profile_image ?? null);
   // 2) presign 결과가 string|null|string[] 이므로
   //    단일 이미지이니 string|null 타입으로 간주
+  console.log(presignedProfile);
   const avatarSrc =
     typeof presignedProfile === "string"
       ? presignedProfile
