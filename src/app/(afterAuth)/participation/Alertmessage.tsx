@@ -41,21 +41,36 @@ export function ConfirmDialog({ trigger, title, description, onConfirm }: Confir
     </AlertDialog>
   );
 }
+// CheckDialog.tsx
 
-export function CheckDialog({ trigger, title, description }: ConfirmDialogProps) {
+interface CheckDialogProps {
+  open: boolean;
+  setOpen: React.Dispatch<React.SetStateAction<boolean>>;
+  title: string;
+  description?: string;
+  onConfirm?: () => void;
+}
+
+export function CheckDialog({ open, setOpen, title, description, onConfirm }: CheckDialogProps) {
   return (
-    <AlertDialog>
-      <AlertDialogTrigger asChild>{trigger}</AlertDialogTrigger>
-
+    <AlertDialog open={open} onOpenChange={setOpen}>
       <AlertDialogContent>
         <AlertDialogHeader>
-          <CircleCheck />
-          <AlertDialogTitle>{title}</AlertDialogTitle>
-          {description && <AlertDialogDescription>{description}</AlertDialogDescription>}
+          <CircleCheck className="mx-auto text-green-500" />
+          <AlertDialogTitle className="text-center">{title}</AlertDialogTitle>
+          {description && (
+            <AlertDialogDescription className="text-center">{description}</AlertDialogDescription>
+          )}
         </AlertDialogHeader>
-
-        <AlertDialogFooter>
-          <AlertDialogAction>확인</AlertDialogAction>
+        <AlertDialogFooter className="justify-center">
+          <AlertDialogAction
+            onClick={() => {
+              setOpen(false);
+              onConfirm?.();
+            }}
+          >
+            확인
+          </AlertDialogAction>{" "}
         </AlertDialogFooter>
       </AlertDialogContent>
     </AlertDialog>
