@@ -15,7 +15,7 @@ export default function ClientPostDetail({ postId }: { postId: number }) {
   const [comments, setComments] = useState([]);
   // const [participants, setParticipants] = useState([]);
   // const [size, setSize] = useState(4);
-  const page = 0;
+  // const page = 0;
 
   useEffect(() => {
     fetchPostDetail(postId).then((post) => {
@@ -25,15 +25,20 @@ export default function ClientPostDetail({ postId }: { postId: number }) {
     });
   }, [postId]);
 
-  useEffect(() => {
+  const fetchAndSetComments = () => {
     fetchComments(postId).then(({ comments }) => {
+      console.log("새로 받아온 댓글:", comments);
+
       const formattedComments = comments.map((comment) => ({
         ...comment,
         createdAt: comment.createdAt.replace("T", " ").slice(0, 16),
       }));
-
       setComments(formattedComments);
     });
+  };
+
+  useEffect(() => {
+    fetchAndSetComments();
   }, [postId]);
 
   const { data: pageResp, isLoading, isError } = useAcceptedParticipations(postId); // 기본 page = 0, size = 8
@@ -54,7 +59,7 @@ export default function ClientPostDetail({ postId }: { postId: number }) {
         <PostDetailItem post={post} />
 
         <h3 className="mt-10 mb-3 text-lg font-semibold">댓글</h3>
-        <CommentForm postId={postId} />
+        <CommentForm postId={postId} onCommentCreated={fetchAndSetComments} />
         <CommentList comments={comments} postId={postId} />
       </div>
 
