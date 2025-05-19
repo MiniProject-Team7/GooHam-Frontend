@@ -1,6 +1,6 @@
 "use client";
 
-import React, { useState } from "react";
+import React, { useEffect, useState } from "react";
 import { Button } from "@/components/ui/button";
 import { Input } from "@/components/ui/input";
 import { Textarea } from "@/components/ui/textarea";
@@ -12,12 +12,18 @@ import {
 } from "@/app/(afterAuth)/mypage/DivWrapper/sections/ActionButtonSection";
 import { useRouter } from "next/navigation";
 import FileInput from "./FileInput";
-import { CreatePostRequest } from "@/types/post";
-import { createPost } from "@/components/api/postWriteApi";
+import { CreatePatchRequest, CreatePostRequest } from "@/types/post";
+import { createPost, updatePost } from "@/components/api/postWriteApi";
 import { useAuthStore } from "@/components/common/useAuthStore";
 import { CheckDialog } from "../../participation/Alertmessage";
+import { fetchPostDetail } from "@/components/api/postDetailApi";
 
-export default function PostWrite() {
+type PostWriteProps = {
+  editMode?: boolean;
+  postId?: number;
+};
+
+export default function PostWrite({ editMode = false, postId }: PostWriteProps) {
   const [selected, setSelected] = useState<Category[]>([]);
   const [files, setFiles] = useState<File[]>([]);
   const [errors, setErrors] = useState<{ [key: string]: boolean }>({});
@@ -127,40 +133,97 @@ export default function PostWrite() {
     try {
       if (!validateFields()) return;
       if (!userId) return;
-      const req: CreatePostRequest = {
-        userId: userId,
-        title: myPostData.title,
-        content: myPostData.content,
-        categoryId: categories.find((cat) => cat.name === myPostData.categoryName)!.id,
-        maxParticipants: myPostData.maxParticipants,
-        status: "모집 중",
-        scheduleStart: myPostData.scheduleStart + "T00:00:00",
-        scheduleEnd: myPostData.scheduleStart + "T00:00:00",
-        location: myPostData.location,
-        eventStart: myPostData.eventStart,
-        images: files,
-      };
-      await createPost(req);
-      alert("게시글 등록 성공!");
-      setDialogMessage({
-        title: "게시글 등록 성공!",
-        description: "게시글이 정상적으로 등록되었습니다.",
-      });
-      setDialogOpen(true);
+      if (!files) {
+        setFiles([]);
+      }
 
-      //  TODO. 이거 dialog로 변경
-      router.push("/posts");
+      const formattedEvent = myPostData.eventStart?.includes(" ")
+        ? myPostData.eventStart.replace(" ", "T") + ":00"
+        : myPostData.eventStart;
+
+      if (editMode) {
+        const req: CreatePatchRequest = {
+          postId: Number(postId),
+          userId: userId,
+          title: myPostData.title,
+          content: myPostData.content,
+          categoryId: categories.find((cat) => cat.name === myPostData.categoryName)!.id,
+          maxParticipants: myPostData.maxParticipants,
+          status: "모집 중",
+          scheduleStart: myPostData.scheduleStart + "T00:00:00",
+          scheduleEnd: myPostData.scheduleEnd + "T00:00:00",
+          location: myPostData.location,
+          eventStart: formattedEvent,
+          images: files,
+        };
+        console.log(req);
+        await updatePost(Number(postId), req);
+        console.log(req);
+        setDialogMessage({
+          title: "게시글 수정 성공!",
+          description: "게시글이 정상적으로 수정되었습니다.",
+        });
+        setDialogOpen(true);
+      } else {
+        const req: CreatePostRequest = {
+          userId: userId,
+          title: myPostData.title,
+          content: myPostData.content,
+          categoryId: categories.find((cat) => cat.name === myPostData.categoryName)!.id,
+          maxParticipants: myPostData.maxParticipants,
+          status: "모집 중",
+          scheduleStart: myPostData.scheduleStart + "T00:00:00",
+          scheduleEnd: myPostData.scheduleEnd + "T00:00:00",
+          location: myPostData.location,
+          eventStart: formattedEvent,
+          images: files,
+        };
+        await createPost(req);
+        setDialogMessage({
+          title: "게시글 등록 성공!",
+          description: "게시글이 정상적으로 등록되었습니다.",
+        });
+        setDialogOpen(true);
+      }
     } catch (e) {
       console.error(e);
-      alert("실패!");
       setDialogMessage({
         title: "등록 실패",
         description: "게시글 등록 중 문제가 발생했습니다.",
       });
       setDialogOpen(true);
-      //  TODO. 이거 dialog로 변경
     }
   };
+
+  // 게시글 수정
+  useEffect(() => {
+    // post user와 로그인중인 user가 같아야 수정 가능해야함.
+    if (editMode && postId) {
+      fetchPostDetail(Number(postId)).then((post) => {
+        // // 날짜 형식 변환
+        const formattedStart = post.scheduleStart?.split("T")[0] || "";
+        const formattedEnd = post.scheduleEnd?.split("T")[0] || "";
+
+        setMyPostData({
+          title: post.title,
+          location: post.location,
+          categoryName: post.categoryName, // 카테고리명 그대로 사용
+          content: post.content || "",
+          maxParticipants: post.maxParticipants,
+          status: post.status,
+          scheduleStart: formattedStart,
+          scheduleEnd: formattedEnd,
+          eventStart: post.eventStart?.replace("T", " ").slice(0, 16) || "",
+        });
+        // setFiles(post.images);
+        // 이미지 로딩하기........!!!!
+        const matchedCategory = categories.find((cat) => cat.name === post.categoryName);
+        if (matchedCategory) {
+          setSelected([matchedCategory]);
+        }
+      });
+    }
+  }, [editMode, postId]);
 
   return (
     <div className="relative w-full max-w-7xl mx-auto py-6">
@@ -316,6 +379,8 @@ export default function PostWrite() {
         onConfirm={() => {
           if (dialogMessage.title === "게시글 등록 성공!") {
             router.push("/posts");
+          } else {
+            router.push(`/postDetail/${postId}`);
           }
         }}
       />
