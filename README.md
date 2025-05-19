@@ -40,11 +40,11 @@ $ npm run dev
 - 댓글: 게시글에 댓글 추가 시 작성자에게 알림 메시지를 전송합니다.
 
 # 4. Tasks & Responsibilities (작업 및 역할 분담_이미지는 슬랙 개인 이미지로 변경할 예정?)
-| 정다희 | ![A 이미지](./11.png) | ● 프로젝트 관리<br>- 회원가입<br>- 마이페이지 |
+| 정다희 | ![A 이미지](./11.png) | ● 알림 관련 API 구현<br>- 알림 삭제 스케줄러 구현<br>- 참여 요청 내역 스케줄러 구현<br>- swagger 도입<br>- 게시글 관련 API 연동<br>- 댓글 관련 API 연동<br>- 게시글 검색 UI page 작성 |
 |:-----:|:-----:|:-----|
-| 김다슬 | ![B 이미지](./12.png) | ● 프로젝트 관리<br>● 회원가입 |
-| 박교녕 | ![C 이미지](./13.png) | ● 프로젝트 관리<br>● 회원가입 |
-| 박희준 | ![D 이미지](./14.png) | ● 프로젝트 관리<br>● 회원가입 |
+| 김다슬 | ![B 이미지](./12.png) | ● 회원 가입 구현<br>● 로그인, 로그아웃 구현<br>● 회원 탈퇴 구현<br>● 프로필 조회, 수정 구현<br>● 비밀번호 찾기, 변경 구현<br>● 이메일 인증 구현<br>● JWT 토큰 사용 구현<br>● 로그인, 로그아웃 API 연동<br>● 마이페이지 API 연동<br>● 비밀번호 재설정 API 연동<br>● ㅂ |
+| 박교녕 | ![C 이미지](./13.png) | ● 참여신청 관련 API 구현<br>● 댓글 관련 API 구현<br>● 모집게시글 관련 API 구현<br>● 기본 ResponseDTO, PageableDTO 및 Exception 포멧 구축<br>● API 연동 |
+| 박희준 | ![D 이미지](./14.png) | ● 게시글 작성, 수정, 삭제, 조회 및 상세 조회 구현<br>● 마이페이지 관련 피그마 구현<br>● 로그인, 회원가입, 비밀번호 재설정 UI page 작성<br>● 로그인 API 연동 |
 
 # 5. Technology Stack (기술 스택)
 ### 5.1 Language
@@ -78,6 +78,8 @@ $ npm run dev
 | GitHub | <img src="./39.png" width="100"/> |
 | Notion | <img src="./38.png" width="100"/> |
 | Slack | <img src="./37.png" width="100"/> |
+### 5.5 Flow
+<img src="./40.png" width="800"/>
 
 # 6. Project Structure (프로젝트 구조)
 ### 6.1 Backend
@@ -214,13 +216,42 @@ GooHam-Frontend
 ```
 
 # 7. Development Workflow (개발 워크플로우)
-## 브랜치 전략 (Branch Strategy)
-우리의 브랜치 전략은 Git Flow를 기반으로 하며, 다음과 같은 브랜치를 사용합니다.
+### 7.1 Branch & Commit Strategy (브랜치 & 커밋 전략)
+📎 브랜치 종류
+```
+🛠 main : 실제로 서비스가 제공되는 브랜치 (=배포 상태)
+   develop : 다음 출시 버전 대비 위해 개발하는 브랜치 (=개발)
+   feature/ : 추가 기능 개발 브랜치 → develop 브랜치로 (=기능 개발)
+   fix/ : 발생한 버그를 수정하는 브랜치
+   test/ : test code 개발 브랜치
+```
+📎 브랜치 규칙 🌟
+ - 브랜치는 `feature/이슈번호-기능명` 형태의 이름을 사용한다
+    (Ex. **feature/1-login**, fix/2-edit-nickname, test/1-login)
+ - 브랜치를 사용한 개발을 완료한 후, PR까지 완료하면 해당 브랜치는 삭제한다
+ - 전체적인 흐름은 feature → develop → main 순으로 진행된다
+ - 커밋은 모두 소문자로 작성한다. *ex) feat: 로그인 API 생성, fix: 잘못된 응답값 수정*
 
-- Main Branch
-  - 배포 가능한 상태의 코드를 유지합니다.
-  - 모든 배포는 이 브랜치에서 이루어집니다.
-- {name} Branch
-  - 팀원 각자의 개발 브랜치입니다.
-  - 모든 기능 개발은 이 브랜치에서 이루어집니다.
+📎 커밋컨벤션 (커밋 규칙)
+
+| 태그 이름 | 설명 |
+| :----|:----|
+| feat | 새로운 기능을 추가할 경우 |
+| design | CSS 등 사용자 UI 디자인 변경 |
+| !breaking change | 커다란 API 변경의 경우 |
+| style | 코드 포맷 변경, 세미 콜론 누락, 코드 수정이 없는 경우 |
+| comment | 필요한 주석 추가 및 변경 |
+### 7.2 ERD (Entity Relationship Diagram)
+<img src="./3.png" width="800"/>
+
+### 7.3 System Flow
+<img src="./41.png" width="800"/>
+
+# 8. API 명세서
+API 명세서: https://www.notion.so/API-1b5d20939aae80368dacdfa8537d7718?pvs=25
+
+# 9. 기능 명세서
+기능 명세서: https://www.notion.so/1b4d20939aae80df9d3ce179400b2533?pvs=25
+
+# 10. Coding Convention ??
 
