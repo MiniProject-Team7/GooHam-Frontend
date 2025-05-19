@@ -37,6 +37,8 @@ export default function HomePage() {
     if (Array.isArray(presigned)) return presigned[0] ?? defaultAvatar;
     return presigned;
   }, [presigned]);
+
+  console.log("imageUrl:" , avatarSrc);
   
   // Embla가 초기화된 후 API를 저장하고, 슬라이드 개수 세팅
   const handleApiInit = React.useCallback((api: CarouselApi) => {
@@ -160,8 +162,11 @@ export default function HomePage() {
             {/* 2) 프로필 정보 */}
             <div className="flex flex-col items-center space-y-3 mb-6">
               <Avatar className="w-20 h-20">
-                <AvatarImage src={avatarSrc} alt="내 아바타" />
-                <AvatarFallback>ME</AvatarFallback>
+                {avatarSrc ? (
+                  <AvatarImage src={avatarSrc} alt="내 아바타" />
+                ) : (
+                  <AvatarFallback>ME</AvatarFallback>
+                )}
               </Avatar>
               <h3 className="text-base font-semibold">{profile?.nickname}</h3>
               <p className="text-sm text-muted-foreground">{profile?.email}</p>

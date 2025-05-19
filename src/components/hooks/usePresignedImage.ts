@@ -32,6 +32,6 @@ export function usePresignedUrls(keys: MaybeStringArray): string | string[] | nu
   }
 
   // 배열 입력이면 배열 출력, 단일 입력이면 첫 번째 URL만 반환
-  const urls = results.map((r) => r.data ?? null);
-  return Array.isArray(keys) ? urls : urls[0];
+  const urls = results.map((r) => r.data ?? null).filter((url): url is string => url !== null);
+  return Array.isArray(keys) ? urls : urls[0] ?? null;
 }
