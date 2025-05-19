@@ -1,5 +1,29 @@
 "use client";
 
+interface ApiError {
+  response: {
+    status: number;
+    data: { message: string };
+  };
+}
+
+function isApiError(err: unknown): err is ApiError {
+  // 1) err가 객체인지 확인
+  if (typeof err !== "object" || err === null) return false;
+
+  // 2) response 프로퍼티가 있는지 확인
+  if (!("response" in err)) return false;
+
+  // 3) response를 unknown으로 받아서
+  const response = (err as { response?: unknown }).response;
+  if (typeof response !== "object" || response === null) return false;
+
+  // 4) response.status 와 response.data 프로퍼티 검사
+  if (!("status" in response) || !("data" in response)) return false;
+
+  return true;
+}
+
 interface SignupResponse {
   status: "success" | "error" | string;
   message: string;
@@ -17,7 +41,8 @@ interface SignupResponse {
 
 
 import React, { useState } from "react";
-import { useRouter } from "next/navigation";
+// import { useRouter } from "next/navigation";
+// import axios, { AxiosError } from "axios";
 import axiosInstance from "@/utils/axiosInstance";
 import Image from "next/image";
 import Link from "next/link";
@@ -30,7 +55,7 @@ import { ActionButtonSection } from "@/app/(afterAuth)/mypage/DivWrapper/section
 
 
 export default function Signup1Page() {
-  const router = useRouter();
+  // const router = useRouter();
   const [step, setStep] = useState(1);
 
   const [email, setEmail] = useState("");
@@ -152,26 +177,30 @@ export default function Signup1Page() {
     };
 
     try {
-      setIsLoading(true);
-      const res = await axiosInstance.post<SignupResponse>("/gooham/users/join", payload);
-
-      if (res.data.status === "success") {
-        setStep(3);
-      } else {
-        alert(res.data.message);
-      }
-    } catch (err: any) {
-      if (err.response?.status === 409) {
-        const msg: string = err.response.data.message;
-        if (msg.includes("이메일")) setEmailError("duplicate");
-        else if (msg.includes("닉네임")) setNicknameError("duplicate");
-        else alert(msg);
-      } else {
-        alert("회원가입 중 오류가 발생했습니다.");
-      }
-    } finally {
-      setIsLoading(false);
+  setIsLoading(true);
+  const res = await axiosInstance.post<SignupResponse>("/gooham/users/join", payload);
+  if (res.data.status === "success") {
+    setStep(3);
+  } else {
+    alert(res.data.message);
+  }
+} catch (error: unknown) {
+  if (isApiError(error)) {
+    const { status, data: { message } } = error.response;
+    if (status === 409) {
+      if (message.includes("이메일")) setEmailError("duplicate");
+      else if (message.includes("닉네임")) setNicknameError("duplicate");
+      else alert(message);
+    } else {
+      alert(message || "회원가입 중 오류가 발생했습니다.");
     }
+  } else {
+    console.error("알 수 없는 오류:", error);
+    alert("회원가입 중 알 수 없는 오류가 발생했습니다.");
+  }
+} finally {
+  setIsLoading(false);
+}
   };
 
   const handleCatChange = (newSelected: string[]) => {
@@ -351,7 +380,7 @@ export default function Signup1Page() {
         
                   <CardFooter className="mt-auto flex flex-col gap-3 px-6">
                     <Button variant="outline" className="block w-3/4 mx-auto border-gray-300" onClick={handleBackToStep1}>뒤로 가기</Button>
-                    <Button className="block w-3/4 mx-auto" onClick={handleSignup}>회원가입 완료하기</Button>
+                    <Button className="block w-3/4 mx-auto" onClick={handleSignup} disabled={isLoading}>{isLoading ? "가입 중..." : "회원가입 완료하기"}</Button>
                   </CardFooter>
                 </Card>
                 )}

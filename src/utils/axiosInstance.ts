@@ -4,8 +4,11 @@ import { API_BASE_URL } from "@/components/common/config";
 
 // Axios 인스턴스 생성
 const axiosInstance = axios.create({
-  baseURL: `${API_BASE_URL}/gooham`, // API 루트 경로
+  baseURL: API_BASE_URL, // API 루트 경로
   withCredentials: true, // 쿠키 인증 필요 시 true
+  headers: {                    
+    "Content-Type": "application/json",
+  },
 });
 
 // 토큰 자동 추가
@@ -56,7 +59,7 @@ axiosInstance.interceptors.response.use(
         return axiosInstance(originalRequest);
       } catch (refreshError) {
         localStorage.removeItem("accessToken");
-        window.location.href = "/account/sigin";
+        window.location.href = "/account/signin";
         return Promise.reject(refreshError);
       }
     }
