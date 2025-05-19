@@ -15,7 +15,7 @@ const PostCard = ({ post }: { post: Post }) => {
   const presigned = usePresignedUrls(post.images);
 
   // 2) 첫 번째 이미지 URL 또는 기본 대체(src)
-  const defaultImg = "/images/default_post.png";
+  const defaultImg = "/images/default_image.png";
   const firstImageUrl = React.useMemo(() => {
     if (presigned === null) return defaultImg;
     if (Array.isArray(presigned)) return presigned[0] ?? defaultImg;
