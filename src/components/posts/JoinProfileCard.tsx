@@ -14,12 +14,19 @@ import { useAuthStore } from "../common/useAuthStore";
 
 const JoinProfileCard = ({ post }: { post: Post }) => {
   const [applied, setApplied] = useState(false);
+  const [dialogOpen, setDialogOpen] = useState(false);
+  const [dialogMessage, setDialogMessage] = useState({ title: "", description: "" });
+  const userId = useAuthStore((state) => state.userId);
 
   const handleApply = async () => {
     try {
-      const userId = useAuthStore((state) => state.userId);
       if (!userId) {
-        alert("로그인이 필요합니다.");
+        // alert("로그인이 필요합니다.");
+        setDialogMessage({
+          title: "참여 신청 실패",
+          description: "로그인이 필요합니다.",
+        });
+        setDialogOpen(true);
         return;
       }
 
@@ -28,7 +35,12 @@ const JoinProfileCard = ({ post }: { post: Post }) => {
       setApplied(true);
     } catch (error) {
       console.error("참여 신청 중 오류 발생:", error);
-      alert("참여 신청에 실패했습니다.");
+      // alert("참여 신청에 실패했습니다.");
+      setDialogMessage({
+        title: "참여 신청 실패",
+        description: error || "참여 신청 중 오류 발생",
+      });
+      setDialogOpen(true);
     }
   };
   return (
