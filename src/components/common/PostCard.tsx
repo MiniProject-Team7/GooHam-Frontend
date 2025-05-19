@@ -10,7 +10,7 @@ const PostCard = ({ post }: { post: Post }) => {
   return (
     <Card className="flex w-[690px] h-[260px] flex-col md:flex-row p-4 rounded-xl hover:shadow-md border border-gray-22 transition">
       <img
-        src={post.images[0]}
+        src={post.images[0] || "/public/images/baseball.jpg"}
         alt={post.title}
         className="self-center w-[300px] h-[200px] flex-shrink-0 object-cover rounded-xl"
       />
@@ -33,7 +33,7 @@ const PostCard = ({ post }: { post: Post }) => {
 
           <div className="flex items-center gap-2 text-sm text-gray-40 mt-2">
             <Calendar className="w-4 h-4" />
-            <span>{post.scheduleStart}</span>
+            <span>{post.eventStart.replace("T", " ").slice(0, 16)}</span>
           </div>
           <div className="flex items-center gap-2 text-sm text-gray-40 mt-2">
             <MapPin className="w-4 h-4" />
