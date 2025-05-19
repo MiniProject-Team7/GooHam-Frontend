@@ -9,6 +9,7 @@ import { Button } from "../../../../../components/ui/button";
 import { Card, CardContent } from "../../../../../components/ui/card";
 import { useAuthStore } from "@/components/common/useAuthStore";
 import axiosInstance from "@/utils/axiosInstance";
+import { useQueryClient } from "@tanstack/react-query";
 
 // 타입 정의
 type FormDataType = {
@@ -47,6 +48,8 @@ export const EditView = ({ setIsEditing }: { setIsEditing: (v: boolean) => void 
   const [selectedFile, setSelectedFile] = useState<File | null>(null);
   const email = useAuthStore((state) => state.email);
   const fileInputRef = useRef<HTMLInputElement | null>(null);
+
+  const queryClient = useQueryClient();
 
   useEffect(() => {
     if (!email) return;
@@ -136,6 +139,9 @@ export const EditView = ({ setIsEditing }: { setIsEditing: (v: boolean) => void 
       };
 
       await axiosInstance.post("/users/mypage/updateInfo", payload);
+
+      // ✅ 프로필 정보 업데이트 이후 캐시 무효화
+      await queryClient.invalidateQueries({ queryKey: ["userProfile"] });
 
       alert("수정이 완료되었습니다.");
       setIsEditing(false);

@@ -13,7 +13,7 @@ import {
 import { useRouter } from "next/navigation";
 import FileInput from "./FileInput";
 import { CreatePostRequest } from "@/types/post";
-import { createPost } from "@/components/api/postWriteApi";
+import { createPost } from "@/components/api/PostWriteApi";
 import { useAuthStore } from "@/components/common/useAuthStore";
 import { CheckDialog } from "../../participation/Alertmessage";
 
