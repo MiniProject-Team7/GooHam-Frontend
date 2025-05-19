@@ -51,6 +51,7 @@ export function Navigation() {
         "/users/logout", {}, { withCredentials: true }
       );
       if (response.status === 200) {
+
         localStorage.removeItem("accessToken");
         clearAuth();
         router.push("/account/signin");

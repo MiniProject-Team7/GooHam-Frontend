@@ -11,7 +11,7 @@ const activityItems = [{ title: "작성한 글" }];
 
 const sidebarItems = [
   { title: "기본 정보" },
-  { title: "비밀번호" },
+  { title: "계정 정보" },
   { title: "알림 설정" },
   { title: "계정 삭제" },
 ];
