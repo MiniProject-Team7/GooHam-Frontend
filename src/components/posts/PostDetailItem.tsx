@@ -1,7 +1,8 @@
 "use client";
+import * as React from "react";
+import Link from "next/link";
 import { Card } from "@/components/ui/card";
 import { Badge } from "@/components/ui/badge";
-import { Post } from "@/types/post";
 import {
   Carousel,
   CarouselApi,
@@ -9,19 +10,27 @@ import {
   CarouselItem,
   CarouselNext,
   CarouselPrevious,
-} from "../ui/carousel";
+} from "@/components/ui/carousel";
+import { usePresignedUrls } from "@/components/hooks/usePresignedImage";
+import { Post } from "@/types/post";
 import { useCallback, useState } from "react";
 import { useAuthStore } from "../common/useAuthStore";
 import { Button } from "../ui/button";
 import { Pen } from "lucide-react";
-import Link from "next/link";
 import { useUserPosts } from "../hooks/usePosts";
+import { deletePost } from "../api/postWriteApi";
+import { useRouter } from "next/navigation";
+import { CheckDialog } from "@/app/(afterAuth)/participation/Alertmessage";
 
 const PostDetailItem = ({ post }: { post: Post }) => {
+  const router = useRouter();
   const [selectedIndex, setSelectedIndex] = useState(0);
   const [slideCount, setSlideCount] = useState(0);
   const [emblaApi, setEmblaApi] = useState<CarouselApi | null>(null);
   const userId = useAuthStore((state) => state.userId);
+  const [dialogOpen, setDialogOpen] = useState(false);
+  const [dialogMessage, setDialogMessage] = useState({ title: "", description: "" });
+
   const {
     data: posts = [],
     isLoading: userPostIsLoading,
@@ -36,7 +45,23 @@ const PostDetailItem = ({ post }: { post: Post }) => {
       setSelectedIndex(api.selectedScrollSnap());
     });
   }, []);
-
+  async function handleDeletePost() {
+    try {
+      await deletePost(post.id, Number(userId));
+      setDialogMessage({
+        title: "게시글 삭제 성공!",
+        description: "게시글이 정상적으로 삭제되었습니다.",
+      });
+      setDialogOpen(true);
+    } catch (error) {
+      // alert("게시글 삭제 실패: " + (error.message || "알 수 없는 오류"));
+      setDialogMessage({
+        title: "게시글 삭제 실패",
+        description: error.message || "알 수 없는 오류",
+      });
+      setDialogOpen(true);
+    }
+  }
   return (
     <Card className="w-full p-6 rounded-xl mx-auto bg-white">
       <div>
@@ -72,7 +97,7 @@ const PostDetailItem = ({ post }: { post: Post }) => {
         {!userPostIsLoading &&
           posts.some((userPost) => String(userPost.id) === String(post.id)) && (
             <div className="flex flex-row">
-              <Link href="/posts/write">
+              <Link href={`/posts/edit/${post.id}`}>
                 <Button
                   variant="outline"
                   className="ml-auto flex items-center gap-1 text-md rounded-[20px] mx-2"
@@ -83,17 +108,13 @@ const PostDetailItem = ({ post }: { post: Post }) => {
                   <Pen className="w-2 h-2" /> 수정
                 </Button>
               </Link>
-              <Link href="/posts/write">
-                <Button
-                  variant="outline"
-                  className="ml-auto flex items-center gap-1 text-md rounded-[20px]"
-                  onClick={() => {
-                    console.log("글 수정 버튼 클릭");
-                  }}
-                >
-                  삭제
-                </Button>
-              </Link>
+              <Button
+                variant="outline"
+                className="ml-auto flex items-center gap-1 text-md rounded-[20px]"
+                onClick={handleDeletePost}
+              >
+                삭제
+              </Button>
             </div>
           )}
       </div>
@@ -126,6 +147,17 @@ const PostDetailItem = ({ post }: { post: Post }) => {
         </div>
       </div>
       <div className="mt-6 text-gray-700 whitespace-pre-wrap">{post.content}</div>
+      <CheckDialog
+        open={dialogOpen}
+        setOpen={setDialogOpen}
+        title={dialogMessage.title}
+        description={dialogMessage.description}
+        onConfirm={() => {
+          if (dialogMessage.title === "게시글 삭제 성공!") {
+            router.push("/posts");
+          }
+        }}
+      />
     </Card>
   );
 };
