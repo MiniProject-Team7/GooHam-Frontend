@@ -39,9 +39,29 @@ $ npm run dev
 - 요청 처리: 요청에 대해 작성자가 승인 및 거절을 합니다.
 - 댓글: 게시글에 댓글 추가 시 작성자에게 알림 메시지를 전송합니다.
 
-# 4. Tasks & Responsibilities (작업 및 역할 분담)
-| 정다희 | ![A 이미지](./6.png) | ● 프로젝트 관리<br>- 회원가입<br>- 마이페이지 |
-|:-----:|:-----:|:-----:|
-| 김다슬 | ![B 이미지](./6.png) | ● 프로젝트 관리<br>● 회원가입 |
-| 박교녕 | 값5   | 값6   |
-| 박희준 | 값5   | 값6   |
+# 4. Tasks & Responsibilities (작업 및 역할 분담_이미지는 슬랙 개인 이미지로 변경할 예정?)
+| 정다희 | ![A 이미지](./11.png) | ● 프로젝트 관리<br>- 회원가입<br>- 마이페이지 |
+|:-----:|:-----:|:-----|
+| 김다슬 | ![B 이미지](./12.png) | ● 프로젝트 관리<br>● 회원가입 |
+| 박교녕 | ![C 이미지](./13.png) | ● 프로젝트 관리<br>● 회원가입 |
+| 박희준 | ![D 이미지](./14.png) | ● 프로젝트 관리<br>● 회원가입 |
+
+# 5. Technology Stack (기술 스택)
+### 5.1 Language
+|  |  |
+|:-----:|:-----:|
+| TypeScript | <img src="./20.png" width="100"/> |
+| CSS | <img src="./21.png" width="100"/> |
+| JavaScript | <img src="./22.png" width="100"/> |
+| Java | <img src="./23.png" width="100"/> |
+### 5.2 Library_Frontend
+|  |  |
+|:-----:|:-----:|
+| Next.js | <img src="./24.png" width="100"/> |
+| React | <img src="./25.png" width="100"/> |
+| Tailwind CSS | <img src="./26.png" width="100"/> |
+| SASS | <img src="./27.png" width="100"/> |
+| Zustand | <img src="./28.png" width="100"/> |
+| Axios | <img src="./29.png" width="100"/> |
+
+
