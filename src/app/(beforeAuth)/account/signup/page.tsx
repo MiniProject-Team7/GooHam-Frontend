@@ -394,7 +394,6 @@ export default function Signup1Page() {
               <p className="text-center text-lg font-bold">회원가입이 완료되었습니다!</p>
             </CardContent>
             <CardFooter className="mt-auto flex flex-col gap-3 px-6 mr-[45px] ml-[45px]">
-              <Link href="/" className="block w-4/4 mx-auto"><Button variant="outline" className="w-full border-gray-300">메인 가기</Button></Link>
               <Link href="/account/signin" className="block w-4/4 mx-auto"><Button className="w-full">로그인 하기</Button></Link>
             </CardFooter>
           </Card>

@@ -13,7 +13,7 @@ import { statusToBadgeVariant } from "@/utils/statusVariant";
 const PostCard = ({ post }: { post: Post }) => {
   // 1) presign 훅 호출 (string[] → string|string[]|null)
   const presigned = usePresignedUrls(post.images);
-
+  // console.log(post);
   // 2) 첫 번째 이미지 URL 또는 기본 대체(src)
   const defaultImg = "/images/default_image.png";
   const firstImageUrl = React.useMemo(() => {

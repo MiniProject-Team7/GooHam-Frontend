@@ -15,7 +15,7 @@ import FileInput from "./FileInput";
 import { CreatePatchRequest, CreatePostRequest } from "@/types/post";
 import { createPost, updatePost } from "@/components/api/PostWriteApi";
 import { useAuthStore } from "@/components/common/useAuthStore";
-import { CheckDialog } from "../../participation/Alertmessage";
+import { CheckDialog } from "@/app/(afterAuth)/participation/Alertmessage";
 import { fetchPostDetail } from "@/components/api/postDetailApi";
 
 type PostWriteProps = {
