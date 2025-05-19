@@ -5,10 +5,55 @@ import { Button } from "../../../../../components/ui/button";
 import { Card, CardContent } from "../../../../../components/ui/card";
 import { DeleteMessage } from "./DeleteMessage";
 
+import axiosInstance from "@/utils/axiosInstance";
+import { useRouter } from "next/navigation";
+import { useAuthStore } from "@/components/common/useAuthStore";
+
+type DeleteResponse = {
+  success: boolean;
+  message: string;
+};
+
 export const FormContainerSection = (): JSX.Element => {
-  const handleDelete = () => {
-    console.log("계정 삭제 처리 실행");
-    // 실제 삭제 로직 (예: API 호출)
+  const router = useRouter();
+  const email = useAuthStore((state) => state.email);
+  const clearAuth = useAuthStore((state) => state.clear);
+
+  const handleDelete = async (password: string): Promise<boolean> => {
+    try {
+      if (!email) {
+        alert("로그인 정보가 없습니다.");
+        return false;
+      }
+      const response = await axiosInstance.post<DeleteResponse>(
+        "/users/delete_account",
+        {
+          email,
+          password,
+        },
+        {
+          headers: {
+            "Content-Type": "application/json",
+          },
+        }
+      );
+
+      const { success, message } = response.data;
+
+      if (success) {
+        alert(message); // "계정이 성공적으로 삭제되었습니다."
+        clearAuth();
+        sessionStorage.clear();
+        router.push("/");
+        return true;
+      } else {
+        return false; // "이메일 또는 비밀번호가 올바르지 않습니다."
+      }
+    } catch (error) {
+      console.error("계정 삭제 실패:", error);
+      alert("서버 오류로 인해 계정 삭제에 실패했습니다.");
+      return false;
+    }
   };
 
   return (

@@ -2,7 +2,8 @@
 import React, { useEffect, useState } from "react";
 import axiosInstance from "@/utils/axiosInstance";
 import { Avatar, AvatarFallback, AvatarImage } from "../../../../../components/ui/avatar";
-// import { Badge } from "../../../../components/ui/badge";
+
+import { Badge } from "../../../../../components/ui/badge";
 import { Button } from "../../../../../components/ui/button";
 import { Card, CardContent } from "../../../../../components/ui/card";
 import { useAuthStore } from "@/components/common/useAuthStore";
@@ -15,9 +16,10 @@ type MyPageData = {
   member_name: string;
   birth_date: string;
   member_nickname: string;
+  member_phone: string;
   member_email: string;
   member_introduce: string;
-  categories: string[];
+  interests: { category_id: number; name: string }[];
   profile_image: string;
 };
 
@@ -41,6 +43,7 @@ export const ReadOnlyView = ({ setIsEditing }: { setIsEditing: (v: boolean) => v
       .then((res) => {
         setData(res.data);
         setError(null);
+        console.log(data?.interests);
       })
       .catch((err) => {
         setError("데이터를 불러오는 데 실패했습니다.");
@@ -66,7 +69,8 @@ export const ReadOnlyView = ({ setIsEditing }: { setIsEditing: (v: boolean) => v
             </Avatar>
           </div>
 
-          <div className="grid grid-cols-[max-content_1fr_max-content_1fr] gap-y-6 gap-x-6">
+
+          <div className="grid grid-cols-[max-content_1fr_max-content_1fr] gap-y-10 gap-x-6">
             {/* 이름 */}
             <div className="text-title-md font-semibold text-gray-40 col-span-1">이름</div>
             <div className="text-title-md font-medium col-span-1">{data.member_name}</div>
@@ -76,30 +80,19 @@ export const ReadOnlyView = ({ setIsEditing }: { setIsEditing: (v: boolean) => v
             <div className="text-title-md font-medium col-span-1">{data.birth_date}</div>
 
             {/* 닉네임 */}
-            <div className="text-title-md font-semibold text-gray-40 col-span-1">닉네임</div>
-            <div className="text-title-md font-medium col-span-1">{data.member_nickname}</div>
-
-            {/* 이메일 */}
-            <div className="text-title-md font-semibold text-gray-40 col-span-1">이메일</div>
-            <div className="text-title-md font-medium col-span-1">{data.member_email}</div>
-
-            {/* 자기소개 (1줄 전체) */}
-            <div className="text-title-md font-semibold text-gray-40 col-span-1">자기소개</div>
-            <div className="text-title-md font-medium col-span-3">{data.member_introduce}</div>
-
-            {/* 카테고리 (1줄 전체) */}
-            {/* <div className="text-title-md font-semibold text-gray-40 col-span-1">카테고리</div>
-            <div className="flex gap-2 flex-wrap col-span-3">
-              {data.categories.map((category, index) => (
                 <Badge
                   key={index}
                   variant="outline"
                   className="px-4 py-[7px] rounded-[20px] bg-white border border-gray-50"
                 >
-                  {category}
+                  {interest.name}
                 </Badge>
               ))}
-            </div> */}
+            </div>
+
+            {/* 자기소개 (1줄 전체) */}
+            <div className="text-title-md font-semibold text-gray-40 col-span-1">자기소개</div>
+            <div className="text-title-md font-medium col-span-3">{data.member_introduce}</div>
           </div>
 
           <div className="flex justify-end mt-6">

@@ -22,7 +22,7 @@ export const DivWrapper = (): JSX.Element => {
 
   const scrollMap: Record<string, React.RefObject<HTMLDivElement | null>> = {
     "기본 정보": basicInfoRef,
-    비밀번호: passwordRef,
+    "계정 정보": passwordRef,
     "알림 설정": alarmRef,
     "계정 삭제": deleteRef,
   };
@@ -50,7 +50,8 @@ export const DivWrapper = (): JSX.Element => {
             </h1>
 
             {activeMenu === "기본 정보" ||
-            activeMenu === "비밀번호" ||
+            activeMenu === "계정 정보" ||
+
             activeMenu === "알림 설정" ||
             activeMenu === "계정 삭제" ? (
               <Card className="rounded-xl">

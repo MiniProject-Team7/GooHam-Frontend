@@ -77,13 +77,6 @@ export default function Signup1Page() {
   const [nickname, setNickname] = useState("");
   const [birth, setBirth] = useState("");
   const [phone, setPhone] = useState("");
-  
-  const [nameError, setNameError] = useState("");
-  const [nicknameError, setNicknameError] = useState("");
-  const [birthError, setBirthError] = useState("");
-  const [phoneError, setPhoneError] = useState("");
-  const [categoryError, setCategoryError] = useState("");
-  const [selectedCats, setSelectedCats] = useState<string[]>([]);
 
   const [isLoading, setIsLoading] = useState(false);
 
@@ -105,6 +98,7 @@ export default function Signup1Page() {
     if (!email) { setEmailError("required"); ok = false; }
     if (!password) { setPasswordError("required"); ok = false; }
     if (!confirmPwd) { setConfirmError("required"); ok = false; }
+
     if (!ok) return;
 
     if (!/^\S+@\S+\.com$/.test(email)) {
@@ -119,7 +113,8 @@ export default function Signup1Page() {
 
     if (!agreeTerms || !agreePrivacy) {
       setTermsError("required");
-      return;  
+      return;
+
     }
 
     setStep(2);
@@ -201,6 +196,8 @@ export default function Signup1Page() {
 } finally {
   setIsLoading(false);
 }
+
+
   };
 
   const handleCatChange = (newSelected: string[]) => {
@@ -265,6 +262,7 @@ export default function Signup1Page() {
           </CardContent>
 
           <div className="px-6">
+
               {emailError === "required" ? (
                 <p className="text-center text-sm text-red-500">이메일을 입력해 주세요.</p>
               ) : emailError === "invalid" ? (
@@ -386,6 +384,7 @@ export default function Signup1Page() {
                 )}
 
             {step === 3 && (
+
           <Card className="w-[500px] mt-[50px] mr-[100px] p-6 flex flex-col border-none shadow-none">
             <h1 className="text-center text-2xl font-bold mt-[30px] mb-[1px]">GooHam 회원가입</h1>
             <CardContent className="flex flex-col items-center space-y-4 py-8">
@@ -402,3 +401,4 @@ export default function Signup1Page() {
     </div>
   );
 }
+
