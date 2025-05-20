@@ -61,16 +61,18 @@ export const EditView = ({ setIsEditing }: { setIsEditing: (v: boolean) => void 
         const currentInterests = res.data.interests
           .map((interest) => {
             const matchingCategory = categories.find((cat) => cat.name === interest.name);
-            return matchingCategory ? { id: matchingCategory.id, name: matchingCategory.name } : null;
+            return matchingCategory
+              ? { id: matchingCategory.id, name: matchingCategory.name }
+              : null;
           })
           .filter(Boolean);
 
         setForm({ ...res.data, interests: [] });
 
         setTimeout(() => {
-          document.querySelector(".action-button-section")?.dispatchEvent(
-            new CustomEvent("set-interests", { detail: currentInterests })
-          );
+          document
+            .querySelector(".action-button-section")
+            ?.dispatchEvent(new CustomEvent("set-interests", { detail: currentInterests }));
         }, 100);
       })
       .catch(console.error);
