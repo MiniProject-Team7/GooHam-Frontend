@@ -10,7 +10,6 @@ import JoinProfileCard from "@/components/posts/JoinProfileCard";
 import ParticipantList from "@/components/posts/ParticipantList";
 import { useAcceptedParticipations } from "@/components/hooks/useParticipation";
 
-
 export default function ClientPostDetail({ postId }: { postId: number }) {
   const [post, setPost] = useState(null);
   const [comments, setComments] = useState([]);
@@ -44,15 +43,15 @@ export default function ClientPostDetail({ postId }: { postId: number }) {
 
   const { data: pageResp, isLoading, isError } = useAcceptedParticipations(postId); // 기본 page = 0, size = 8
 
-  if (isLoading) return <p>로딩 중...</p>;
-  if (isError) return <p>에러 발생</p>;
+  if (isLoading) return <p className="text-center  mt-100">로딩 중...</p>;
+  if (isError) return <p className="text-center  mt-100">에러 발생</p>;
 
   const participants =
     pageResp?.content.map((item) => ({
       id: item.userId,
       name: item.userName,
     })) ?? [];
-  if (!post) return <div>로딩 중...</div>;
+  if (!post) return <div className="text-center  mt-100">로딩 중...</div>;
 
   return (
     <div className="flex justify-center px-6 py-10 gap-6">
