@@ -41,10 +41,10 @@ export const FormContainerSection = (): JSX.Element => {
       const { success, message } = response.data;
 
       if (success) {
-        alert(message); // "계정이 성공적으로 삭제되었습니다."
+        // alert(message); // "계정이 성공적으로 삭제되었습니다."
         clearAuth();
         sessionStorage.clear();
-        router.push("/");
+        router.push("/account/signin");
         return true;
       } else {
         return false; // "이메일 또는 비밀번호가 올바르지 않습니다."

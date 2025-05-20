@@ -171,7 +171,7 @@ export default function HomePage() {
               <h3 className="text-base font-semibold">{profile?.nickname}</h3>
               <p className="text-sm text-muted-foreground">{profile?.email}</p>
               <Button variant="edit" size="sm" className="mt-2 w-full">
-                프로필 수정하기
+                <Link href={`/mypage`}>프로필 수정하기</Link>
               </Button>
             </div>
             <div className="space-y-2">
