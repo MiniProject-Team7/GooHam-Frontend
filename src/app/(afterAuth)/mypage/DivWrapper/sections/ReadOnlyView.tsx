@@ -20,11 +20,7 @@ type MyPageData = {
   profile_image: string; // S3 Key
 };
 
-export const ReadOnlyView = ({
-  setIsEditing,
-}: {
-  setIsEditing: (v: boolean) => void;
-}) => {
+export const ReadOnlyView = ({ setIsEditing }: { setIsEditing: (v: boolean) => void }) => {
   const [data, setData] = useState<MyPageData | null>(null);
   const [loading, setLoading] = useState(false);
   const [error, setError] = useState<string | null>(null);
@@ -32,14 +28,12 @@ export const ReadOnlyView = ({
 
   // 1) 사용자 프로필 이미지 presign URL 훅
   //    data?.profile_image 에 S3 키가 들어있다면
-  const presignedProfile = usePresignedUrls(data?.profile_image ?? null);
+  const presignedProfile = usePresignedUrls(data?.profile_image ?? []);
   // 2) presign 결과가 string|null|string[] 이므로
   //    단일 이미지이니 string|null 타입으로 간주
   console.log(presignedProfile);
   const avatarSrc =
-    typeof presignedProfile === "string"
-      ? presignedProfile
-      : "/images/default_profile.png";
+    typeof presignedProfile === "string" ? presignedProfile : "/images/default_profile.png";
 
   useEffect(() => {
     if (!email) {
@@ -49,9 +43,7 @@ export const ReadOnlyView = ({
     setLoading(true);
 
     axiosInstance
-      .get<MyPageData>(
-        `/users/mypage/detail?member_email=${encodeURIComponent(email)}`
-      )
+      .get<MyPageData>(`/users/mypage/detail?member_email=${encodeURIComponent(email)}`)
       .then((res) => {
         setData(res.data);
         setError(null);
@@ -59,10 +51,8 @@ export const ReadOnlyView = ({
       .catch((err) => {
         console.error(err);
         setError("데이터를 불러오는 데 실패했습니다.");
-      })
-      .finally(() => {
-        setLoading(false);
       });
+    setLoading(false);
   }, [email]);
 
   if (loading) return <div>로딩 중...</div>;
@@ -76,14 +66,8 @@ export const ReadOnlyView = ({
           {/* 프로필 아바타만 presigned URL */}
           <div className="flex flex-col items-center mb-8">
             <Avatar className="w-[100px] h-[100px]">
-              <AvatarImage
-                src={avatarSrc}
-                alt={data.member_name}
-                className="object-cover"
-              />
-              <AvatarFallback>
-                {data.member_name[0]}
-              </AvatarFallback>
+              <AvatarImage src={avatarSrc} alt={data.member_name} className="object-cover" />
+              <AvatarFallback>{data.member_name[0]}</AvatarFallback>
             </Avatar>
           </div>
 
@@ -91,31 +75,19 @@ export const ReadOnlyView = ({
             <div className="text-title-md font-semibold text-gray-40">이름</div>
             <div className="text-title-md font-medium">{data.member_name}</div>
 
-            <div className="text-title-md font-semibold text-gray-40">
-              생년월일
-            </div>
+            <div className="text-title-md font-semibold text-gray-40">생년월일</div>
             <div className="text-title-md font-medium">{data.birth_date}</div>
 
-            <div className="text-title-md font-semibold text-gray-40">
-              닉네임
-            </div>
-            <div className="text-title-md font-medium">
-              {data.member_nickname}
-            </div>
+            <div className="text-title-md font-semibold text-gray-40">닉네임</div>
+            <div className="text-title-md font-medium">{data.member_nickname}</div>
 
-            <div className="text-title-md font-semibold text-gray-40">
-              전화번호
-            </div>
+            <div className="text-title-md font-semibold text-gray-40">전화번호</div>
             <div className="text-title-md font-medium">{data.member_phone}</div>
 
             <div className="text-title-md font-semibold text-gray-40">이메일</div>
-            <div className="text-title-md font-medium">
-              {data.member_email}
-            </div>
+            <div className="text-title-md font-medium">{data.member_email}</div>
 
-            <div className="text-title-md font-semibold text-gray-40">
-              카테고리
-            </div>
+            <div className="text-title-md font-semibold text-gray-40">카테고리</div>
             <div className="flex gap-2 flex-wrap">
               {data.interests.map((interest, idx) => (
                 <Badge
@@ -128,12 +100,8 @@ export const ReadOnlyView = ({
               ))}
             </div>
 
-            <div className="text-title-md font-semibold text-gray-40">
-              자기소개
-            </div>
-            <div className="text-title-md font-medium col-span-3">
-              {data.member_introduce}
-            </div>
+            <div className="text-title-md font-semibold text-gray-40">자기소개</div>
+            <div className="text-title-md font-medium col-span-3">{data.member_introduce}</div>
           </div>
 
           <div className="flex justify-end mt-6">

@@ -41,7 +41,7 @@ export const categories = [
   { id: 10, name: "기타" },
 ];
 
-export type Category = { id: number; name: string };
+type Category = { id: number; name: string };
 
 type Props = {
   selected: Category[];
@@ -114,6 +114,12 @@ export const ActionButtonSection = ({ selected, onChange, className }: Props) =>
           );
         })}
       </div>
+
+      {showWarning && (
+        <p className="mt-3 text-sm text-primary-500 font-medium">
+          카테고리는 최대 3개까지 선택할 수 있습니다.
+        </p>
+      )}
     </section>
   );
 };

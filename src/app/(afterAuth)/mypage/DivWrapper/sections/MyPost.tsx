@@ -1,6 +1,6 @@
 "use client";
 
-import React, { useEffect, useState } from "react";
+import React, { JSX, useEffect, useState } from "react";
 import axiosInstance from "@/utils/axiosInstance";
 import { Avatar, AvatarFallback, AvatarImage } from "@/components/ui/avatar";
 import { Button } from "@/components/ui/button";
@@ -48,19 +48,17 @@ export const MyPost = (): JSX.Element => {
   const [error, setError] = useState<string | null>(null);
 
   const userId = useAuthStore((state) => state.userId);
-  const email  = useAuthStore((state) => state.email);
+  const email = useAuthStore((state) => state.email);
 
   const [myPosts, setMyPosts] = useState<Post[]>([]);
   const [comments, setComments] = useState<UserComment[]>([]);
   const [loadingComments, setLoadingComments] = useState(false);
 
   // ─── 여기에 presign 훅을 최상단에 호출 ─────────────────────────────────
-  const presignedProfile = usePresignedUrls(userInfo?.profile_image ?? null);
+  const presignedProfile = usePresignedUrls(userInfo?.profile_image ?? []);
   // presignedProfile 이 string|null|string[] 이므로, 단일 string 으로 정리
   const avatarSrc =
-    typeof presignedProfile === "string"
-      ? presignedProfile
-      : "/images/default_profile.png";
+    typeof presignedProfile === "string" ? presignedProfile : "/images/default_profile.png";
 
   // ─── 사용자 정보 로드 ────────────────────────────────────────────────────
   useEffect(() => {
@@ -77,10 +75,9 @@ export const MyPost = (): JSX.Element => {
       })
       .catch(() => {
         setError("사용자 정보를 불러오는데 실패했습니다.");
-      })
-      .finally(() => {
-        setLoading(false);
       });
+
+    setLoading(false);
   }, [email]);
 
   // ─── 게시글 & 댓글 로드 ─────────────────────────────────────────────────
@@ -89,12 +86,12 @@ export const MyPost = (): JSX.Element => {
 
     // 내 게시글
     fetchPostsByUser(userId)
-    .then((posts) => {
-      setMyPosts(posts);
-    })
-    .catch((err) => {
-      console.error("게시글 불러오기 실패", err);
-    });
+      .then((posts) => {
+        setMyPosts(posts);
+      })
+      .catch((err) => {
+        console.error("게시글 불러오기 실패", err);
+      });
 
     // 내 댓글 (페이징 전부)
     setLoadingComments(true);
@@ -116,14 +113,14 @@ export const MyPost = (): JSX.Element => {
           }))
         );
       })
-      .catch((err) => console.error("댓글 불러오기 실패", err))
-      .finally(() => setLoadingComments(false));
+      .catch((err) => console.error("댓글 불러오기 실패", err));
+    setLoadingComments(false);
   }, [userId]);
 
   // ─── 로딩/에러/없음 처리 ───────────────────────────────────────────────
-  if (loading)        return <div>로딩중...</div>;
-  if (error)          return <div className="text-red-500">{error}</div>;
-  if (!userInfo)      return <div>사용자 정보가 없습니다.</div>;
+  if (loading) return <div>로딩중...</div>;
+  if (error) return <div className="text-red-500">{error}</div>;
+  if (!userInfo) return <div>사용자 정보가 없습니다.</div>;
 
   // ─── JSX 반환 ─────────────────────────────────────────────────────────
   return (
@@ -145,11 +142,21 @@ export const MyPost = (): JSX.Element => {
       {/* 탭 영역 */}
       <Tabs defaultValue="posts" className="mt-8">
         <TabsList className="gap-6">
-          <TabsTrigger value="posts">작성한 게시글</TabsTrigger>
-          <TabsTrigger value="comments">작성한 댓글</TabsTrigger>
+          <TabsTrigger
+            value="posts"
+            className="cursor-pointer text-title-lg tracking-wide leading-[24px] data-[state=active]:text-primary-500 transition-all duration-300"
+          >
+            작성한 게시글
+          </TabsTrigger>
+          <TabsTrigger
+            value="comments"
+            className="cursor-pointer text-title-lg tracking-wide leading-[24px] data-[state=active]:text-primary-500 transition-all duration-300"
+          >
+            작성한 댓글
+          </TabsTrigger>
         </TabsList>
 
-        <TabsContent value="posts" className="mt-6 space-y-6 overflow-auto">
+        <TabsContent value="posts" className="mt-6 space-y-6 overflow-auto ml-[55px]">
           {myPosts.map((post) => (
             <div key={post.id} className="min-w-[690px] mx-auto">
               <PostCard post={post} />
