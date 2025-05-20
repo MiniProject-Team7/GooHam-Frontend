@@ -3,6 +3,7 @@ import { Post, FetchPostsResult } from "@/types/post";
 import { PageRequestParams } from "@/types/pagination";
 import {
   fetchAllPosts,
+  fetchAllPostsPaged,
   fetchPostsByCategory,
   FetchPostsByCategoryOpts,
   fetchPostsByUser,
@@ -74,4 +75,30 @@ export const useRefreshPosts = () => {
       exact: false, // 기본값(false)이어서 하위 키도 포함
     });
   };
+};
+
+export const useMyCategoryPosts = (categoryId: number, opts: PageRequestParams = {}) => {
+  const finalOpts: FetchPostsByCategoryOpts = {
+    categoryId,
+    ...opts,
+  };
+
+  const key = ["posts", "category", finalOpts] as const;
+
+  return useQuery<FetchPostsResult, Error>({
+    queryKey: key,
+
+    // categoryId === 0이면 전체 페이징, 아니면 카테고리별 페이징
+    queryFn: () => {
+      if (categoryId === 0) {
+        return fetchAllPostsPaged(opts);
+      } else {
+        return fetchPostsByCategory(finalOpts);
+      }
+    },
+
+    enabled: categoryId != null,
+    refetchOnWindowFocus: true,
+    refetchInterval: 1000 * 60 * 5,
+  });
 };

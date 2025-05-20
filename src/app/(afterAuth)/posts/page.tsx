@@ -2,16 +2,13 @@
 import { Button } from "@/components/ui/button";
 import { Badge } from "@/components/ui/badge";
 
-// import { Post } from "@/types/post";
 import { ChevronLeft, ChevronRight, Pen } from "lucide-react";
 import Link from "next/link";
-import { useEffect, useState } from "react";
-import { dummyPosts } from "./postData";
-import { Post } from "@/types/post";
+import { useState } from "react";
 import PostCard from "@/components/common/PostCard";
-import axiosInstance from "@/utils/axiosInstance";
 import { Separator } from "@/components/ui/separator";
-import { fetchAllPosts, fetchAllPostsPaged, fetchPostsByCategory } from "@/components/api/PostApi";
+import { useMyCategoryPosts } from "@/components/hooks/usePosts";
+import { PostSkeletonCard } from "@/components/posts/PostSkeletonCard";
 
 const categories = [
   { id: 0, name: "전체" },
@@ -28,66 +25,35 @@ const categories = [
 ];
 
 export default function Posts() {
-  const [allPosts, setAllPosts] = useState<Post[]>([]); // API에서 받아온 전체 게시글
-  const [filteredPosts, setFilteredPosts] = useState<Post[]>([]); // 카테고리에 따라 필터링된 게시글
-  const [posts, setPosts] = useState<Post[]>([]);
-  const [page, setPage] = useState(1);
-  const [pageInfo, setPageInfo] = useState({
-    page: 0,
-    size: 8,
-    totalPages: 0,
-  });
   const [selectedCategory, setSelectedCategory] = useState(0);
+  const [pageInfo, setPageInfo] = useState({ page: 0, size: 8 });
 
-  const perPage = 8;
-  const totalPages = Math.ceil(filteredPosts.length / perPage);
-
-  const fetchPosts = async (categoryId: number, page = 0) => {
-    try {
-      let res;
-      if (categoryId === 0) {
-        res = await fetchAllPostsPaged({ page, size: pageInfo.size });
-      } else {
-        res = await fetchPostsByCategory({
-          page,
-          size: pageInfo.size,
-          categoryId,
-        });
-      }
-      setPosts(res.posts);
-      setPageInfo((prev) => ({
-        ...prev,
-        page: res.pagination.pageNumber,
-        totalPages: res.pagination.totalPages,
-      }));
-    } catch (error) {
-      console.error("게시글 요청 실패:", error);
-    }
-  };
-
-  useEffect(() => {
-    fetchPosts(selectedCategory);
-  }, [selectedCategory]);
+  const { data, isLoading, error } = useMyCategoryPosts(selectedCategory, {
+    page: pageInfo.page,
+    size: pageInfo.size,
+  });
 
   const handleSelect = (categoryId: number) => {
     setSelectedCategory(categoryId);
+    setPageInfo((prev) => ({ ...prev, page: 0 })); // 카테고리 바뀌면 페이지 초기화
   };
 
   const handlePageChange = (newPage: number) => {
-    fetchPosts(selectedCategory, newPage);
+    setPageInfo((prev) => ({ ...prev, page: newPage }));
   };
 
   return (
     <main className="px-8 py-12 max-w-screen-2xl mx-auto">
       <h1 className="text-3xl font-bold mb-6 text-left">게시글</h1>
-      <div className="flex flex-row  justify-between ">
+
+      <div className="flex flex-row justify-between">
         <div className="flex flex-wrap gap-2 mb-10">
           {categories.map((category) => (
             <Badge
               key={category.id}
               variant={selectedCategory === category.id ? "selected" : "default"}
               className={`px-5 mx-0.5 text-lg cursor-pointer rounded-full transition duration-200 ease-in-out
-              ${selectedCategory === category.id ? "scale-105 shadow-md" : ""}`}
+            ${selectedCategory === category.id ? "scale-105 shadow-md" : ""}`}
               onClick={() => handleSelect(category.id)}
             >
               {category.name}
@@ -104,35 +70,50 @@ export default function Posts() {
         </Link>
       </div>
 
-      <div className="grid grid-cols-1 md:grid-cols-2 gap-6">
-        {posts.map((post) => (
-          <PostCard key={post.id} post={post} />
-        ))}
-      </div>
-      <Separator className="my-5" />
+      {isLoading ? (
+        <div className="grid grid-cols-1 md:grid-cols-2 gap-6">
+          {Array.from({ length: 6 }).map((_, i) => (
+            <PostSkeletonCard key={i} />
+          ))}
+        </div>
+      ) : error ? (
+        <p className="text-red-500">에러 발생: {error.message}</p>
+      ) : (
+        <>
+          <div className="grid grid-cols-1 md:grid-cols-2 gap-6">
+            {data?.posts.map((post) => (
+              <PostCard key={post.id} post={post} />
+            ))}
+          </div>
 
-      {/* 페이징 */}
-      <div className="flex items-center justify-center space-x-4">
-        <Button
-          variant="ghost"
-          disabled={pageInfo.page === 0}
-          onClick={() => handlePageChange(pageInfo.page - 1)}
-        >
-          <ChevronLeft />
-        </Button>
+          <Separator className="my-5" />
 
-        <span className="text-sm">
-          {pageInfo.totalPages === 0 ? "0 / 0" : `${pageInfo.page + 1} / ${pageInfo.totalPages}`}
-        </span>
+          {/* 페이징 */}
+          <div className="flex items-center justify-center space-x-4">
+            <Button
+              variant="ghost"
+              disabled={data?.pagination.pageNumber === 0}
+              onClick={() => handlePageChange(data!.pagination.pageNumber - 1)}
+            >
+              <ChevronLeft />
+            </Button>
 
-        <Button
-          variant="ghost"
-          disabled={pageInfo.page + 1 >= pageInfo.totalPages}
-          onClick={() => handlePageChange(pageInfo.page + 1)}
-        >
-          <ChevronRight />
-        </Button>
-      </div>
+            <span className="text-sm">
+              {data?.pagination.totalPages === 0
+                ? "0 / 0"
+                : `${data?.pagination.pageNumber + 1} / ${data?.pagination.totalPages}`}
+            </span>
+
+            <Button
+              variant="ghost"
+              disabled={data?.pagination.pageNumber + 1 >= data?.pagination.totalPages}
+              onClick={() => handlePageChange(data!.pagination.pageNumber + 1)}
+            >
+              <ChevronRight />
+            </Button>
+          </div>
+        </>
+      )}
     </main>
   );
 }
