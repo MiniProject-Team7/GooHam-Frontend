@@ -36,10 +36,10 @@ export default function ParticipationManagementPage() {
 
   const [page, setPage] = React.useState(1);
 
-  if (isProfileLoading || isPostsLoading) return <p className="p-8">데이터를 불러오는 중…</p>;
-  if (isProfileError || isPostsError) return <p className="p-8 text-red-500">데이터 불러오기 실패</p>;
+  if (isProfileLoading || isPostsLoading) return <p className="text-center text-gray-500 mt-100">데이터를 불러오는 중…</p>;
+  if (isProfileError || isPostsError) return <p className="text-center text-gray-500 mt-100">데이터 불러오기 실패</p>;
 
-  if (posts.length === 0) return <p className="p-8 text-center text-gray-500">작성한 게시물이 없습니다.</p>;
+  if (posts.length === 0) return <p className="mt-100 p-8 text-center text-gray-500">작성한 게시물이 없습니다.</p>;
 
   const totalPages = Math.ceil(posts.length / postsPerPage);
   const startIdx = (page - 1) * postsPerPage;
@@ -47,6 +47,7 @@ export default function ParticipationManagementPage() {
 
   return (
     <div className="relative w-full max-w-7xl mx-auto py-6 space-y-6">
+      <h1 className="text-3xl font-bold mb-6 text-left">참여 신청 관리</h1>
       {currentPosts.map((post) => (
         <PostWithApplications
           key={post.id}
