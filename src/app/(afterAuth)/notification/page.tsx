@@ -47,7 +47,7 @@ export default function NotificationsPage() {
 
   // ✅ 로딩/에러 처리
   if (isProfileLoading || isNotiLoading) return <p className="p-8">알림을 불러오는 중…</p>;
-  if (isProfileError || isNotiError) return <p className="p-8 text-red-500">알림 불러오기 실패</p>;
+  if (isProfileError || isNotiError) return <p className="text-center text-gray-500">알림이 없습니다.</p>;
 
   // ✅ 읽은 알림 삭제 핸들러
   const handleDeleteRead = () => {
