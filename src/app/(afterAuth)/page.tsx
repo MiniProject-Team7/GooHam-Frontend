@@ -12,7 +12,7 @@ import { useAllPosts } from "@/components/hooks/usePosts";
 import { useFetchUserProfile } from "@/components/common/useProfileStore";
 import { usePresignedUrls } from "@/components/hooks/usePresignedImage";
 import type { Post } from "@/types/post";
-
+import Link from "next/link";
 
 const cards = [
   { img: "Carousel_1.png", category: 1 },
@@ -145,7 +145,7 @@ export default function HomePage() {
                   {/* 4) 자세히 보기 버튼 (푸터) */}
                   <CardFooter className="px-4 pb-4 pt-2">
                     <Button variant="default" className="w-full py-2 text-sm">
-                      자세히 보기
+                       <Link href={`/postDetail/${post.id}`}>자세히 보기</Link>
                     </Button>
                   </CardFooter>
                 </Card>
