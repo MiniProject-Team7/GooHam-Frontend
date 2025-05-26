@@ -8,7 +8,7 @@ import { AvatarImage } from "@radix-ui/react-avatar";
 import { Calendar, MapPin, Shapes, Users } from "lucide-react";
 import { ConfirmDialog } from "@/app/(afterAuth)/participation/Alertmessage";
 import { useState } from "react";
-import { requestParticipation } from "@/components/api/Participationapi";
+import { requestParticipation } from "@/api/Participationapi";
 import { useAuthStore } from "@/components/common/useAuthStore";
 
 const JoinProfileCard = ({ post }: { post: Post }) => {

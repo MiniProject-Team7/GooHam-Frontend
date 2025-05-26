@@ -9,7 +9,7 @@ import { Tabs, TabsContent, TabsList, TabsTrigger } from "@/components/ui/tabs";
 import PostCard from "@/components/common/PostCard";
 import { useAuthStore } from "@/components/common/useAuthStore";
 import { usePresignedUrls } from "@/components/hooks/usePresignedImage";
-import { fetchPostsByUser } from "@/components/api/PostApi";
+import { fetchPostsByUser } from "@/api/PostApi";
 import type { Post } from "@/types/post";
 
 export interface UserComment {

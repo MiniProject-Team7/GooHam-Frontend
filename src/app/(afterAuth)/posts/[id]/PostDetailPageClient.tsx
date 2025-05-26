@@ -2,7 +2,7 @@
 "use client";
 
 import { useEffect, useState } from "react";
-import { fetchPostDetail, fetchComments } from "@/components/api/postDetailApi";
+import { fetchPostDetail, fetchComments } from "@/api/postDetailApi";
 import PostDetailItem from "./components/posts/PostDetailItem";
 import CommentForm from "./components/comments/CommentForm";
 import CommentList from "./components/comments/CommentList";

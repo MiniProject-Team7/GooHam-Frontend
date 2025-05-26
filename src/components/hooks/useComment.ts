@@ -5,8 +5,8 @@ import {
   CreateCommentRequest,
   deleteComment,
   updateComment,
-} from "@/components/api/commentApi";
-import { fetchCommentsByPostId } from "../api/postDetailApi";
+} from "@/api/commentApi";
+import { fetchCommentsByPostId } from "../../api/postDetailApi";
 
 export const useCreateComment = (postId: number) => {
   const queryClient = useQueryClient();
