@@ -23,9 +23,9 @@ import { Avatar, AvatarImage, AvatarFallback } from "@/components/ui/avatar";
 import { Button } from "@/components/ui/button";
 import { Calendar, MapPin } from "lucide-react";
 import { statusToBadgeVariant } from "@/lib/constants/status";
-import { useAllPosts } from "@/components/hooks/usePosts";
+import { useAllPosts } from "@/hooks/usePosts";
 import { useFetchUserProfile } from "@/components/common/useProfileStore";
-import { usePresignedUrls } from "@/components/hooks/usePresignedImage";
+import { usePresignedUrls } from "@/hooks/usePresignedImage";
 import type { Post } from "@/types/post";
 import Link from "next/link";
 

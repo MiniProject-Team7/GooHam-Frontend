@@ -24,9 +24,9 @@ import axiosInstance from "@/lib/axiosInstance";
 
 // Hooks & utils for notifications
 import { useFetchUserProfile } from "@/components/common/useProfileStore";
-import { useNotifications, useMarkAsRead } from "@/components/hooks/useNotification";
+import { useNotifications, useMarkAsRead } from "@/hooks/useNotification";
 import { mapRawListToNotices, formatNoticeContent } from "@/components/common/noticeStore";
-import { usePresignedUrls } from "@/components/hooks/usePresignedImage";
+import { usePresignedUrls } from "@/hooks/usePresignedImage";
 import type { Notice } from "@/types/notification";
 
 const navItems = [

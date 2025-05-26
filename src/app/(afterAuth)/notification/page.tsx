@@ -8,11 +8,7 @@ import { Card, CardContent } from "@/components/ui/card";
 import { Separator } from "@/components/ui/separator";
 import { Button } from "@/components/ui/button";
 
-import {
-  useMarkAsRead,
-  useNotifications,
-  useClearNotifications,
-} from "@/components/hooks/useNotification";
+import { useMarkAsRead, useNotifications, useClearNotifications } from "@/hooks/useNotification";
 import { mapRawListToNotices, formatNoticeContent } from "@/components/common/noticeStore";
 import type { Notice } from "@/types/notification";
 import { useFetchUserProfile } from "@/components/common/useProfileStore";
@@ -46,8 +42,10 @@ export default function NotificationsPage() {
   const current = notices.slice(start, start + perPage);
 
   // ✅ 로딩/에러 처리
-  if (isProfileLoading || isNotiLoading) return <p className="text-center text-gray-500 mt-100">알림을 불러오는 중…</p>;
-  if (isProfileError || isNotiError) return <p className="text-center text-gray-500 mt-100">알림이 없습니다.</p>;
+  if (isProfileLoading || isNotiLoading)
+    return <p className="text-center text-gray-500 mt-100">알림을 불러오는 중…</p>;
+  if (isProfileError || isNotiError)
+    return <p className="text-center text-gray-500 mt-100">알림이 없습니다.</p>;
 
   // ✅ 읽은 알림 삭제 핸들러
   const handleDeleteRead = () => {
@@ -107,7 +105,9 @@ export default function NotificationsPage() {
           <ChevronLeft />
         </Button>
 
-        <span className="text-sm">{page} / {totalPages || 1}</span>
+        <span className="text-sm">
+          {page} / {totalPages || 1}
+        </span>
 
         <Button
           variant="ghost"

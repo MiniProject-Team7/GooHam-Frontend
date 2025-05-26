@@ -8,7 +8,7 @@ import { Button } from "@/components/ui/button";
 import { Textarea } from "@/components/ui/textarea";
 import { Comment } from "@/types/comment";
 import { CheckDialog, ConfirmDialog } from "@/app/(afterAuth)/participation/Alertmessage";
-import { useComment } from "@/components/hooks/useComment";
+import { useComment } from "@/hooks/useComment";
 import { useAuthStore } from "@/components/common/useAuthStore";
 
 const CommentItem = ({ comment, postId }: { comment: Comment; postId: number }) => {

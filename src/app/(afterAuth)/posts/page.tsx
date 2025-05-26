@@ -7,7 +7,7 @@ import Link from "next/link";
 import { useState } from "react";
 import PostCard from "@/components/common/PostCard";
 import { Separator } from "@/components/ui/separator";
-import { useMyCategoryPosts } from "@/components/hooks/usePosts";
+import { useMyCategoryPosts } from "@/hooks/usePosts";
 import { PostSkeletonCard } from "./[id]/components/posts/PostSkeletonCard";
 
 const categories = [

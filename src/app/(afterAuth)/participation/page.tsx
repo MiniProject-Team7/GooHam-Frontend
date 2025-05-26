@@ -6,12 +6,12 @@ import { Separator } from "@/components/ui/separator";
 import { Button } from "@/components/ui/button";
 import { ParticipationCard } from "@/components/common/ParticipationCard";
 import PostCard from "@/components/common/PostCard";
-import { useUserPosts } from "@/components/hooks/usePosts";
+import { useUserPosts } from "@/hooks/usePosts";
 import {
   useParticipations,
   useApproveParticipation,
   useRejectParticipation,
-} from "@/components/hooks/useParticipation";
+} from "@/hooks/useParticipation";
 import { useFetchUserProfile } from "@/components/common/useProfileStore";
 import type { Post } from "@/types/post";
 import type { RawParticipation, ParticipationMutationVars } from "@/types/participation";
@@ -36,10 +36,13 @@ export default function ParticipationManagementPage() {
 
   const [page, setPage] = React.useState(1);
 
-  if (isProfileLoading || isPostsLoading) return <p className="text-center text-gray-500 mt-100">데이터를 불러오는 중…</p>;
-  if (isProfileError || isPostsError) return <p className="text-center text-gray-500 mt-100">데이터 불러오기 실패</p>;
+  if (isProfileLoading || isPostsLoading)
+    return <p className="text-center text-gray-500 mt-100">데이터를 불러오는 중…</p>;
+  if (isProfileError || isPostsError)
+    return <p className="text-center text-gray-500 mt-100">데이터 불러오기 실패</p>;
 
-  if (posts.length === 0) return <p className="mt-100 p-8 text-center text-gray-500">작성한 게시물이 없습니다.</p>;
+  if (posts.length === 0)
+    return <p className="mt-100 p-8 text-center text-gray-500">작성한 게시물이 없습니다.</p>;
 
   const totalPages = Math.ceil(posts.length / postsPerPage);
   const startIdx = (page - 1) * postsPerPage;
@@ -93,8 +96,11 @@ const PostWithApplications: React.FC<PostWithApplicationsProps> = ({
 }) => {
   const [appsPage, setAppsPage] = React.useState(0);
 
-  const { data: pageResp, isLoading: appsLoading, isError: appsError } =
-    useParticipations(post.id, appsPage, appsPerPost);
+  const {
+    data: pageResp,
+    isLoading: appsLoading,
+    isError: appsError,
+  } = useParticipations(post.id, appsPage, appsPerPost);
 
   const approve = useApproveParticipation();
   const reject = useRejectParticipation();

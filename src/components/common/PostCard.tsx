@@ -3,7 +3,7 @@
 import React from "react";
 import { Post } from "@/types/post";
 import Link from "next/link";
-import { usePresignedUrls } from "@/components/hooks/usePresignedImage";
+import { usePresignedUrls } from "@/hooks/usePresignedImage";
 import { Button } from "../ui/button";
 import { Card, CardContent } from "../ui/card";
 import { Badge } from "../ui/badge";

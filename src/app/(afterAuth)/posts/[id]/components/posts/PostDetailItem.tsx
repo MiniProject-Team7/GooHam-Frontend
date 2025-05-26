@@ -11,13 +11,13 @@ import {
   CarouselNext,
   CarouselPrevious,
 } from "@/components/ui/carousel";
-import { usePresignedUrls } from "@/components/hooks/usePresignedImage";
+import { usePresignedUrls } from "@/hooks/usePresignedImage";
 import { Post } from "@/types/post";
 import { useEffect, useState, useCallback } from "react";
 import { useAuthStore } from "@/components/common/useAuthStore";
 import { Button } from "@/components/ui/button";
 import { Pen } from "lucide-react";
-import { useUserPosts } from "@/components/hooks/usePosts";
+import { useUserPosts } from "@/hooks/usePosts";
 import { deletePost } from "@/api/PostWriteApi";
 import { useRouter } from "next/navigation";
 import { CheckDialog } from "@/app/(afterAuth)/participation/Alertmessage";
