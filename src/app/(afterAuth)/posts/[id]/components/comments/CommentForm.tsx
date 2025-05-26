@@ -3,8 +3,8 @@
 import { useState } from "react";
 import { Button } from "@/components/ui/button";
 import { Textarea } from "@/components/ui/textarea";
-import { useCreateComment } from "../hooks/useComment";
-import { useAuthStore } from "../common/useAuthStore";
+import { useCreateComment } from "@/components/hooks/useComment";
+import { useAuthStore } from "@/components/common/useAuthStore";
 import { CheckDialog } from "@/app/(afterAuth)/participation/Alertmessage";
 
 interface CommentFormProps {

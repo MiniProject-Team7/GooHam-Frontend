@@ -3,11 +3,11 @@
 
 import { useEffect, useState } from "react";
 import { fetchPostDetail, fetchComments } from "@/components/api/postDetailApi";
-import PostDetailItem from "@/components/posts/PostDetailItem";
-import CommentForm from "@/components/comments/CommentForm";
-import CommentList from "@/components/comments/CommentList";
-import JoinProfileCard from "@/components/posts/JoinProfileCard";
-import ParticipantList from "@/components/posts/ParticipantList";
+import PostDetailItem from "./components/posts/PostDetailItem";
+import CommentForm from "./components/comments/CommentForm";
+import CommentList from "./components/comments/CommentList";
+import JoinProfileCard from "./components/posts/JoinProfileCard";
+import ParticipantList from "./components/posts/ParticipantList";
 import { useAcceptedParticipations } from "@/components/hooks/useParticipation";
 
 export default function ClientPostDetail({ postId }: { postId: number }) {

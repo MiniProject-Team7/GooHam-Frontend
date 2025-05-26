@@ -380,7 +380,7 @@ export default function PostWrite({ editMode = false, postId }: PostWriteProps) 
           if (dialogMessage.title === "게시글 등록 성공!") {
             router.push("/posts");
           } else {
-            router.push(`/postDetail/${postId}`);
+            router.push(`/posts/${postId}`);
           }
         }}
       />

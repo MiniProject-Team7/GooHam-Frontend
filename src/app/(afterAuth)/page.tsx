@@ -147,7 +147,7 @@ export default function HomePage() {
 
                   <CardFooter className="px-4 pb-4 pt-2">
                     <Button variant="default" className="w-full py-2 text-sm">
-                       <Link href={`/postDetail/${post.id}`}>자세히 보기</Link>
+                      <Link href={`/posts/${post.id}`}>자세히 보기</Link>
                     </Button>
                   </CardFooter>
                 </Card>

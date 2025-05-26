@@ -8,12 +8,12 @@ type FormattedNotice = {
 
 export function mapRawToNotice(raw: RawNotification): Notice {
   // link를 타입별로 다르게 만듭니다.
-  const link = `/postDetail/${raw.postId}`;
+  const link = `/posts/${raw.postId}`;
 
   return {
     id: raw.id.toString(),
     type: raw.type,
-    from: raw.participantName,  // 신청자/참여자 이름
+    from: raw.participantName, // 신청자/참여자 이름
     postTitle: raw.postTitle,
     createdAt: raw.createdAt,
     link,
@@ -53,18 +53,10 @@ export function formatNoticeContent(n: Notice): FormattedNotice {
       );
       break;
     case "승인":
-      content = (
-        <>
-          {titleSpan}에 대한 신청이 승인되었습니다.
-        </>
-      );
+      content = <>{titleSpan}에 대한 신청이 승인되었습니다.</>;
       break;
     case "거절":
-      content = (
-        <>
-          {titleSpan}에 대한 신청이 거절되었습니다.
-        </>
-      );
+      content = <>{titleSpan}에 대한 신청이 거절되었습니다.</>;
       break;
   }
 

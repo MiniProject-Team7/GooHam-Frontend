@@ -1,4 +1,4 @@
-"use client";  // 훅을 쓰려면 클라이언트 컴포넌트여야 합니다.
+"use client"; // 훅을 쓰려면 클라이언트 컴포넌트여야 합니다.
 
 import React from "react";
 import { Post } from "@/types/post";
@@ -60,7 +60,7 @@ const PostCard = ({ post }: { post: Post }) => {
         </div>
 
         <div className="mt-3">
-          <Link href={`/postDetail/${post.id}`}>
+          <Link href={`/posts/${post.id}`}>
             <Button variant="link" size="default" className="w-75">
               자세히 보기
             </Button>
