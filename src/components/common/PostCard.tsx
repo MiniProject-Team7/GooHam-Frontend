@@ -8,7 +8,7 @@ import { Button } from "../ui/button";
 import { Card, CardContent } from "../ui/card";
 import { Badge } from "../ui/badge";
 import { Calendar, MapPin } from "lucide-react";
-import { statusToBadgeVariant } from "@/utils/statusVariant";
+import { statusToBadgeVariant } from "@/lib/constants/status";
 
 const PostCard = ({ post }: { post: Post }) => {
   // 1) presign 훅 호출 (string[] → string|string[]|null)

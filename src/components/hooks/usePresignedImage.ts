@@ -1,5 +1,5 @@
 import { useQueries } from "@tanstack/react-query";
-import axiosInstance from "@/utils/axiosInstance";
+import axiosInstance from "@/lib/axiosInstance";
 
 type MaybeStringArray = string | string[];
 
@@ -15,10 +15,9 @@ export function usePresignedUrls(keys: MaybeStringArray): string | string[] | nu
       queryKey: ["presignImage", key] as const,
       queryFn: async () => {
         if (!key) throw new Error("No image key");
-        const { data } = await axiosInstance.get<{ url: string }>(
-          "/images/presign",
-          { params: { key } }
-        );
+        const { data } = await axiosInstance.get<{ url: string }>("/images/presign", {
+          params: { key },
+        });
         return data.url;
       },
       enabled: Boolean(key),

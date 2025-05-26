@@ -9,7 +9,7 @@ import { Button } from "@/components/ui/button";
 import { Card, CardContent } from "@/components/ui/card";
 import { useAuthStore } from "@/components/common/useAuthStore";
 import { CheckDialog } from "@/app/(afterAuth)/participation/Alertmessage";
-import axiosInstance from "@/utils/axiosInstance";
+import axiosInstance from "@/lib/axiosInstance";
 import { useQueryClient } from "@tanstack/react-query";
 
 type FormDataType = {

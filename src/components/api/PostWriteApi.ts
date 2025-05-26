@@ -1,5 +1,5 @@
 import { CreatePostRequest } from "@/types/post";
-import axiosInstance from "@/utils/axiosInstance";
+import axiosInstance from "@/lib/axiosInstance";
 
 /**
  *  게시글 작성

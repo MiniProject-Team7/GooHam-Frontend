@@ -22,7 +22,7 @@ import { Badge } from "@/components/ui/badge";
 import { Avatar, AvatarImage, AvatarFallback } from "@/components/ui/avatar";
 import { Button } from "@/components/ui/button";
 import { Calendar, MapPin } from "lucide-react";
-import { statusToBadgeVariant } from "@/utils/statusVariant";
+import { statusToBadgeVariant } from "@/lib/constants/status";
 import { useAllPosts } from "@/components/hooks/usePosts";
 import { useFetchUserProfile } from "@/components/common/useProfileStore";
 import { usePresignedUrls } from "@/components/hooks/usePresignedImage";

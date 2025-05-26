@@ -3,7 +3,7 @@ import React, { JSX, useEffect, useState } from "react";
 import { Button } from "../../../../../components/ui/button";
 import { Card, CardContent } from "../../../../../components/ui/card";
 import { useAuthStore } from "@/components/common/useAuthStore";
-import axiosInstance from "@/utils/axiosInstance";
+import axiosInstance from "@/lib/axiosInstance";
 import Link from "next/link";
 
 type MyPageData = {
@@ -62,14 +62,14 @@ export const SettingsGroupSection = (): JSX.Element => {
           <div className="flex justify-between items-center p-8">
             <div className="flex flex-col gap-4">
               <p className="text-title-md text-black text-base">
-                계정 생성 일자:  {" "}
+                계정 생성 일자:{" "}
                 <span className="text-label-lg font-normal">
                   {" "}
                   {formatDateTime(data.created_at)}
                 </span>
               </p>
               <p className="text-title-md text-black">
-                계정 정보 업데이트 일자:  
+                계정 정보 업데이트 일자:
                 <span className="text-label-lg font-normal">{formatDateTime(data.updated_at)}</span>
               </p>
             </div>

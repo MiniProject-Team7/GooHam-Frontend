@@ -5,7 +5,7 @@ import { Button } from "../../../../../components/ui/button";
 import { Card, CardContent } from "../../../../../components/ui/card";
 import { DeleteMessage } from "./DeleteMessage";
 
-import axiosInstance from "@/utils/axiosInstance";
+import axiosInstance from "@/lib/axiosInstance";
 import { useRouter } from "next/navigation";
 import { useAuthStore } from "@/components/common/useAuthStore";
 
