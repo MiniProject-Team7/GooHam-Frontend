@@ -13,10 +13,10 @@ import {
 import { useRouter } from "next/navigation";
 import FileInput from "./FileInput";
 import { CreatePatchRequest, CreatePostRequest } from "@/types/post";
-import { createPost, updatePost } from "@/components/api/PostWriteApi";
+import { createPost, updatePost } from "@/api/PostWriteApi";
 import { useAuthStore } from "@/components/common/useAuthStore";
 import { CheckDialog } from "@/app/(afterAuth)/participation/Alertmessage";
-import { fetchPostDetail } from "@/components/api/postDetailApi";
+import { fetchPostDetail } from "@/api/postDetailApi";
 
 type PostWriteProps = {
   editMode?: boolean;
@@ -380,7 +380,7 @@ export default function PostWrite({ editMode = false, postId }: PostWriteProps) 
           if (dialogMessage.title === "게시글 등록 성공!") {
             router.push("/posts");
           } else {
-            router.push(`/postDetail/${postId}`);
+            router.push(`/posts/${postId}`);
           }
         }}
       />

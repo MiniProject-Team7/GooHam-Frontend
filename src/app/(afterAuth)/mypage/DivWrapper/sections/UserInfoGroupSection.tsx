@@ -3,7 +3,7 @@
 import React, { JSX, useEffect, useState } from "react";
 import { Card, CardContent } from "../../../../../components/ui/card";
 import { Switch } from "../../../../../components/ui/switch";
-import axiosInstance from "@/utils/axiosInstance";
+import axiosInstance from "@/lib/axiosInstance";
 import { useAuthStore } from "@/components/common/useAuthStore";
 
 type MyPageData = {

@@ -1,5 +1,5 @@
 // api/commentApi.ts
-import axiosInstance from "@/utils/axiosInstance";
+import axiosInstance from "@/lib/axiosInstance";
 
 export interface CreateCommentRequest {
   postId: number;

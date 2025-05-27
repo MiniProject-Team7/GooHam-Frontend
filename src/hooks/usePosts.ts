@@ -7,7 +7,7 @@ import {
   fetchPostsByCategory,
   FetchPostsByCategoryOpts,
   fetchPostsByUser,
-} from "@/components/api/PostApi";
+} from "@/api/PostApi";
 
 const QUERY_KEY_BASE = "posts";
 

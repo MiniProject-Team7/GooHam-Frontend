@@ -1,12 +1,12 @@
 "use client";
 import React, { useEffect, useState } from "react";
-import axiosInstance from "@/utils/axiosInstance";
+import axiosInstance from "@/lib/axiosInstance";
 import { Avatar, AvatarFallback, AvatarImage } from "@/components/ui/avatar";
 import { Badge } from "@/components/ui/badge";
 import { Button } from "@/components/ui/button";
 import { Card, CardContent } from "@/components/ui/card";
 import { useAuthStore } from "@/components/common/useAuthStore";
-import { usePresignedUrls } from "@/components/hooks/usePresignedImage";
+import { usePresignedUrls } from "@/hooks/usePresignedImage";
 
 // 타입 정의
 type MyPageData = {

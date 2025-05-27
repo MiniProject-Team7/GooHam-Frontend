@@ -1,7 +1,7 @@
 // src/components/PresignedMedia.tsx
 "use client";
 import * as React from "react";
-import { usePresignedUrls } from "@/components/hooks/usePresignedImage";
+import { usePresignedUrls } from "@/hooks/usePresignedImage";
 
 interface PresignedMediaProps {
   /** S3 객체 키 혹은 키 배열 (or null) */
@@ -29,12 +29,7 @@ export function PresignedMedia({
   return (
     <>
       {urls.map((url, i) => (
-        <img
-          key={i}
-          src={url ?? fallback}
-          className={className}
-          alt={`image-${i}`}
-        />
+        <img key={i} src={url ?? fallback} className={className} alt={`image-${i}`} />
       ))}
     </>
   );

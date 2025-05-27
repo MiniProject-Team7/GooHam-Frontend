@@ -5,7 +5,7 @@ import {
   CreateCommentRequest,
   deleteComment,
   updateComment,
-} from "@/components/api/commentApi";
+} from "@/api/commentApi";
 import { fetchCommentsByPostId } from "../api/postDetailApi";
 
 export const useCreateComment = (postId: number) => {

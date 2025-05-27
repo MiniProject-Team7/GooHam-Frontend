@@ -1,4 +1,3 @@
-// utils/axiosInstance.ts
 import axios from "axios";
 import { API_BASE_URL } from "@/components/common/config";
 
@@ -6,7 +5,7 @@ import { API_BASE_URL } from "@/components/common/config";
 const axiosInstance = axios.create({
   baseURL: `${API_BASE_URL}/gooham`, // API 루트 경로
   withCredentials: true, // 쿠키 인증 필요 시 true
-  headers: {                    
+  headers: {
     "Content-Type": "application/json",
   },
 });
@@ -69,4 +68,3 @@ axiosInstance.interceptors.response.use(
 );
 
 export default axiosInstance;
-

@@ -1,4 +1,4 @@
-import CommentItem from "@/components/comments/CommentItem";
+import CommentItem from "./CommentItem";
 import { Comment } from "@/types/comment";
 
 const CommentList = ({ comments, postId }: { comments: Comment[]; postId: number }) => {

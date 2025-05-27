@@ -1,14 +1,14 @@
-"use client";  // 훅을 쓰려면 클라이언트 컴포넌트여야 합니다.
+"use client"; // 훅을 쓰려면 클라이언트 컴포넌트여야 합니다.
 
 import React from "react";
 import { Post } from "@/types/post";
 import Link from "next/link";
-import { usePresignedUrls } from "@/components/hooks/usePresignedImage";
+import { usePresignedUrls } from "@/hooks/usePresignedImage";
 import { Button } from "../ui/button";
 import { Card, CardContent } from "../ui/card";
 import { Badge } from "../ui/badge";
 import { Calendar, MapPin } from "lucide-react";
-import { statusToBadgeVariant } from "@/utils/statusVariant";
+import { statusToBadgeVariant } from "@/lib/constants/status";
 
 const PostCard = ({ post }: { post: Post }) => {
   // 1) presign 훅 호출 (string[] → string|string[]|null)
@@ -60,7 +60,7 @@ const PostCard = ({ post }: { post: Post }) => {
         </div>
 
         <div className="mt-3">
-          <Link href={`/postDetail/${post.id}`}>
+          <Link href={`/posts/${post.id}`}>
             <Button variant="link" size="default" className="w-75">
               자세히 보기
             </Button>

@@ -1,15 +1,15 @@
 "use client";
 
 import React, { JSX, useEffect, useState } from "react";
-import axiosInstance from "@/utils/axiosInstance";
+import axiosInstance from "@/lib/axiosInstance";
 import { Avatar, AvatarFallback, AvatarImage } from "@/components/ui/avatar";
 import { Button } from "@/components/ui/button";
 import { Card } from "@/components/ui/card";
 import { Tabs, TabsContent, TabsList, TabsTrigger } from "@/components/ui/tabs";
 import PostCard from "@/components/common/PostCard";
 import { useAuthStore } from "@/components/common/useAuthStore";
-import { usePresignedUrls } from "@/components/hooks/usePresignedImage";
-import { fetchPostsByUser } from "@/components/api/PostApi";
+import { usePresignedUrls } from "@/hooks/usePresignedImage";
+import { fetchPostsByUser } from "@/api/PostApi";
 import type { Post } from "@/types/post";
 
 export interface UserComment {

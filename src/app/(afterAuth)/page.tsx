@@ -22,10 +22,10 @@ import { Badge } from "@/components/ui/badge";
 import { Avatar, AvatarImage, AvatarFallback } from "@/components/ui/avatar";
 import { Button } from "@/components/ui/button";
 import { Calendar, MapPin } from "lucide-react";
-import { statusToBadgeVariant } from "@/utils/statusVariant";
-import { useAllPosts } from "@/components/hooks/usePosts";
+import { statusToBadgeVariant } from "@/lib/constants/status";
+import { useAllPosts } from "@/hooks/usePosts";
 import { useFetchUserProfile } from "@/components/common/useProfileStore";
-import { usePresignedUrls } from "@/components/hooks/usePresignedImage";
+import { usePresignedUrls } from "@/hooks/usePresignedImage";
 import type { Post } from "@/types/post";
 import Link from "next/link";
 
@@ -147,7 +147,7 @@ export default function HomePage() {
 
                   <CardFooter className="px-4 pb-4 pt-2">
                     <Button variant="default" className="w-full py-2 text-sm">
-                       <Link href={`/postDetail/${post.id}`}>자세히 보기</Link>
+                      <Link href={`/posts/${post.id}`}>자세히 보기</Link>
                     </Button>
                   </CardFooter>
                 </Card>

@@ -1,5 +1,5 @@
 // api/postDetailApi.ts
-import axiosInstance from "@/utils/axiosInstance";
+import axiosInstance from "@/lib/axiosInstance";
 import { RawPost, RawPageResponse, Post, FetchPostsResult } from "@/types/post";
 import { buildPageRequest, PageRequestParams } from "@/types/pagination";
 import { mapRawToPost } from "./PostApi";

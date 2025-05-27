@@ -5,12 +5,11 @@ import { Badge } from "@/components/ui/badge";
 import { Post } from "@/types/post";
 import { Avatar, AvatarFallback } from "../ui/avatar";
 import { AvatarImage } from "@radix-ui/react-avatar";
-import { Member } from "@/types/user";
 import { Calendar, MapPin, Shapes, Users } from "lucide-react";
-import { CheckDialog, ConfirmDialog } from "@/app/(afterAuth)/participation/Alertmessage";
+import { ConfirmDialog } from "@/app/(afterAuth)/participation/Alertmessage";
 import { useState } from "react";
-import { requestParticipation } from "../api/Participationapi";
-import { useAuthStore } from "../common/useAuthStore";
+import { requestParticipation } from "@/api/Participationapi";
+import { useAuthStore } from "@/components/common/useAuthStore";
 
 const JoinProfileCard = ({ post }: { post: Post }) => {
   const [applied, setApplied] = useState(false);

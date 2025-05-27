@@ -1,34 +1,31 @@
 // app/test-posts/page.tsx
-"use client"
+"use client";
 
-import { useState } from "react"
-import { useUserPosts, useCategoryPosts, useAllPosts, useRefreshPosts } from "@/components/hooks/usePosts"
-import type { Post } from "@/types/post"
+import { useState } from "react";
+import { useUserPosts, useCategoryPosts, useAllPosts, useRefreshPosts } from "@/hooks/usePosts";
+import type { Post } from "@/types/post";
 
 export default function TestPostsPage() {
-  const [userId, setUserId] = useState<number>(1)
-  const [categoryId, setCategoryId] = useState<number>(1)
+  const [userId, setUserId] = useState<number>(1);
+  const [categoryId, setCategoryId] = useState<number>(1);
 
   // 각각의 훅
-  const { data: userPosts, isLoading: uLoading } = useUserPosts(userId)
+  const { data: userPosts, isLoading: uLoading } = useUserPosts(userId);
   const { data: catData, isLoading: cLoading } = useCategoryPosts(categoryId, {
     page: 0,
     size: 5,
     sortField: "createdAt",
     sortOrder: "asc",
-  })
-  const { data: allPosts, isLoading: aLoading } = useAllPosts()
-  const refreshPosts = useRefreshPosts()
+  });
+  const { data: allPosts, isLoading: aLoading } = useAllPosts();
+  const refreshPosts = useRefreshPosts();
 
-  const loading = uLoading || cLoading || aLoading
+  const loading = uLoading || cLoading || aLoading;
 
   return (
     <div className="p-8 space-y-8">
       <h1 className="text-2xl font-bold">🧪 Test Posts Hooks</h1>
-      <button
-        className="px-4 py-2 bg-blue-600 text-white rounded"
-        onClick={() => refreshPosts()}
-      >
+      <button className="px-4 py-2 bg-blue-600 text-white rounded" onClick={() => refreshPosts()}>
         전체 Posts 리프레시
       </button>
 
@@ -101,5 +98,5 @@ export default function TestPostsPage() {
         )}
       </div>
     </div>
-  )
+  );
 }
